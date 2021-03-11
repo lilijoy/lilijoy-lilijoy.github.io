@@ -3,9 +3,10 @@
   <entry>
     <title>CSS3与HTML5</title>
     <url>/2021/03/11/CSS3%E4%B8%8EHTML5/</url>
-    <content><![CDATA[<p>[TOC]</p>
-<h2 id="HTML5新特性"><a href="#HTML5新特性" class="headerlink" title="HTML5新特性"></a>HTML5新特性</h2><p>增加了一些新的标签、新的表单以及新的表单属性等</p>
+    <content><![CDATA[<h2 id="HTML5新特性"><a href="#HTML5新特性" class="headerlink" title="HTML5新特性"></a>HTML5新特性</h2><p>增加了一些新的标签、新的表单以及新的表单属性等</p>
 <p>这些新特性都有兼容性问题，基本上IE9+以上版本浏览器才支持，如果不考虑兼容性问题，可以大量使用这些新特性</p>
+<span id="more"></span>
+
 <h3 id="新增语义化标签"><a href="#新增语义化标签" class="headerlink" title="新增语义化标签"></a>新增语义化标签</h3><ul>
 <li><header>:头部标签</li>
 <li><nav>:导航标签</li>
@@ -175,9 +176,10 @@
   <entry>
     <title>CSS3之变换与动画</title>
     <url>/2021/03/11/CSS3%E4%B9%8B%E5%8F%98%E6%8D%A2%E4%B8%8E%E5%8A%A8%E7%94%BB/</url>
-    <content><![CDATA[<p>[TOC]</p>
-<h2 id="2D转换"><a href="#2D转换" class="headerlink" title="2D转换"></a>2D转换</h2><p>转换是CSS3中具有颠覆性的特征之一，可以实现元素的位移、旋转、缩放等效果</p>
+    <content><![CDATA[<h2 id="2D转换"><a href="#2D转换" class="headerlink" title="2D转换"></a>2D转换</h2><p>转换是CSS3中具有颠覆性的特征之一，可以实现元素的位移、旋转、缩放等效果</p>
 <p>转换可以简单理解为变形</p>
+<span id="more"></span>
+
 <ul>
 <li>移动: translate</li>
 <li>旋转：retate</li>
@@ -298,10 +300,11 @@
   <entry>
     <title>CSS高级技巧</title>
     <url>/2021/03/11/CSS%E9%AB%98%E7%BA%A7%E6%8A%80%E5%B7%A7/</url>
-    <content><![CDATA[<p>[TOC]</p>
-<h3 id="精灵图"><a href="#精灵图" class="headerlink" title="精灵图"></a>精灵图</h3><h4 id="为什么需要精灵图"><a href="#为什么需要精灵图" class="headerlink" title="为什么需要精灵图"></a>为什么需要精灵图</h4><p>有效减少服务器接收和发送请求的次数，提高页面的加载速度，出现了CSS精灵技术（也称）CSS Sprites、CSS雪碧）</p>
+    <content><![CDATA[<h3 id="精灵图"><a href="#精灵图" class="headerlink" title="精灵图"></a>精灵图</h3><h4 id="为什么需要精灵图"><a href="#为什么需要精灵图" class="headerlink" title="为什么需要精灵图"></a>为什么需要精灵图</h4><p>有效减少服务器接收和发送请求的次数，提高页面的加载速度，出现了CSS精灵技术（也称）CSS Sprites、CSS雪碧）</p>
 <p>核心原理：将网页中一些小背景图像整合到一张大图中，这样只需要一次请求即可</p>
 <p>使用精灵图：使用background-position属性，移动的是这个目标图片的x和y坐标</p>
+<span id="more"></span>
+
 <p>精灵图使用：</p>
 <ol>
 <li>使用ps切片选择需要的切片</li>
@@ -410,7 +413,10 @@
   <entry>
     <title>CSS基础</title>
     <url>/2021/03/11/CSS%E5%9F%BA%E7%A1%80/</url>
-    <content><![CDATA[<h3 id="CSS元素显示模式"><a href="#CSS元素显示模式" class="headerlink" title="CSS元素显示模式"></a>CSS元素显示模式</h3><h5 id="块元素"><a href="#块元素" class="headerlink" title="块元素"></a>块元素</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;h1&gt;~&lt;h6&gt;、&lt;p&gt;、&lt;div&gt;、&lt;ul&gt;、&lt;ol&gt;、&lt;li&gt;</span><br></pre></td></tr></table></figure>
+    <content><![CDATA[<p>CSS基础</p>
+<span id="more"></span>
+
+<h3 id="CSS元素显示模式"><a href="#CSS元素显示模式" class="headerlink" title="CSS元素显示模式"></a>CSS元素显示模式</h3><h5 id="块元素"><a href="#块元素" class="headerlink" title="块元素"></a>块元素</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;h1&gt;~&lt;h6&gt;、&lt;p&gt;、&lt;div&gt;、&lt;ul&gt;、&lt;ol&gt;、&lt;li&gt;</span><br></pre></td></tr></table></figure>
 
 <p>独占一行、可以控制宽度高度内外边距、宽度默认是父级宽度的百分之百、里面可以放行内或块级元素</p>
 <p>和<h>不能放其他块级元素
@@ -756,6 +762,8 @@
     <url>/2021/03/11/JS%E4%B9%8BDOM/</url>
     <content><![CDATA[<h2 id="API和Web-API"><a href="#API和Web-API" class="headerlink" title="API和Web API"></a>API和Web API</h2><h3 id="API"><a href="#API" class="headerlink" title="API"></a>API</h3><p>应用程序编程接口，目的是提供应用程序与开发人员基于某软件或硬件得以访问一组例程的能力，且又无需访问源码，或理解内部工作机制的细节</p>
 <p>API是给程序员提供的一种工具，以便能更轻松的实现想要的功能</p>
+<span id="more"></span>
+
 <h3 id="Web-API"><a href="#Web-API" class="headerlink" title="Web API"></a>Web API</h3><p>是浏览器提供的一套操作浏览器功能和页面元素的API（BOM和DOM）</p>
 <h2 id="DOM"><a href="#DOM" class="headerlink" title="DOM"></a>DOM</h2><p>DOM是(Document Object Model)文档对象模型，是W3C组织推荐的处理可扩展标记语言的标准编程接口</p>
 <p>可以通过DOM接口改变网页的结构、内容和样式</p>
@@ -959,6 +967,10 @@
 <li>JavaScript是一种运行在客户端的脚本语言</li>
 <li>脚本语言：不需要编译，运行过程中由js解释器（js引擎）逐行来进行解释并执行</li>
 <li>现在也可以基于Node.js技术进行服务器编程</li>
+</ul>
+<span id="more"></span>
+
+<ul>
 <li>浏览器分为渲染引擎和JS引擎，渲染引擎用来解析HTML和CSS，俗称内核，比如chrome浏览器的blink，老版本的webkit,JS引擎也成js解释器，用来读取网页中的JavaScript代码，对其处理后运行，比如chrome浏览器的V8</li>
 <li>JS引擎执行代码时逐行解释每一句原码，然后由计算机取执行，所以归为脚本语言</li>
 </ul>
@@ -1248,6 +1260,17 @@
       </categories>
       <tags>
         <tag>JavaScript</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>第一次创建博客</title>
+    <url>/2021/03/11/%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%88%9B%E5%BB%BA%E5%8D%9A%E5%AE%A2/</url>
+    <content><![CDATA[<p>第一次创建博客，踩坑很多</p>
+<p>最大的问题是分支命名问题，按照往常的教程在HEXO的配置文件的branch中写的是master，但是现在的github创建的默认分支名字应该是main了，以至于一直可以更新仓库但是博客内容不更新</p>
+<p>参考文章：<a href="https://blog.csdn.net/Lu_xiuyuan/article/details/112056997">https://blog.csdn.net/Lu_xiuyuan/article/details/112056997</a></p>
+]]></content>
+      <tags>
+        <tag>blog</tag>
       </tags>
   </entry>
 </search>
