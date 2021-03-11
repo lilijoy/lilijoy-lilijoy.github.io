@@ -1273,4 +1273,22 @@
         <tag>blog</tag>
       </tags>
   </entry>
+  <entry>
+    <title>‘JS案例-跟随鼠标的天使’</title>
+    <url>/2021/03/11/JS%E6%A1%88%E4%BE%8B-%E8%B7%9F%E9%9A%8F%E9%BC%A0%E6%A0%87%E7%9A%84%E5%A4%A9%E4%BD%BF/</url>
+    <content><![CDATA[<ol>
+<li>鼠标不断的移动，使用鼠标移动事件：mousemove</li>
+<li>在页面中移动，所以要给document注册事件</li>
+<li>图片要移动距离，而且不占位置，使用绝对定位</li>
+<li>核心原理：每次鼠标移动，都会得到最新的鼠标坐标，把这个xy作为图片的top和left值</li>
+</ol>
+<span id="more"></span>
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">    &lt;style&gt;</span><br><span class="line">        img &#123;</span><br><span class="line">            position: absolute;</span><br><span class="line">            top: 2px;</span><br><span class="line">        &#125;</span><br><span class="line">    &lt;&#x2F;style&gt;</span><br><span class="line">&lt;&#x2F;head&gt;</span><br><span class="line"></span><br><span class="line">&lt;body&gt;</span><br><span class="line">    &lt;img src&#x3D;&quot;images&#x2F;angel.gif&quot; alt&#x3D;&quot;&quot;&gt;</span><br><span class="line">    &lt;script&gt;</span><br><span class="line">        var pic &#x3D; document.querySelector(&#39;img&#39;);</span><br><span class="line">        document.addEventListener(&#39;mousemove&#39;, function (e) &#123;</span><br><span class="line">            console.log(1);</span><br><span class="line">            &#x2F;&#x2F;mousemove鼠标每移动1px就会触发这个事件</span><br><span class="line">            var x &#x3D; e.pageX;</span><br><span class="line">            var y &#x3D; e.pageY;</span><br><span class="line">            pic.style.left &#x3D; x - 40 + &#39;px&#39;;&#x2F;&#x2F;减图片大小的一半，使鼠标居中</span><br><span class="line">            pic.style.top &#x3D; y - 50 + &#39;px&#39;;&#x2F;&#x2F;必须加单位</span><br><span class="line"></span><br><span class="line">        &#125;)</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <tags>
+        <tag>JavaScript</tag>
+      </tags>
+  </entry>
 </search>
