@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.2/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","version":"8.2.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
+  </script>
+<meta name="description" content="​    移动端浏览器主要对webkit内核兼容，现在的移动端主要针对手机端开发，移动端碎片化比较严重，分辨率和屏幕尺寸不一">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CSS移动端开发">
+<meta property="og:url" content="http://example.com/2021/03/13/CSS%E7%A7%BB%E5%8A%A8%E7%AB%AF%E5%BC%80%E5%8F%91/index.html">
+<meta property="og:site_name" content="lilijoy">
+<meta property="og:description" content="​    移动端浏览器主要对webkit内核兼容，现在的移动端主要针对手机端开发，移动端碎片化比较严重，分辨率和屏幕尺寸不一">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-03-13T07:30:05.000Z">
+<meta property="article:modified_time" content="2021-03-16T16:03:51.345Z">
+<meta property="article:author" content="Li Jing">
+<meta property="article:tag" content="CSS">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2021/03/13/CSS%E7%A7%BB%E5%8A%A8%E7%AB%AF%E5%BC%80%E5%8F%91/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<title>CSS移动端开发 | lilijoy</title>
+  
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">lilijoy</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B0%83%E8%AF%95%E6%96%B9%E6%B3%95"><span class="nav-number">1.</span> <span class="nav-text">调试方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%86%E5%8F%A3"><span class="nav-number">2.</span> <span class="nav-text">视口</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%83%E5%B1%80%E8%A7%86%E5%8F%A3layout-viewport"><span class="nav-number">2.1.</span> <span class="nav-text">布局视口layout viewport</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%86%E8%A7%89%E8%A7%86%E5%8F%A3-visual-viewport"><span class="nav-number">2.2.</span> <span class="nav-text">视觉视口 visual viewport</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%90%86%E6%83%B3%E8%A7%86%E5%8F%A3-ideal-viewport"><span class="nav-number">2.3.</span> <span class="nav-text">理想视口 ideal viewport</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#meta%E8%A7%86%E5%8F%A3%E6%A0%87%E7%AD%BE"><span class="nav-number">2.4.</span> <span class="nav-text">meta视口标签</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E5%80%8D%E5%9B%BE"><span class="nav-number">3.</span> <span class="nav-text">二倍图</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%A9%E7%90%86%E5%83%8F%E7%B4%A0-amp-%E7%89%A9%E7%90%86%E5%83%8F%E7%B4%A0%E6%AF%94"><span class="nav-number">3.1.</span> <span class="nav-text">物理像素&amp;物理像素比</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E5%80%8D%E5%9B%BE"><span class="nav-number">3.2.</span> <span class="nav-text">多倍图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%83%8C%E6%99%AF%E7%BC%A9%E6%94%BE"><span class="nav-number">3.3.</span> <span class="nav-text">背景缩放</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A7%BB%E5%8A%A8%E7%AB%AF%E5%BC%80%E5%8F%91%E9%80%89%E6%8B%A9"><span class="nav-number">4.</span> <span class="nav-text">移动端开发选择</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A7%BB%E5%8A%A8%E7%AB%AF%E6%8A%80%E6%9C%AF%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="nav-number">5.</span> <span class="nav-text">移动端技术解决方案</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#CSS3%E7%9B%92%E5%AD%90%E6%A8%A1%E5%9E%8Bbox-sizing"><span class="nav-number">5.1.</span> <span class="nav-text">CSS3盒子模型box-sizing</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%B9%E6%AE%8A%E6%A0%B7%E5%BC%8F"><span class="nav-number">5.2.</span> <span class="nav-text">特殊样式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A7%BB%E5%8A%A8%E7%AB%AF%E5%B8%B8%E8%A7%81%E5%B8%83%E5%B1%80"><span class="nav-number">5.3.</span> <span class="nav-text">移动端常见布局</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B5%81%E5%BC%8F%E5%B8%83%E5%B1%80"><span class="nav-number">5.3.1.</span> <span class="nav-text">流式布局</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#flex%E5%B8%83%E5%B1%80"><span class="nav-number">5.4.</span> <span class="nav-text">flex布局</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B8%83%E5%B1%80%E5%8E%9F%E7%90%86"><span class="nav-number">5.4.1.</span> <span class="nav-text">布局原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#flex%E7%88%B6%E9%A1%B9%E5%B8%B8%E8%A7%81%E5%B1%9E%E6%80%A7"><span class="nav-number">5.4.2.</span> <span class="nav-text">flex父项常见属性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#flex%E5%AD%90%E9%A1%B9%E5%B8%B8%E8%A7%81%E5%B1%9E%E6%80%A7"><span class="nav-number">5.4.3.</span> <span class="nav-text">flex子项常见属性</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E5%80%8D%E7%B2%BE%E7%81%B5%E5%9B%BE"><span class="nav-number">5.5.</span> <span class="nav-text">二倍精灵图</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Li Jing</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">16</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/03/13/CSS%E7%A7%BB%E5%8A%A8%E7%AB%AF%E5%BC%80%E5%8F%91/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Li Jing">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="lilijoy">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          CSS移动端开发
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-03-13 15:30:05" itemprop="dateCreated datePublished" datetime="2021-03-13T15:30:05+08:00">2021-03-13</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-03-17 00:03:51" itemprop="dateModified" datetime="2021-03-17T00:03:51+08:00">2021-03-17</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/CSS/" itemprop="url" rel="index"><span itemprop="name">CSS</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>​    移动端浏览器主要对webkit内核兼容，现在的移动端主要针对手机端开发，移动端碎片化比较严重，分辨率和屏幕尺寸不一</p>
+<span id="more"></span>
+
+<h2 id="调试方法"><a href="#调试方法" class="headerlink" title="调试方法"></a>调试方法</h2><ol>
+<li>谷歌浏览器模拟手机调试</li>
+<li>搭建本地web服务器，手机和服务器在同一个局域网内，通过手机访问服务器</li>
+<li>使用外网服务器，直接IP或域名访问</li>
+</ol>
+<h2 id="视口"><a href="#视口" class="headerlink" title="视口"></a>视口</h2><p>视口就是浏览器显示页面内容的屏幕区域。视口可以分布为布局视口、视觉视口和理想视口</p>
+<h3 id="布局视口layout-viewport"><a href="#布局视口layout-viewport" class="headerlink" title="布局视口layout viewport"></a>布局视口layout viewport</h3><ul>
+<li>一般移动设备的浏览器都默认设置了一个布局视口，用于解决早期的PC端页面在手机上显示的问题</li>
+<li>IOS、Android都把视口分辨率设置为980px，所以pc端上的页面大多都能在手机上呈现，只不过元素看起来很小，一般只能手动缩放页面</li>
+</ul>
+<h3 id="视觉视口-visual-viewport"><a href="#视觉视口-visual-viewport" class="headerlink" title="视觉视口 visual viewport"></a>视觉视口 visual viewport</h3><p>用户正在看到的网站的区域，可以通过缩放操作视觉视口，但是不会影响布局视口，布局视口仍然保持原来的宽度</p>
+<h3 id="理想视口-ideal-viewport"><a href="#理想视口-ideal-viewport" class="headerlink" title="理想视口 ideal viewport"></a>理想视口 ideal viewport</h3><ul>
+<li>为了使网站在移动端有最理想的浏览和阅读宽度而设定</li>
+<li>理想视口，对设备来讲，是最理想的视口尺寸</li>
+<li>需要手写meta视口标签来通知浏览器操作</li>
+<li>meta视口标签的目的：布局视口的宽度和理想视口的宽度保持一致，就是设备有多宽，布局的视口就有多宽</li>
+</ul>
+<h3 id="meta视口标签"><a href="#meta视口标签" class="headerlink" title="meta视口标签"></a>meta视口标签</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;meta name&#x3D;&quot;viewport&quot; content&#x3D;&quot;width&#x3D;device-width, user-scalable&#x3D;no,initial-scale&#x3D;1.0,maximum-scale&#x3D;1.0,minimum-scale&#x3D;1.0&quot;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>width viewport宽度，可以设置device-width特殊值</p>
+<p>initial-scale 初始缩放比，大于0的数字</p>
+<p>maximum-scale  最大缩放比，大于0的数字</p>
+<p>minimum-scale   最小缩放比，大于0的数字</p>
+<p>user-scalable  用户是否可以缩放，yes或no</p>
+<p>视口宽度和设备一致、默认缩放比1:0，不允许用户自行缩放、最大允许缩放比1.0，最小允许缩放比1.0</p>
+<h2 id="二倍图"><a href="#二倍图" class="headerlink" title="二倍图"></a>二倍图</h2><h3 id="物理像素-amp-物理像素比"><a href="#物理像素-amp-物理像素比" class="headerlink" title="物理像素&amp;物理像素比"></a>物理像素&amp;物理像素比</h3><p>物理像素点指屏幕显示的最小颗粒，1px在PC端等于1物理像素，但是移动端不一定，一个1px能显示多少物理像素点成为屏幕像素比</p>
+<ul>
+<li>视网膜屏幕是一种显示技术，把更多物理像素点压缩至一块屏幕内，从而达到更多分辨率</li>
+</ul>
+<h3 id="多倍图"><a href="#多倍图" class="headerlink" title="多倍图"></a>多倍图</h3><p>图片在手机中打开，会按照物理像素比放大，出现模糊现象，因此用倍图的方式（放二倍大小的图片再缩小到需要的大小）</p>
+<h3 id="背景缩放"><a href="#背景缩放" class="headerlink" title="背景缩放"></a>背景缩放</h3><ul>
+<li>background-size  </li>
+<li>规定背景图像尺寸，两个参数为高度，宽度，只写一个参数就是指宽度，等比例缩放</li>
+<li>单位可以是百分比，是相对父盒子的百分比</li>
+<li>cover：等比例缩放，要求完全覆盖盒子 ，可能有部分背景图片显示不全</li>
+<li>contain: 等比例缩放，尽量铺满不会超出，可能会有空白</li>
+</ul>
+<h2 id="移动端开发选择"><a href="#移动端开发选择" class="headerlink" title="移动端开发选择"></a>移动端开发选择</h2><p>单独制作移动端页面（主流）</p>
+<p>响应式页面兼容移动端</p>
+<h2 id="移动端技术解决方案"><a href="#移动端技术解决方案" class="headerlink" title="移动端技术解决方案"></a>移动端技术解决方案</h2><p>###移动端初始化nomalize.css</p>
+<p><a target="_blank" rel="noopener" href="http://necolas.github.io/normalize.css/">http://necolas.github.io/normalize.css/</a></p>
+<h3 id="CSS3盒子模型box-sizing"><a href="#CSS3盒子模型box-sizing" class="headerlink" title="CSS3盒子模型box-sizing"></a>CSS3盒子模型box-sizing</h3><p>boxing-size:border-box;(传统是content-box)</p>
+<p>padding和border不会再撑大盒子</p>
+<p>移动端可以完全兼容CSS3</p>
+<h3 id="特殊样式"><a href="#特殊样式" class="headerlink" title="特殊样式"></a>特殊样式</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-webkit-tap-highlight-color: transparent;&#x2F;&#x2F;清除高亮</span><br><span class="line">-webkit-appearance: none;&#x2F;&#x2F;在ios上加上这个属性才可以给按钮和输入框自定义样式</span><br><span class="line">img,a&#123;-webkit-touch-callout:none&#125;&#x2F;&#x2F;禁止长按页面时弹出菜单</span><br></pre></td></tr></table></figure>
+
+<h3 id="移动端常见布局"><a href="#移动端常见布局" class="headerlink" title="移动端常见布局"></a>移动端常见布局</h3><h4 id="流式布局"><a href="#流式布局" class="headerlink" title="流式布局"></a>流式布局</h4><p>百分比布局，非固定像素布局</p>
+<ul>
+<li>通过盒子的宽度设置成百分比来根据屏幕伸缩</li>
+<li>需要设定最大值最小值，防止影响内容显示max-width:  min-width</li>
+</ul>
+<h3 id="flex布局"><a href="#flex布局" class="headerlink" title="flex布局"></a>flex布局</h3><ul>
+<li>传统布局兼容性好，但是布局繁琐，局限性高</li>
+<li>伸缩布局=弹性布局=伸缩盒布局=弹性盒布局=flex布局</li>
+<li>flex布局在PC端支持较差，移动端应用广泛</li>
+<li>采用flex布局的元素称为flex容器，所有子元素自动成为容器成员，成为flex项目，简称项目</li>
+</ul>
+<h4 id="布局原理"><a href="#布局原理" class="headerlink" title="布局原理"></a>布局原理</h4><ul>
+<li>任何一个容器都可以使用flex布局</li>
+<li>父盒子设为flex布局后，子元素的float、clear、和vertical-align属性失效</li>
+<li>原理：通过给父盒子添加flex属性，控制子盒子的位置和排列方式</li>
+</ul>
+<h4 id="flex父项常见属性"><a href="#flex父项常见属性" class="headerlink" title="flex父项常见属性"></a>flex父项常见属性</h4><ul>
+<li>flex-direction:设置主轴的方向，默认是row，元素是跟着主轴排列的，设为column，则主轴变为y轴，实现从上到下排列</li>
+<li>justify-content: 设置主轴上的子元素排列方式</li>
+<li>flex-wrap:设置子元素是否换行</li>
+<li>align-content:设置侧轴上子元素的排列方式（<strong>多行</strong>），只能用于出现换行的情况</li>
+<li>align-items: 设置侧轴上的子元素排列方式（<strong>单行</strong>）</li>
+<li>flex-flow: 复合属性，同时设置direction和wrap</li>
+</ul>
+<p>主轴是x轴方向，水平向右；侧轴是y轴方向，垂直向下</p>
+<hr>
+<p><strong>justify-content：</strong>一定要确定好主轴</p>
+<ul>
+<li>flex-start 靠左对齐</li>
+<li>flex-end 靠右对齐</li>
+<li>center: 子元素居中对齐</li>
+<li>space-around：平分剩余空间(每个盒子都有左右边距)</li>
+<li>space-between:先两边贴边再分配剩余空间</li>
+</ul>
+<p><strong>flex-wrap:</strong></p>
+<p>默认不换行，当多个子盒子装不进去父盒子的时候，会强制放在一行，缩小子盒子</p>
+<ul>
+<li>warp：允许换行</li>
+</ul>
+<p><strong>align-items:</strong></p>
+<ul>
+<li>center:侧轴居中（侧轴为y时垂直居中）</li>
+<li>flex-start: 贴着侧轴上沿</li>
+<li>flex-end :贴着侧轴下沿</li>
+<li>stretch ：拉伸，必须子盒子没有高度，会拉伸到和父盒子一样高（margin不影响）</li>
+</ul>
+<p><strong>align-contents:</strong></p>
+<p>比items多space-around、space-between两个值，可以实现平分空间，在单行下没有效果</p>
+<p>flex-flow:</p>
+<p>是flex-direction和flex-wrap属性的复合属性</p>
+<p><code>flex-flow: row wrap;</code></p>
+<h4 id="flex子项常见属性"><a href="#flex子项常见属性" class="headerlink" title="flex子项常见属性"></a>flex子项常见属性</h4><ul>
+<li>flex:定义子项目分配<strong>剩余空间</strong>，用flex表示子项目占的份数</li>
+</ul>
+<p>可用于布局两边固定盒子，中间盒子长度可随屏幕大小调整的情况（自适应）  //圣杯布局</p>
+<ul>
+<li>align-self:控制子项自己在侧轴上的排列方式</li>
+</ul>
+<p>允许某个项目有与其他项目不同的排列方式，可覆盖align-items属性，默认值为auto，相当于继承align-items属性，如果没有父元素则等同于stretch</p>
+<ul>
+<li>order：属性定义项目的排列顺序，移动的是左右排列，与z-index不同</li>
+</ul>
+<p>数值小的靠前排列</p>
+<h3 id="二倍精灵图"><a href="#二倍精灵图" class="headerlink" title="二倍精灵图"></a>二倍精灵图</h3><p>background-size缩放的是整个精灵图</p>
+<ul>
+<li>在firework里把精灵图等比例缩放为原来的一半</li>
+<li>根据大小测量坐标</li>
+<li>代码里的bgcsize也要缩放</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/CSS/" rel="tag"># CSS</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/03/13/JS%E6%A1%88%E4%BE%8B-%E7%BD%91%E9%A1%B5%E8%BD%AE%E6%92%AD%E5%9B%BE/" rel="prev" title="JS案例-网页轮播图">
+                  <i class="fa fa-chevron-left"></i> JS案例-网页轮播图
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/03/15/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E6%98%93%E9%94%99%E5%88%86%E6%9E%90/" rel="next" title="数据结构与算法易错分析">
+                  数据结构与算法易错分析 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Li Jing</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

@@ -1838,4 +1838,262 @@
         <tag>JavaScript</tag>
       </tags>
   </entry>
+  <entry>
+    <title>CSS移动端开发</title>
+    <url>/2021/03/13/CSS%E7%A7%BB%E5%8A%A8%E7%AB%AF%E5%BC%80%E5%8F%91/</url>
+    <content><![CDATA[<p>​    移动端浏览器主要对webkit内核兼容，现在的移动端主要针对手机端开发，移动端碎片化比较严重，分辨率和屏幕尺寸不一</p>
+<span id="more"></span>
+
+<h2 id="调试方法"><a href="#调试方法" class="headerlink" title="调试方法"></a>调试方法</h2><ol>
+<li>谷歌浏览器模拟手机调试</li>
+<li>搭建本地web服务器，手机和服务器在同一个局域网内，通过手机访问服务器</li>
+<li>使用外网服务器，直接IP或域名访问</li>
+</ol>
+<h2 id="视口"><a href="#视口" class="headerlink" title="视口"></a>视口</h2><p>视口就是浏览器显示页面内容的屏幕区域。视口可以分布为布局视口、视觉视口和理想视口</p>
+<h3 id="布局视口layout-viewport"><a href="#布局视口layout-viewport" class="headerlink" title="布局视口layout viewport"></a>布局视口layout viewport</h3><ul>
+<li>一般移动设备的浏览器都默认设置了一个布局视口，用于解决早期的PC端页面在手机上显示的问题</li>
+<li>IOS、Android都把视口分辨率设置为980px，所以pc端上的页面大多都能在手机上呈现，只不过元素看起来很小，一般只能手动缩放页面</li>
+</ul>
+<h3 id="视觉视口-visual-viewport"><a href="#视觉视口-visual-viewport" class="headerlink" title="视觉视口 visual viewport"></a>视觉视口 visual viewport</h3><p>用户正在看到的网站的区域，可以通过缩放操作视觉视口，但是不会影响布局视口，布局视口仍然保持原来的宽度</p>
+<h3 id="理想视口-ideal-viewport"><a href="#理想视口-ideal-viewport" class="headerlink" title="理想视口 ideal viewport"></a>理想视口 ideal viewport</h3><ul>
+<li>为了使网站在移动端有最理想的浏览和阅读宽度而设定</li>
+<li>理想视口，对设备来讲，是最理想的视口尺寸</li>
+<li>需要手写meta视口标签来通知浏览器操作</li>
+<li>meta视口标签的目的：布局视口的宽度和理想视口的宽度保持一致，就是设备有多宽，布局的视口就有多宽</li>
+</ul>
+<h3 id="meta视口标签"><a href="#meta视口标签" class="headerlink" title="meta视口标签"></a>meta视口标签</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;meta name&#x3D;&quot;viewport&quot; content&#x3D;&quot;width&#x3D;device-width, user-scalable&#x3D;no,initial-scale&#x3D;1.0,maximum-scale&#x3D;1.0,minimum-scale&#x3D;1.0&quot;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>width viewport宽度，可以设置device-width特殊值</p>
+<p>initial-scale 初始缩放比，大于0的数字</p>
+<p>maximum-scale  最大缩放比，大于0的数字</p>
+<p>minimum-scale   最小缩放比，大于0的数字</p>
+<p>user-scalable  用户是否可以缩放，yes或no</p>
+<p>视口宽度和设备一致、默认缩放比1:0，不允许用户自行缩放、最大允许缩放比1.0，最小允许缩放比1.0</p>
+<h2 id="二倍图"><a href="#二倍图" class="headerlink" title="二倍图"></a>二倍图</h2><h3 id="物理像素-amp-物理像素比"><a href="#物理像素-amp-物理像素比" class="headerlink" title="物理像素&amp;物理像素比"></a>物理像素&amp;物理像素比</h3><p>物理像素点指屏幕显示的最小颗粒，1px在PC端等于1物理像素，但是移动端不一定，一个1px能显示多少物理像素点成为屏幕像素比</p>
+<ul>
+<li>视网膜屏幕是一种显示技术，把更多物理像素点压缩至一块屏幕内，从而达到更多分辨率</li>
+</ul>
+<h3 id="多倍图"><a href="#多倍图" class="headerlink" title="多倍图"></a>多倍图</h3><p>图片在手机中打开，会按照物理像素比放大，出现模糊现象，因此用倍图的方式（放二倍大小的图片再缩小到需要的大小）</p>
+<h3 id="背景缩放"><a href="#背景缩放" class="headerlink" title="背景缩放"></a>背景缩放</h3><ul>
+<li>background-size  </li>
+<li>规定背景图像尺寸，两个参数为高度，宽度，只写一个参数就是指宽度，等比例缩放</li>
+<li>单位可以是百分比，是相对父盒子的百分比</li>
+<li>cover：等比例缩放，要求完全覆盖盒子 ，可能有部分背景图片显示不全</li>
+<li>contain: 等比例缩放，尽量铺满不会超出，可能会有空白</li>
+</ul>
+<h2 id="移动端开发选择"><a href="#移动端开发选择" class="headerlink" title="移动端开发选择"></a>移动端开发选择</h2><p>单独制作移动端页面（主流）</p>
+<p>响应式页面兼容移动端</p>
+<h2 id="移动端技术解决方案"><a href="#移动端技术解决方案" class="headerlink" title="移动端技术解决方案"></a>移动端技术解决方案</h2><p>###移动端初始化nomalize.css</p>
+<p><a href="http://necolas.github.io/normalize.css/">http://necolas.github.io/normalize.css/</a></p>
+<h3 id="CSS3盒子模型box-sizing"><a href="#CSS3盒子模型box-sizing" class="headerlink" title="CSS3盒子模型box-sizing"></a>CSS3盒子模型box-sizing</h3><p>boxing-size:border-box;(传统是content-box)</p>
+<p>padding和border不会再撑大盒子</p>
+<p>移动端可以完全兼容CSS3</p>
+<h3 id="特殊样式"><a href="#特殊样式" class="headerlink" title="特殊样式"></a>特殊样式</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">-webkit-tap-highlight-color: transparent;&#x2F;&#x2F;清除高亮</span><br><span class="line">-webkit-appearance: none;&#x2F;&#x2F;在ios上加上这个属性才可以给按钮和输入框自定义样式</span><br><span class="line">img,a&#123;-webkit-touch-callout:none&#125;&#x2F;&#x2F;禁止长按页面时弹出菜单</span><br></pre></td></tr></table></figure>
+
+<h3 id="移动端常见布局"><a href="#移动端常见布局" class="headerlink" title="移动端常见布局"></a>移动端常见布局</h3><h4 id="流式布局"><a href="#流式布局" class="headerlink" title="流式布局"></a>流式布局</h4><p>百分比布局，非固定像素布局</p>
+<ul>
+<li>通过盒子的宽度设置成百分比来根据屏幕伸缩</li>
+<li>需要设定最大值最小值，防止影响内容显示max-width:  min-width</li>
+</ul>
+<h3 id="flex布局"><a href="#flex布局" class="headerlink" title="flex布局"></a>flex布局</h3><ul>
+<li>传统布局兼容性好，但是布局繁琐，局限性高</li>
+<li>伸缩布局=弹性布局=伸缩盒布局=弹性盒布局=flex布局</li>
+<li>flex布局在PC端支持较差，移动端应用广泛</li>
+<li>采用flex布局的元素称为flex容器，所有子元素自动成为容器成员，成为flex项目，简称项目</li>
+</ul>
+<h4 id="布局原理"><a href="#布局原理" class="headerlink" title="布局原理"></a>布局原理</h4><ul>
+<li>任何一个容器都可以使用flex布局</li>
+<li>父盒子设为flex布局后，子元素的float、clear、和vertical-align属性失效</li>
+<li>原理：通过给父盒子添加flex属性，控制子盒子的位置和排列方式</li>
+</ul>
+<h4 id="flex父项常见属性"><a href="#flex父项常见属性" class="headerlink" title="flex父项常见属性"></a>flex父项常见属性</h4><ul>
+<li>flex-direction:设置主轴的方向，默认是row，元素是跟着主轴排列的，设为column，则主轴变为y轴，实现从上到下排列</li>
+<li>justify-content: 设置主轴上的子元素排列方式</li>
+<li>flex-wrap:设置子元素是否换行</li>
+<li>align-content:设置侧轴上子元素的排列方式（<strong>多行</strong>），只能用于出现换行的情况</li>
+<li>align-items: 设置侧轴上的子元素排列方式（<strong>单行</strong>）</li>
+<li>flex-flow: 复合属性，同时设置direction和wrap</li>
+</ul>
+<p>主轴是x轴方向，水平向右；侧轴是y轴方向，垂直向下</p>
+<hr>
+<p><strong>justify-content：</strong>一定要确定好主轴</p>
+<ul>
+<li>flex-start 靠左对齐</li>
+<li>flex-end 靠右对齐</li>
+<li>center: 子元素居中对齐</li>
+<li>space-around：平分剩余空间(每个盒子都有左右边距)</li>
+<li>space-between:先两边贴边再分配剩余空间</li>
+</ul>
+<p><strong>flex-wrap:</strong></p>
+<p>默认不换行，当多个子盒子装不进去父盒子的时候，会强制放在一行，缩小子盒子</p>
+<ul>
+<li>warp：允许换行</li>
+</ul>
+<p><strong>align-items:</strong></p>
+<ul>
+<li>center:侧轴居中（侧轴为y时垂直居中）</li>
+<li>flex-start: 贴着侧轴上沿</li>
+<li>flex-end :贴着侧轴下沿</li>
+<li>stretch ：拉伸，必须子盒子没有高度，会拉伸到和父盒子一样高（margin不影响）</li>
+</ul>
+<p><strong>align-contents:</strong></p>
+<p>比items多space-around、space-between两个值，可以实现平分空间，在单行下没有效果</p>
+<p>flex-flow:</p>
+<p>是flex-direction和flex-wrap属性的复合属性</p>
+<p><code>flex-flow: row wrap;</code></p>
+<h4 id="flex子项常见属性"><a href="#flex子项常见属性" class="headerlink" title="flex子项常见属性"></a>flex子项常见属性</h4><ul>
+<li>flex:定义子项目分配<strong>剩余空间</strong>，用flex表示子项目占的份数</li>
+</ul>
+<p>可用于布局两边固定盒子，中间盒子长度可随屏幕大小调整的情况（自适应）  //圣杯布局</p>
+<ul>
+<li>align-self:控制子项自己在侧轴上的排列方式</li>
+</ul>
+<p>允许某个项目有与其他项目不同的排列方式，可覆盖align-items属性，默认值为auto，相当于继承align-items属性，如果没有父元素则等同于stretch</p>
+<ul>
+<li>order：属性定义项目的排列顺序，移动的是左右排列，与z-index不同</li>
+</ul>
+<p>数值小的靠前排列</p>
+<h3 id="二倍精灵图"><a href="#二倍精灵图" class="headerlink" title="二倍精灵图"></a>二倍精灵图</h3><p>background-size缩放的是整个精灵图</p>
+<ul>
+<li>在firework里把精灵图等比例缩放为原来的一半</li>
+<li>根据大小测量坐标</li>
+<li>代码里的bgcsize也要缩放</li>
+</ul>
+]]></content>
+      <categories>
+        <category>CSS</category>
+      </categories>
+      <tags>
+        <tag>CSS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>数据结构与算法易错分析</title>
+    <url>/2021/03/15/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E6%98%93%E9%94%99%E5%88%86%E6%9E%90/</url>
+    <content><![CDATA[<h2 id="绪论"><a href="#绪论" class="headerlink" title="绪论"></a>绪论</h2><ol>
+<li>数据结构三要素：数据的逻辑结构，数据的存储结构，数据的运算</li>
+<li>逻辑结构包括线性结构和非线性结构（集合、树形、图状）</li>
+<li>存储结构也称物理结构，包括顺序存储，链式存储，索引存储和散列存储</li>
+<li>数据的运算包括运算的定义和实现，定义是针对逻辑结构，实现是针对存储结构 </li>
+</ol>
+<span id="more"></span>
+
+<h2 id="线性表"><a href="#线性表" class="headerlink" title="线性表"></a>线性表</h2><ol>
+<li>顺序存储方式不仅仅可以用于存储线性结构，还可以用于存储图和树等</li>
+<li>在对链表进行第i个元素的增删改除时，需要考虑的不仅仅是o(1)复杂度的增删改除，还有O(n)复杂度的查找</li>
+<li>给定有n个元素的一维数组，建立一个有序单链表的最低时间复杂度是O(nlogn), 直接按顺序插入需要每次遍历一遍链表，复杂度为O(n²)；若先将数组排序（复杂度最好为O(logn)), 再建立链表(O(n)),总复杂度为O(nlogn);</li>
+<li>头结点所在的结点不存储内容，不属于链表长度</li>
+</ol>
+<h2 id="栈和队列"><a href="#栈和队列" class="headerlink" title="栈和队列"></a>栈和队列</h2><p>###栈</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#define MaxSize 50</span><br><span class="line">typedef struct&#123;</span><br><span class="line">    Elemtype data[MaxSize];</span><br><span class="line">    int top;</span><br><span class="line">&#125; SqStack;</span><br></pre></td></tr></table></figure>
+
+<p>栈空条件： S.top==-1;  </p>
+<p>栈满：S.top=MaxSize-1;</p>
+<p>###<strong>队列</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#define MaxSize 50</span><br><span class="line">typedef struct&#123;</span><br><span class="line">    ElemType data[MaxSize];</span><br><span class="line">    int front,rear;</span><br><span class="line">&#125;SqQueue;</span><br></pre></td></tr></table></figure>
+
+<p>队空：Q.front==Q.rear==0</p>
+<ul>
+<li><p>链式队列的实现：注意要实现对头、尾结点的快速操作</p>
+</li>
+<li><p>单链表实现队列时，队头设在链表的链头位置，便于删除队头元素</p>
+</li>
+<li><p>队列用链式存储时，删除元素从表头删除，通常需要修改头指针，但若队列仅有一个元素，则尾指针也需要被修改，当仅有一个元素时，删除后队列为空，则头、尾指针都需要修改，使rear=front</p>
+</li>
+<li><p>链队列入队时需要执行：尾指针的next指向新元素，新元素的next指向空，尾指向新元素</p>
+</li>
+</ul>
+<p>###<strong>循环队列：</strong></p>
+<p>队空：Q.front=Q.rear</p>
+<p>入队：rear=(rear+1) mod maxSize(注意maxSize大小，可能有坑)，不会改变front指针</p>
+<p><strong>队满如何判断？</strong></p>
+<ol>
+<li>牺牲一个单元来区分队空和队满  队满条件：(Q.rear+1)%MaxSize==Q.front</li>
+<li>类型中增设表示元素个数的数据成员。这样Q.size==0为队空Q.size=MaxSize为满</li>
+<li>类型中增设tag数据成员，以区分是队满还是队空。tag=0时，若因删除导致Q.front=Q.rear ,则为队空；tag等于1时，若因插入导致Q.front==Q.rear则队满</li>
+</ol>
+<h3 id="栈和队列的应用"><a href="#栈和队列的应用" class="headerlink" title="栈和队列的应用"></a>栈和队列的应用</h3><p>栈的应用包括：递归、进制转换、括号匹配、表达式求值</p>
+<p>队列的应用包括：树的层次遍历、计算机缓冲区，页面替换算法（FIFO），广度优先搜索</p>
+<ul>
+<li>适用于压缩存储稀疏矩阵的两种存储结构是：邻接矩阵和十字链表</li>
+</ul>
+<h2 id="串"><a href="#串" class="headerlink" title="串"></a>串</h2><p>–</p>
+<h2 id="树"><a href="#树" class="headerlink" title="树"></a>树</h2><h3 id="树的基本概念"><a href="#树的基本概念" class="headerlink" title="树的基本概念"></a>树的基本概念</h3><p>树中一个节点的孩子个数称为该节点的度，节点的最大度数为树的度</p>
+<ul>
+<li>树的节点数等于所有节点的度数之和+1</li>
+<li>度为m的树第i层最多有m^(i-1)个节点</li>
+<li>高度为h的m叉树至多有(m^h-1)/(m-1)个节点</li>
+<li>具有n个结点的m叉树的最小高度为logm(n(m-1))+1</li>
+<li>树的路径长度是从树根到每个结点的路径长度的总和</li>
+</ul>
+<h3 id="二叉树"><a href="#二叉树" class="headerlink" title="二叉树"></a>二叉树</h3><p>二叉树可以为空，仅有一个子节点时也需要区分左右</p>
+<p>满二叉树：每层含有最多的结点</p>
+<p>完全二叉树：可能存在一部分倒数第二层的结点为叶子结点，只能有一个度为1的结点，其只能有左孩子</p>
+<ul>
+<li>非空二叉树的叶子结点数等于度为2的结点数+1</li>
+<li>结点i的左孩子为2i,右孩子为2i+1</li>
+</ul>
+<h3 id="二叉树的遍历和线索二叉树"><a href="#二叉树的遍历和线索二叉树" class="headerlink" title="二叉树的遍历和线索二叉树"></a>二叉树的遍历和线索二叉树</h3><ul>
+<li>使用后序遍历可以找到到某祖先的路径</li>
+<li>二叉树是一种逻辑结构，但线索二叉树是加上线索后的链表结果，是二叉树在计算机内部的一种存储结构，是物理结构</li>
+<li>后序线索二叉树不能有效解决求后序后继的问题，仅用指针无法实现遍历，需要栈的支持</li>
+</ul>
+<h3 id="树、森林"><a href="#树、森林" class="headerlink" title="树、森林"></a>树、森林</h3><ul>
+<li>森林与树转化成二叉树时有所不同，森林存在第二颗树时，二叉链表的根结点的右指针指向的是森林中第二棵树的根结点</li>
+<li>森林转化成二叉树时，原来的叶子结点还是叶子结点，除此之外，最后一棵树在不断称为前一个树的子树的时候，根结点变成了叶子结点，因此会<strong>增加一个</strong>右指针域为空的结点；而森林叶子结点的个数<strong>等于</strong>二叉树中左孩子指针域为空的结点个数</li>
+<li>树转化为二叉树，先根序列等于先序遍历；后根序列变为二叉树中序序列</li>
+<li>树转化为二叉树，若某节点转化为右孩子，那么它在树种一定有左兄弟</li>
+<li>森林的先根遍历序列对应于其二叉树的先序遍历序列；中根遍历序列对应其二叉树的中序遍历序列，后序遍历也对应</li>
+</ul>
+]]></content>
+      <tags>
+        <tag>数据结构</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>京东移动端仿制html+css流式布局</title>
+    <url>/2021/03/16/%E4%BA%AC%E4%B8%9C%E7%A7%BB%E5%8A%A8%E7%AB%AF%E4%BB%BF%E5%88%B6html-css%E6%B5%81%E5%BC%8F%E5%B8%83%E5%B1%80/</url>
+    <content><![CDATA[<p>练习京东移动端页面的制作</p>
+<p>使用流式布局</p>
+<span id="more"></span>
+
+<p>##顶端app栏</p>
+<p><img src="C:\Users\LiJing\AppData\Local\Temp\1615899040327.png" alt="1615899040327"></p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">header</span> <span class="attr">class</span>=<span class="string">&quot;app&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;images/close.png&quot;</span> <span class="attr">alt</span>=<span class="string">&quot;&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;images/logo.png&quot;</span> <span class="attr">alt</span>=<span class="string">&quot;&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">li</span>&gt;</span>打开京东app，购物更轻松<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">li</span>&gt;</span>立即打开<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">header</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>分为四块</p>
+<p>##搜索框栏</p>
+<p><img src="C:\Users\LiJing\AppData\Local\Temp\1615899108579.png" alt="1615899108579"></p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;search-wrap&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;search-btn&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;search&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;jd-icon&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;sou&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;search-login&quot;</span>&gt;</span>登录<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>中间搜索栏不固定宽度，用margin调边距，即可实现随屏幕变化改变长度，旁边两块用定位</li>
+</ul>
+<p>##广告栏</p>
+<p><img src="C:\Users\LiJing\AppData\Local\Temp\1615899276613.png" alt="1615899276613"></p>
+<ul>
+<li>让搜索盒子出现在大图上面，改成fixed（固定定位），同时固定定位必须给宽度，设为100%</li>
+<li>清除图片下缝隙：vertical-align:middle</li>
+</ul>
+<p><img src="C:\Users\LiJing\AppData\Local\Temp\1615899748360.png" alt="1615899748360"></p>
+<p>由三个图片组成，三个div每个33.33%，图片设为宽度100%</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;main-content&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;slider&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;upload/banner.dpg&quot;</span> <span class="attr">alt</span>=<span class="string">&quot;&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;brand&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;#&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;upload/pic1.dpg&quot;</span> <span class="attr">alt</span>=<span class="string">&quot;&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;#&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;upload/pic2.dpg&quot;</span> <span class="attr">alt</span>=<span class="string">&quot;&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;#&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;upload/pic3.dpg&quot;</span> <span class="attr">alt</span>=<span class="string">&quot;&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="京东DPG图片压缩"><a href="#京东DPG图片压缩" class="headerlink" title="京东DPG图片压缩"></a>京东DPG图片压缩</h2><p>节省百分之五十的浏览流量，提升了用户的网页打开速度，压缩后的图片和webp的清晰度对比没有差距</p>
+<p>webp图片格式加快图片加载速度</p>
+<h2 id="导航图标栏"><a href="#导航图标栏" class="headerlink" title="导航图标栏"></a>导航图标栏</h2><p>其中一个图标</p>
+<p><img src="C:\Users\LiJing\AppData\Local\Temp\1615902249000.png" alt="1615902249000"></p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;#&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;upload/nav1.webp&quot;</span> <span class="attr">alt</span>=<span class="string">&quot;&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">span</span>&gt;</span>京东超市<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="新闻快报"><a href="#新闻快报" class="headerlink" title="新闻快报"></a>新闻快报</h2><p><img src="C:\Users\LiJing\AppData\Local\Temp\1615903109661.png" alt="1615903109661"></p>
+<p>三个盒子分别50%、25%、25%</p>
+<p>竖线通过边框实现，可以使用CSS3盒子模型box-sizing防止加边框后掉下去</p>
+]]></content>
+      <categories>
+        <category>CSS</category>
+      </categories>
+      <tags>
+        <tag>html CSS</tag>
+      </tags>
+  </entry>
 </search>
