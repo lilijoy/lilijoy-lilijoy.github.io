@@ -23,16 +23,23 @@
     var NexT = window.NexT || {};
     var CONFIG = {"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","version":"8.2.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
   </script>
-<meta property="og:type" content="website">
-<meta property="og:title" content="lilijoy">
-<meta property="og:url" content="http://example.com/tags/JavaScript/index.html">
+<meta name="description" content="看到这道题上来就果断递归了……结果–超出时间限制了 想不到思路就去翻题解了，给出了一种动态规划的思路">
+<meta property="og:type" content="article">
+<meta property="og:title" content="算法-斐波那契非递归方法">
+<meta property="og:url" content="http://example.com/2021/03/21/%E7%AE%97%E6%B3%95-%E6%96%90%E6%B3%A2%E9%82%A3%E5%A5%91%E9%9D%9E%E9%80%92%E5%BD%92%E6%96%B9%E6%B3%95/index.html">
 <meta property="og:site_name" content="lilijoy">
+<meta property="og:description" content="看到这道题上来就果断递归了……结果–超出时间限制了 想不到思路就去翻题解了，给出了一种动态规划的思路">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.hualigs.cn/image/6056f8542b194.jpg">
+<meta property="article:published_time" content="2021-03-21T07:39:38.000Z">
+<meta property="article:modified_time" content="2021-03-21T07:49:48.003Z">
 <meta property="article:author" content="Li Jing">
+<meta property="article:tag" content="算法">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.hualigs.cn/image/6056f8542b194.jpg">
 
 
-<link rel="canonical" href="http://example.com/tags/JavaScript/">
+<link rel="canonical" href="http://example.com/2021/03/21/%E7%AE%97%E6%B3%95-%E6%96%90%E6%B3%A2%E9%82%A3%E5%A5%91%E9%9D%9E%E9%80%92%E5%BD%92%E6%96%B9%E6%B3%95/">
 
 
 <script class="page-configurations">
@@ -40,11 +47,11 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
-<title>标签: JavaScript | lilijoy</title>
+<title>算法-斐波那契非递归方法 | lilijoy</title>
   
 
 
@@ -209,210 +216,102 @@
 </noscript>
 
 
-    <div class="main-inner tag posts-collapse">
+    <div class="main-inner post posts-expand">
 
 
   
-  
-  
-  <div class="post-block">
-    <div class="post-content">
-      <div class="collection-title">
-        <h2 class="collection-header">JavaScript
-          <small>标签</small>
-        </h2>
-      </div>
 
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/03/21/%E7%AE%97%E6%B3%95-%E6%96%90%E6%B3%A2%E9%82%A3%E5%A5%91%E9%9D%9E%E9%80%92%E5%BD%92%E6%96%B9%E6%B3%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Li Jing">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="lilijoy">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          算法-斐波那契非递归方法
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
       
-    <div class="collection-year">
-      <span class="collection-header">2021</span>
+
+      <time title="创建时间：2021-03-21 15:39:38 / 修改时间：15:49:48" itemprop="dateCreated datePublished" datetime="2021-03-21T15:39:38+08:00">2021-03-21</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p><img src="https://www.hualigs.cn/image/6056f8542b194.jpg"></p>
+<p>看到这道题上来就果断递归了……结果–超出时间限制了</p>
+<p>想不到思路就去翻题解了，给出了一种动态规划的思路</p>
+<span id="more"></span>
+
+<p>递归是直接从表达式下手，不断执行函数，直到执行到终止条件即n=0或n=1；复杂度很高</p>
+<p>动态规划则是完全相反的思路：我们已知了n=0和n=1时的值，那我们可以直到n=2，n=4，一直到n=输入，就是我们想要求得的值</p>
+<p>有这个思路后代码实现就比较容易了，分别取两个值记录上一个值和上上个值，循环计算，直到计算到n，复杂度只有O(n)</p>
+<p>同时还需要注意一个小细节：int是32位整型，当数字过大时必然会溢出，因此要对sum取模（题目要求1000000007 ）</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">fib</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(n==<span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(n==<span class="number">1</span>) <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> a=<span class="number">0</span>,b=<span class="number">1</span>,sum=<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">2</span>;i&lt;=n;i++)&#123;</span><br><span class="line">            sum=(a+b)%<span class="number">1000000007</span>;</span><br><span class="line">            a=b;</span><br><span class="line">            b=sum;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> sum;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+
+
     </div>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2021-03-13T00:02:51+08:00"
-              content="2021-03-13">
-          03-13
-        </time>
-      </div>
+    
+    
+    
 
-      <div class="post-title">
-          <a class="post-title-link" href="/2021/03/13/JS%E6%A1%88%E4%BE%8B-%E7%BD%91%E9%A1%B5%E8%BD%AE%E6%92%AD%E5%9B%BE/" itemprop="url">
-            <span itemprop="name">JS案例-网页轮播图</span>
-          </a>
-      </div>
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%AE%97%E6%B3%95/" rel="tag"># 算法</a>
+          </div>
 
-      
-    </header>
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/03/20/jQuery%E5%9F%BA%E7%A1%80/" rel="prev" title="jQuery基础">
+                  <i class="fa fa-chevron-left"></i> jQuery基础
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/03/21/%E7%AE%97%E6%B3%95-%E9%93%BE%E8%A1%A8%E4%B8%AD%E5%80%92%E6%95%B0%E7%AC%ACk%E4%B8%AA%E7%BB%93%E7%82%B9/" rel="next" title="算法-链表中倒数第k个结点">
+                  算法-链表中倒数第k个结点 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
   </article>
+</div>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2021-03-12T17:04:07+08:00"
-              content="2021-03-12">
-          03-12
-        </time>
-      </div>
 
-      <div class="post-title">
-          <a class="post-title-link" href="/2021/03/12/JS%E6%A1%88%E4%BE%8B-%E4%BB%BF%E4%BA%AC%E4%B8%9C%E6%94%BE%E5%A4%A7%E9%95%9C%E6%95%88%E6%9E%9C/" itemprop="url">
-            <span itemprop="name">JS案例-仿京东放大镜效果</span>
-          </a>
-      </div>
 
-      
-    </header>
-  </article>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2021-03-12T16:30:34+08:00"
-              content="2021-03-12">
-          03-12
-        </time>
-      </div>
 
-      <div class="post-title">
-          <a class="post-title-link" href="/2021/03/12/JS%E6%A1%88%E4%BE%8B-%E6%A8%A1%E6%80%81%E6%A1%86%E6%8B%96%E5%8A%A8/" itemprop="url">
-            <span itemprop="name">JS案例-模态框拖动</span>
-          </a>
-      </div>
-
-      
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2021-03-12T15:51:30+08:00"
-              content="2021-03-12">
-          03-12
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2021/03/12/JS-5-PC%E7%AB%AF%E7%BD%91%E9%A1%B5%E7%89%B9%E6%95%88/" itemprop="url">
-            <span itemprop="name">JS-5-PC端网页特效</span>
-          </a>
-      </div>
-
-      
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2021-03-11T23:07:42+08:00"
-              content="2021-03-11">
-          03-11
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2021/03/11/JS-4-BOM%E6%B5%8F%E8%A7%88%E5%99%A8%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B/" itemprop="url">
-            <span itemprop="name">JS-4-BOM浏览器对象模型</span>
-          </a>
-      </div>
-
-      
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2021-03-11T23:02:58+08:00"
-              content="2021-03-11">
-          03-11
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2021/03/11/JS-3-%E9%AB%98%E7%BA%A7%E4%BA%8B%E4%BB%B6/" itemprop="url">
-            <span itemprop="name">JS-3-高级事件</span>
-          </a>
-      </div>
-
-      
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2021-03-11T22:15:08+08:00"
-              content="2021-03-11">
-          03-11
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2021/03/11/JS%E6%A1%88%E4%BE%8B-%E8%B7%9F%E9%9A%8F%E9%BC%A0%E6%A0%87%E7%9A%84%E5%A4%A9%E4%BD%BF/" itemprop="url">
-            <span itemprop="name">‘JS案例-跟随鼠标的天使’</span>
-          </a>
-      </div>
-
-      
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2021-03-11T10:40:56+08:00"
-              content="2021-03-11">
-          03-11
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2021/03/11/JS-2-DOM/" itemprop="url">
-            <span itemprop="name">JS-2-DOM</span>
-          </a>
-      </div>
-
-      
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2021-03-11T10:39:25+08:00"
-              content="2021-03-11">
-          03-11
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2021/03/11/JS-1-%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95/" itemprop="url">
-            <span itemprop="name">JS-1-基本语法</span>
-          </a>
-      </div>
-
-      
-    </header>
-  </article>
-
-    </div>
-  </div>
-  
-  
-  
 
 
 <script>
