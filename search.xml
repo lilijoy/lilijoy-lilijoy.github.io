@@ -791,7 +791,7 @@
 </ul>
 <p>基于next主题的操作，其他主题可能有所不同</p>
 <p><strong>设置标签目录：</strong></p>
-<p><img src="https://www.hualigs.cn/image/60571e3a30079.jpg"></p>
+<p><img src="https://www.hualigs.cn/image/60571ecd98651.jpg"></p>
 <p>样式如图</p>
 <p>tags和categories内容是可以自己定义的，支持中文</p>
 <p><strong>显示隐藏内容</strong>：</p>
@@ -805,6 +805,9 @@
 <p>需要的图片贴进去上传，将markdown代码复制贴过来</p>
 <p>本地粘贴的图片直接上传后是不会显示的！具体实现上传本地图片比较复杂，于是乎我选择了图床</p>
 ]]></content>
+      <categories>
+        <category>blog</category>
+      </categories>
       <tags>
         <tag>blog</tag>
       </tags>
