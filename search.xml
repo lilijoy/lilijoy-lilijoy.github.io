@@ -1,127 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>CSS3之变换与动画</title>
-    <url>/2021/03/11/CSS3%E4%B9%8B%E5%8F%98%E6%8D%A2%E4%B8%8E%E5%8A%A8%E7%94%BB/</url>
-    <content><![CDATA[<h2 id="2D转换"><a href="#2D转换" class="headerlink" title="2D转换"></a>2D转换</h2><p>转换是CSS3中具有颠覆性的特征之一，可以实现元素的位移、旋转、缩放等效果</p>
-<p>转换可以简单理解为变形</p>
+    <title>CPU的构造和原理</title>
+    <url>/2021/03/29/CPU%E7%9A%84%E6%9E%84%E9%80%A0%E5%92%8C%E5%8E%9F%E7%90%86/</url>
+    <content><![CDATA[<p>CPU分为哪几部分？</p>
+<p>CPU是如何数据传输的？</p>
+<p>CPU怎样控制执行指令？</p>
+<p>执行顺序是否可以优化</p>
 <span id="more"></span>
 
+<p><img src="https://www.hualigs.cn/image/606144e7aef39.jpg"></p>
+<h2 id="CPU的组成和功能"><a href="#CPU的组成和功能" class="headerlink" title="CPU的组成和功能"></a>CPU的组成和功能</h2><p>​    分为运算器和控制器。运算器负责对数据的加工，即对数据进行算术和逻辑运算；控制器是整个系统的指挥中枢，对整个计算机系统进行有效的控制，包括指令控制、操作控制、时间控制和中断管理</p>
+<h2 id="CPU如何进行数据传输"><a href="#CPU如何进行数据传输" class="headerlink" title="CPU如何进行数据传输"></a>CPU如何进行数据传输</h2><p>CPU传输数据一般有三种方式：</p>
 <ul>
-<li>移动: translate</li>
-<li>旋转：retate</li>
-<li>缩放：scale</li>
+<li>CPU内部单总线方式：所有输入输出都接到一条通路上</li>
+<li>CPU内部三总线方式：有数据总线、控制总线、地址总线</li>
+<li>专用数据通路方式：根据数据和地址流动方向安排连接线路，避免使用共享总线</li>
 </ul>
+<p>总线可以实现数据的传递，比如说CPU已经取到了指令并放在了MDR中，要把MDR的指令传入IR，就要通过总线</p>
+<p>寄存器间的数据传送、主存与CPU间的数据传送、暂存器与寄存器间的数据传送，都是以总线为桥梁的</p>
+<h2 id="CPU如何执行指令"><a href="#CPU如何执行指令" class="headerlink" title="CPU如何执行指令"></a>CPU如何执行指令</h2><p>CPU执行指令的一个周期主要包括取指周期、间指周期、执行周期、中断周期四部分</p>
+<p><strong>取指周期</strong>就是将PC中的内容从主存中取出并存放在IR中，数据流向为</p>
+<p>PC→Bus→MAR</p>
+<p>1→R  </p>
+<p>MEM(MAR)→MDR</p>
+<p>MDR→Bus→IR</p>
+<p><strong>间址周期</strong>就是取操作数有效地址，只有使用间接寻址时才需要这步操作，一次间址就是将指令中的地址码送到MAR再传到总线，CU发出读命令在存储器相应地址中读取该地址后存回MDR</p>
+<p><strong>执行周期</strong>就是根据IR中的指令通过ALU操作来产生执行结果，不同指令有不同的执行周期内容</p>
+<p><strong>中断周期</strong>是处理中断请求，假设程序断点存放在堆栈中，那么需要由CU通过MAR、总线到主存修改栈顶指针，再通过控制总线发出写命令，然后将程序计数器内容通过MDR、数据总线写入存储器对应的堆栈中。</p>
+<h2 id="CPU怎么控制指令执行"><a href="#CPU怎么控制指令执行" class="headerlink" title="CPU怎么控制指令执行"></a>CPU怎么控制指令执行</h2><p>​    通过控制器，根据指令操作码和时序信号，产生各种操作控制信号，以便正确地建立数据通路，从而完成取指令和执行指令的控制。 </p>
+<p>控制器主要功能有：</p>
+<ol>
+<li>从主存中取出一条指令，并指出下一条指令在主存中的位置。</li>
+<li>对指令进行译码或测试，产生相应的操作控制信号，以便启动规定的动作。</li>
+<li>指挥并控制CPU、主存、输入和输出设备之间的数据流动方向。</li>
+</ol>
+<p>​    控制器可以分为硬布线控制器和微程序控制器两种，两类控制器中PC和IR是相同的，有区别的是操作控制器部分。</p>
+<p>###硬布线控制器</p>
+<p>​    通过布线的方式实现不同控制信号输入得到相应的输出结果，控制器的速度取决于电路延迟，速度快，但是设计完成不容易修改</p>
+<p><img src="https://www.hualigs.cn/image/6061530491f5d.jpg"></p>
+<p>###微程序控制器</p>
+<p>​    将每条机器指令编写成一个微程序，每个微程序包含若干微指令，每条微指令对应一个或几个微操作命令</p>
+<p>工作过程：</p>
+<ol>
+<li>执行取微指令公共操作。具体的执行是：在机器开始运行时，自动将取指微程序的入口地址送入CMAR，并从CM中读出相应的微指令送入CMDR。取指微程序的入口地址一般为CM的0号单元，当取指微程序执行完后，从主存中取出的机器指令就已存入指令寄存器中。</li>
+<li>由机器指令的操作码字段通过微地址形成部件产生该机器指令所对应的微程序的入口地址，并送入CMAR。</li>
+<li>从CM中逐条取出对应的微指令并执行。</li>
+<li>执行完对应于一条机器指令的一个微程序后，又回到取指微程序的入口地址，继续第 1 步，以完成取下一条机器指令的公共操作。</li>
+</ol>
+<p>以上是一条机器指令的执行过程，如此周而复始，直到整个程序执行完毕</p>
+<p><img src="https://www.hualigs.cn/image/606076e7e826d.jpg"></p>
+<p>其中CU是一个控制单元</p>
+<p>概念辨析：</p>
 <blockquote>
-<p>过渡效果是transition: all 0.3s;</p>
+<p>微程序&gt;微指令&gt;微命令&gt;微操作</p>
+<p>一条指令的功能由一段微程序实现；</p>
+<p>微指令包含操作控制字段(微操作码)、顺序控制字段(微地址码)(存放<strong>下一条</strong>要执行的微指令地址);</p>
+<p>微命令是控制部件向执行部件发出的各种控制命令，是构成控制序列的最小单位</p>
+<p>微操作是计算机最基本的、不可再分解的操作</p>
 </blockquote>
-<h3 id="translate"><a href="#translate" class="headerlink" title="translate"></a>translate</h3><p>二维坐标系：向右向下为正</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">transform: translate(x,y)</span><br><span class="line">transform: translateX(x)</span><br><span class="line">transform: translateY(y)</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>x是x轴上移动位置，y是y轴移动位置</li>
-<li>translate不会影响其他元素位置</li>
-<li>百分比单位是相对自身元素的</li>
-<li>对<strong>行内标签无效</strong></li>
-<li>在子盒子想要定位到父盒子中间时，可以定位top%50,left50%,然后translate(50%,50%)</li>
-</ul>
-<h3 id="rotate"><a href="#rotate" class="headerlink" title="rotate"></a>rotate</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">transform: rotate(360deg)</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>可以用来实现小三角&gt;&lt;朝上朝下(小正方形只要两个边框，旋转)</li>
-<li>度数逆时针为正</li>
-</ul>
-<h3 id="转换中心点-transform-origin"><a href="#转换中心点-transform-origin" class="headerlink" title="转换中心点 transform-origin"></a>转换中心点 transform-origin</h3><p>默认为50 % 50%</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">transform-origin: x y;</span><br></pre></td></tr></table></figure>
-
-<p>x y可以是像素、百分比、方位名词</p>
-<h3 id="缩放scale"><a href="#缩放scale" class="headerlink" title="缩放scale"></a>缩放scale</h3><p>可以实现放大缩小</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">transform:scale(x,y);</span><br><span class="line">transform:scale(x);</span><br></pre></td></tr></table></figure>
-
-<p>x,y表示倍数，1表示一倍,只写一个表示同时x倍</p>
-<ul>
-<li>不会影响其他盒子，而且可以设置缩放中心点</li>
-<li>缩放是向四周缩放的，比直接改宽高更适合做动画</li>
-</ul>
-<h3 id="综合写法"><a href="#综合写法" class="headerlink" title="综合写法"></a>综合写法</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">transform: translate() rotate() scale()</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>先旋转会改变坐标轴方向</li>
-<li>先同时有位移和其他效果时，位移放在最前面</li>
-</ul>
-<h2 id="动画"><a href="#动画" class="headerlink" title="动画"></a>动画</h2><p>可以通过设置多个节点来精确控制一个或者一组动画，实现复杂的动画效果</p>
-<ul>
-<li>先定义动画</li>
-<li>再调用动画</li>
-</ul>
-<h3 id="用keyframes定义动画"><a href="#用keyframes定义动画" class="headerlink" title="用keyframes定义动画"></a>用keyframes定义动画</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@keyframes move &#123;</span><br><span class="line">    0% &#123;</span><br><span class="line">        transform: translateX(0px);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    100% &#123;</span><br><span class="line">        transform: translateX(1000px);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">使用的元素 &#123;</span><br><span class="line">    animation-name: move;</span><br><span class="line">    animation-duration: 2s;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>from to等同于0%,100%</li>
-<li>可以做多个状态的变化，百分比要是正数，100%的时候是总时间</li>
-</ul>
-<h4 id="动画属性"><a href="#动画属性" class="headerlink" title="动画属性"></a>动画属性</h4><ul>
-<li>animation: 动画属性的简写属性</li>
-<li>animation-name: 动画名字</li>
-<li>animation-duration: 持续时间</li>
-<li>animation-timing-function: 规定动画的速度曲线，默认是’ease’</li>
-<li>animation-delay: 规定动画何时开始，单位是秒</li>
-<li>animation-iteration-count: 规定动画被播放的次数infinite表示无限循环</li>
-<li>animation-direction: 规定动画</li>
-<li>animation-direction: 默认是normal反方向是alternate</li>
-<li>animation-play-state: 规定动画是否正在运行或者暂停，默认是running,pause</li>
-<li>animation-fill-mode: 规定动画结束后状态，保持forwards回到起始backwards</li>
-</ul>
-<p>简写</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">annimation: 动画名称 持续时间 运动曲线 何时开始 播放次数 是否反方向 动画起始或者结束的状态</span><br><span class="line">annimation: myfirst 5s linear 2s infinite alternate;</span><br></pre></td></tr></table></figure>
-
-<p>前两个不能省略</p>
-<h4 id="速度曲线细节"><a href="#速度曲线细节" class="headerlink" title="速度曲线细节"></a>速度曲线细节</h4><p>animation-timing-function:</p>
-<ul>
-<li>linear 匀速</li>
-<li>ease 低–&gt;高–&gt;低</li>
-<li>ease-in 低速开始</li>
-<li>ease-out 低速结束</li>
-<li>ease-in-out 低速开始和结束</li>
-<li>steps()指定了时间函数中的间隔数量(步长)，相当于一步一步走，离散化</li>
-</ul>
-<p>–可以通过设定一个盒子，装n个字，宽度为n个字的宽度，并且分n步，设定一行显示和溢出隐藏，即可实现打字机效果</p>
-<h3 id="动画实例"><a href="#动画实例" class="headerlink" title="动画实例"></a>动画实例</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">body &#123;</span><br><span class="line">    background-color: rgb(163, 151, 229);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">div &#123;</span><br><span class="line">    position: absolute;</span><br><span class="line">    width: 200px;</span><br><span class="line">    height: 100px;</span><br><span class="line">    margin: 0 auto;</span><br><span class="line">    background: url(bear.png) no-repeat;</span><br><span class="line"></span><br><span class="line">    animation: run 1s steps(8) infinite, move 3s forwards;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@keyframes run &#123;</span><br><span class="line">    0% &#123;</span><br><span class="line">        background-position: 0 0;</span><br><span class="line">        &#x2F;* transform: translate(0, 0); *&#x2F;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    100% &#123;</span><br><span class="line">        background-position: -1600px 0;</span><br><span class="line">        &#x2F;* transform: translate(-1400px, 0); *&#x2F;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@keyframes move &#123;</span><br><span class="line">    0% &#123;</span><br><span class="line">        left: 0;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    100% &#123;</span><br><span class="line">        left: 50%;</span><br><span class="line">        transform: translate(-50%);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><img src="D:\桌面\web\bear.png"></p>
-<h2 id="3D变换"><a href="#3D变换" class="headerlink" title="3D变换"></a>3D变换</h2><p>x水平向右y垂直向下z垂直屏幕（往外是正值，往内是负值）</p>
-<h3 id="3D位移"><a href="#3D位移" class="headerlink" title="3D位移"></a>3D位移</h3><p>translateZ沿着z轴运动，后面的单位一般跟px</p>
-<p>translate3d(100px,100px,100px) 不能省略x，y，z，如果没有就写0</p>
-<p>z轴值越大，我们看到的物体越大</p>
-<h3 id="透视perspective"><a href="#透视perspective" class="headerlink" title="透视perspective"></a>透视perspective</h3><p>网页中产生3D效果需要透视，透视也称为视距(人的眼睛到屏幕的距离)，透视的单位是像素</p>
-<p>透视要加在父亲上</p>
-<p>perspective: 500px;</p>
-<h3 id="3D旋转rotate"><a href="#3D旋转rotate" class="headerlink" title="3D旋转rotate"></a>3D旋转rotate</h3><p>transform: rotate3d(x,y,z,deg):沿着自定义轴旋转deg</p>
-<p>(x,y,z)可以表示轴的方向</p>
-<p>transformX:</p>
-<p>transformY：</p>
-<p>transformZ：</p>
-<p>左手准则，大拇指指向x正向，则四指指向翻转方向</p>
-<h3 id="3D呈现transform-style"><a href="#3D呈现transform-style" class="headerlink" title="3D呈现transform-style"></a>3D呈现transform-style</h3><ul>
-<li>控制子元素是否开启三维立体空间</li>
-<li>默认flat不开启3D</li>
-<li>transform-style: preserve-3D子元素开启3D立体空间</li>
-<li>代码写给父级，影响的是子盒子</li>
-</ul>
-<h3 id="实现双面盒子"><a href="#实现双面盒子" class="headerlink" title="实现双面盒子"></a>实现双面盒子</h3><ul>
-<li>两个盒子叠在一起放在一个父盒子里，先将背面盒子旋转180，再将父盒子旋转180，记得维持3D效果</li>
-<li>多个transform记得放在一起</li>
-<li>要让旋转轴在中间</li>
-</ul>
-<h3 id="实现旋转木马"><a href="#实现旋转木马" class="headerlink" title="实现旋转木马"></a>实现旋转木马</h3><ul>
-<li>先旋转后移动</li>
-</ul>
+<h2 id="指令执行顺序的优化"><a href="#指令执行顺序的优化" class="headerlink" title="指令执行顺序的优化"></a>指令执行顺序的优化</h2><p>​    一条指令的执行过程可以分解为多个阶段，如果一条指令一条指令按顺序执行，必然效率很低。因此引入了指令流水线。</p>
+<p>​    流水CPU是一种非常经济而实用的时间并行技术</p>
+<p><img src="https://www.hualigs.cn/image/6061562ca3fb6.jpg"></p>
+<p>​    类似如图所示的流水线形式工作，可以大幅度提升工作效率</p>
+<p>​    那么不免想到一个问题，如果第二条指令需要资源时第一条指令正在使用呢？或者第二条指令需要的数据应该是第一条输出的数据呢？</p>
+<ol>
+<li>资源冲突：同一时刻争抢同一资源  解决方案：①后面的指令暂停 ②设置不同存储器</li>
+<li>数据冲突：下一条指令使用上一条结果  解决方案：①后面的指令暂停，硬件阻塞和软件插入 ②数据旁路技术  ③编译器优化调整顺序</li>
+<li>控制冲突：转移、调用、返回时冲突  解决方案①分支预测②预测转移成功与不成功指令</li>
+</ol>
+<p>此时如果还是觉得速度不够快效率不够高呢？还有新的技术</p>
+<ol>
+<li>超标量流水线技术：同一阶段并行执行多条指令；要求配置多个功能部件和指令译码电路</li>
+<li>超流水线技术：每个周期分段，一个周期内每个部件使用多次；对cache容量要求更大，需要执行的指令长度很长</li>
+<li>超长指令字：将多条能并行操作的指令组合成一条具有多个操作码字段的超长指令字；需要采用多个处理部件</li>
+</ol>
+<p>本质还是用空间换时间，后续CPU的多核并行也一样是为了提高CPU的工作效率，也是目前速度优化的主流趋势</p>
+<p>后续等待补充—0—</p>
 ]]></content>
       <categories>
-        <category>CSS</category>
+        <category>408</category>
       </categories>
       <tags>
-        <tag>CSS</tag>
+        <tag>计组</tag>
       </tags>
   </entry>
   <entry>
@@ -639,6 +600,196 @@
 </ul>
 <p>一般情况下，不让溢出的内容显示出来，因为溢出的部分会影响布局</p>
 <p>但是如果有定位的盒子，慎用overflow：hidden 会影响多余的部分</p>
+]]></content>
+      <categories>
+        <category>CSS</category>
+      </categories>
+      <tags>
+        <tag>CSS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>CSS3之变换与动画</title>
+    <url>/2021/03/11/CSS3%E4%B9%8B%E5%8F%98%E6%8D%A2%E4%B8%8E%E5%8A%A8%E7%94%BB/</url>
+    <content><![CDATA[<h2 id="2D转换"><a href="#2D转换" class="headerlink" title="2D转换"></a>2D转换</h2><p>转换是CSS3中具有颠覆性的特征之一，可以实现元素的位移、旋转、缩放等效果</p>
+<p>转换可以简单理解为变形</p>
+<span id="more"></span>
+
+<ul>
+<li>移动: translate</li>
+<li>旋转：retate</li>
+<li>缩放：scale</li>
+</ul>
+<blockquote>
+<p>过渡效果是transition: all 0.3s;</p>
+</blockquote>
+<h3 id="translate"><a href="#translate" class="headerlink" title="translate"></a>translate</h3><p>二维坐标系：向右向下为正</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">transform: translate(x,y)</span><br><span class="line">transform: translateX(x)</span><br><span class="line">transform: translateY(y)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>x是x轴上移动位置，y是y轴移动位置</li>
+<li>translate不会影响其他元素位置</li>
+<li>百分比单位是相对自身元素的</li>
+<li>对<strong>行内标签无效</strong></li>
+<li>在子盒子想要定位到父盒子中间时，可以定位top%50,left50%,然后translate(50%,50%)</li>
+</ul>
+<h3 id="rotate"><a href="#rotate" class="headerlink" title="rotate"></a>rotate</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">transform: rotate(360deg)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>可以用来实现小三角&gt;&lt;朝上朝下(小正方形只要两个边框，旋转)</li>
+<li>度数逆时针为正</li>
+</ul>
+<h3 id="转换中心点-transform-origin"><a href="#转换中心点-transform-origin" class="headerlink" title="转换中心点 transform-origin"></a>转换中心点 transform-origin</h3><p>默认为50 % 50%</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">transform-origin: x y;</span><br></pre></td></tr></table></figure>
+
+<p>x y可以是像素、百分比、方位名词</p>
+<h3 id="缩放scale"><a href="#缩放scale" class="headerlink" title="缩放scale"></a>缩放scale</h3><p>可以实现放大缩小</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">transform:scale(x,y);</span><br><span class="line">transform:scale(x);</span><br></pre></td></tr></table></figure>
+
+<p>x,y表示倍数，1表示一倍,只写一个表示同时x倍</p>
+<ul>
+<li>不会影响其他盒子，而且可以设置缩放中心点</li>
+<li>缩放是向四周缩放的，比直接改宽高更适合做动画</li>
+</ul>
+<h3 id="综合写法"><a href="#综合写法" class="headerlink" title="综合写法"></a>综合写法</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">transform: translate() rotate() scale()</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>先旋转会改变坐标轴方向</li>
+<li>先同时有位移和其他效果时，位移放在最前面</li>
+</ul>
+<h2 id="动画"><a href="#动画" class="headerlink" title="动画"></a>动画</h2><p>可以通过设置多个节点来精确控制一个或者一组动画，实现复杂的动画效果</p>
+<ul>
+<li>先定义动画</li>
+<li>再调用动画</li>
+</ul>
+<h3 id="用keyframes定义动画"><a href="#用keyframes定义动画" class="headerlink" title="用keyframes定义动画"></a>用keyframes定义动画</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@keyframes move &#123;</span><br><span class="line">    0% &#123;</span><br><span class="line">        transform: translateX(0px);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    100% &#123;</span><br><span class="line">        transform: translateX(1000px);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">使用的元素 &#123;</span><br><span class="line">    animation-name: move;</span><br><span class="line">    animation-duration: 2s;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>from to等同于0%,100%</li>
+<li>可以做多个状态的变化，百分比要是正数，100%的时候是总时间</li>
+</ul>
+<h4 id="动画属性"><a href="#动画属性" class="headerlink" title="动画属性"></a>动画属性</h4><ul>
+<li>animation: 动画属性的简写属性</li>
+<li>animation-name: 动画名字</li>
+<li>animation-duration: 持续时间</li>
+<li>animation-timing-function: 规定动画的速度曲线，默认是’ease’</li>
+<li>animation-delay: 规定动画何时开始，单位是秒</li>
+<li>animation-iteration-count: 规定动画被播放的次数infinite表示无限循环</li>
+<li>animation-direction: 规定动画</li>
+<li>animation-direction: 默认是normal反方向是alternate</li>
+<li>animation-play-state: 规定动画是否正在运行或者暂停，默认是running,pause</li>
+<li>animation-fill-mode: 规定动画结束后状态，保持forwards回到起始backwards</li>
+</ul>
+<p>简写</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">annimation: 动画名称 持续时间 运动曲线 何时开始 播放次数 是否反方向 动画起始或者结束的状态</span><br><span class="line">annimation: myfirst 5s linear 2s infinite alternate;</span><br></pre></td></tr></table></figure>
+
+<p>前两个不能省略</p>
+<h4 id="速度曲线细节"><a href="#速度曲线细节" class="headerlink" title="速度曲线细节"></a>速度曲线细节</h4><p>animation-timing-function:</p>
+<ul>
+<li>linear 匀速</li>
+<li>ease 低–&gt;高–&gt;低</li>
+<li>ease-in 低速开始</li>
+<li>ease-out 低速结束</li>
+<li>ease-in-out 低速开始和结束</li>
+<li>steps()指定了时间函数中的间隔数量(步长)，相当于一步一步走，离散化</li>
+</ul>
+<p>–可以通过设定一个盒子，装n个字，宽度为n个字的宽度，并且分n步，设定一行显示和溢出隐藏，即可实现打字机效果</p>
+<h3 id="动画实例"><a href="#动画实例" class="headerlink" title="动画实例"></a>动画实例</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">body &#123;</span><br><span class="line">    background-color: rgb(163, 151, 229);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">div &#123;</span><br><span class="line">    position: absolute;</span><br><span class="line">    width: 200px;</span><br><span class="line">    height: 100px;</span><br><span class="line">    margin: 0 auto;</span><br><span class="line">    background: url(bear.png) no-repeat;</span><br><span class="line"></span><br><span class="line">    animation: run 1s steps(8) infinite, move 3s forwards;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@keyframes run &#123;</span><br><span class="line">    0% &#123;</span><br><span class="line">        background-position: 0 0;</span><br><span class="line">        &#x2F;* transform: translate(0, 0); *&#x2F;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    100% &#123;</span><br><span class="line">        background-position: -1600px 0;</span><br><span class="line">        &#x2F;* transform: translate(-1400px, 0); *&#x2F;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@keyframes move &#123;</span><br><span class="line">    0% &#123;</span><br><span class="line">        left: 0;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    100% &#123;</span><br><span class="line">        left: 50%;</span><br><span class="line">        transform: translate(-50%);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="D:\桌面\web\bear.png"></p>
+<h2 id="3D变换"><a href="#3D变换" class="headerlink" title="3D变换"></a>3D变换</h2><p>x水平向右y垂直向下z垂直屏幕（往外是正值，往内是负值）</p>
+<h3 id="3D位移"><a href="#3D位移" class="headerlink" title="3D位移"></a>3D位移</h3><p>translateZ沿着z轴运动，后面的单位一般跟px</p>
+<p>translate3d(100px,100px,100px) 不能省略x，y，z，如果没有就写0</p>
+<p>z轴值越大，我们看到的物体越大</p>
+<h3 id="透视perspective"><a href="#透视perspective" class="headerlink" title="透视perspective"></a>透视perspective</h3><p>网页中产生3D效果需要透视，透视也称为视距(人的眼睛到屏幕的距离)，透视的单位是像素</p>
+<p>透视要加在父亲上</p>
+<p>perspective: 500px;</p>
+<h3 id="3D旋转rotate"><a href="#3D旋转rotate" class="headerlink" title="3D旋转rotate"></a>3D旋转rotate</h3><p>transform: rotate3d(x,y,z,deg):沿着自定义轴旋转deg</p>
+<p>(x,y,z)可以表示轴的方向</p>
+<p>transformX:</p>
+<p>transformY：</p>
+<p>transformZ：</p>
+<p>左手准则，大拇指指向x正向，则四指指向翻转方向</p>
+<h3 id="3D呈现transform-style"><a href="#3D呈现transform-style" class="headerlink" title="3D呈现transform-style"></a>3D呈现transform-style</h3><ul>
+<li>控制子元素是否开启三维立体空间</li>
+<li>默认flat不开启3D</li>
+<li>transform-style: preserve-3D子元素开启3D立体空间</li>
+<li>代码写给父级，影响的是子盒子</li>
+</ul>
+<h3 id="实现双面盒子"><a href="#实现双面盒子" class="headerlink" title="实现双面盒子"></a>实现双面盒子</h3><ul>
+<li>两个盒子叠在一起放在一个父盒子里，先将背面盒子旋转180，再将父盒子旋转180，记得维持3D效果</li>
+<li>多个transform记得放在一起</li>
+<li>要让旋转轴在中间</li>
+</ul>
+<h3 id="实现旋转木马"><a href="#实现旋转木马" class="headerlink" title="实现旋转木马"></a>实现旋转木马</h3><ul>
+<li>先旋转后移动</li>
+</ul>
+]]></content>
+      <categories>
+        <category>CSS</category>
+      </categories>
+      <tags>
+        <tag>CSS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>CSS移动端开发</title>
+    <url>/2021/03/13/CSS%E7%A7%BB%E5%8A%A8%E7%AB%AF%E5%BC%80%E5%8F%91/</url>
+    <content><![CDATA[<p>​    移动端浏览器主要对webkit内核兼容，现在的移动端主要针对手机端开发，移动端碎片化比较严重，分辨率和屏幕尺寸不一</p>
+<span id="more"></span>
+
+<h2 id="调试方法"><a href="#调试方法" class="headerlink" title="调试方法"></a>调试方法</h2><ol>
+<li>谷歌浏览器模拟手机调试</li>
+<li>搭建本地web服务器，手机和服务器在同一个局域网内，通过手机访问服务器</li>
+<li>使用外网服务器，直接IP或域名访问</li>
+</ol>
+<h2 id="视口"><a href="#视口" class="headerlink" title="视口"></a>视口</h2><p>视口就是浏览器显示页面内容的屏幕区域。视口可以分布为布局视口、视觉视口和理想视口</p>
+<h3 id="布局视口layout-viewport"><a href="#布局视口layout-viewport" class="headerlink" title="布局视口layout viewport"></a>布局视口layout viewport</h3><ul>
+<li>一般移动设备的浏览器都默认设置了一个布局视口，用于解决早期的PC端页面在手机上显示的问题</li>
+<li>IOS、Android都把视口分辨率设置为980px，所以pc端上的页面大多都能在手机上呈现，只不过元素看起来很小，一般只能手动缩放页面</li>
+</ul>
+<h3 id="视觉视口-visual-viewport"><a href="#视觉视口-visual-viewport" class="headerlink" title="视觉视口 visual viewport"></a>视觉视口 visual viewport</h3><p>用户正在看到的网站的区域，可以通过缩放操作视觉视口，但是不会影响布局视口，布局视口仍然保持原来的宽度</p>
+<h3 id="理想视口-ideal-viewport"><a href="#理想视口-ideal-viewport" class="headerlink" title="理想视口 ideal viewport"></a>理想视口 ideal viewport</h3><ul>
+<li>为了使网站在移动端有最理想的浏览和阅读宽度而设定</li>
+<li>理想视口，对设备来讲，是最理想的视口尺寸</li>
+<li>需要手写meta视口标签来通知浏览器操作</li>
+<li>meta视口标签的目的：布局视口的宽度和理想视口的宽度保持一致，就是设备有多宽，布局的视口就有多宽</li>
+</ul>
+<h3 id="meta视口标签"><a href="#meta视口标签" class="headerlink" title="meta视口标签"></a>meta视口标签</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;meta name&#x3D;&quot;viewport&quot; content&#x3D;&quot;width&#x3D;device-width, user-scalable&#x3D;no,initial-scale&#x3D;1.0,maximum-scale&#x3D;1.0,minimum-scale&#x3D;1.0&quot;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>width viewport宽度，可以设置device-width特殊值</p>
+<p>initial-scale 初始缩放比，大于0的数字</p>
+<p>maximum-scale  最大缩放比，大于0的数字</p>
+<p>minimum-scale   最小缩放比，大于0的数字</p>
+<p>user-scalable  用户是否可以缩放，yes或no</p>
+<p>视口宽度和设备一致、默认缩放比1:0，不允许用户自行缩放、最大允许缩放比1.0，最小允许缩放比1.0</p>
+<h2 id="二倍图"><a href="#二倍图" class="headerlink" title="二倍图"></a>二倍图</h2><h3 id="物理像素-amp-物理像素比"><a href="#物理像素-amp-物理像素比" class="headerlink" title="物理像素&amp;物理像素比"></a>物理像素&amp;物理像素比</h3><p>物理像素点指屏幕显示的最小颗粒，1px在PC端等于1物理像素，但是移动端不一定，一个1px能显示多少物理像素点成为屏幕像素比</p>
+<ul>
+<li>视网膜屏幕是一种显示技术，把更多物理像素点压缩至一块屏幕内，从而达到更多分辨率</li>
+</ul>
+<h3 id="多倍图"><a href="#多倍图" class="headerlink" title="多倍图"></a>多倍图</h3><p>图片在手机中打开，会按照物理像素比放大，出现模糊现象，因此用倍图的方式（放二倍大小的图片再缩小到需要的大小）</p>
+<h3 id="背景缩放"><a href="#背景缩放" class="headerlink" title="背景缩放"></a>背景缩放</h3><ul>
+<li>background-size  </li>
+<li>规定背景图像尺寸，两个参数为高度，宽度，只写一个参数就是指宽度，等比例缩放</li>
+<li>单位可以是百分比，是相对父盒子的百分比</li>
+<li>cover：等比例缩放，要求完全覆盖盒子 ，可能有部分背景图片显示不全</li>
+<li>contain: 等比例缩放，尽量铺满不会超出，可能会有空白</li>
+</ul>
+<h2 id="移动端开发选择"><a href="#移动端开发选择" class="headerlink" title="移动端开发选择"></a>移动端开发选择</h2><p>单独制作移动端页面（主流）</p>
+<p>响应式页面兼容移动端</p>
+<h2 id="移动端技术解决方案"><a href="#移动端技术解决方案" class="headerlink" title="移动端技术解决方案"></a>移动端技术解决方案</h2><p>###移动端初始化nomalize.css</p>
+<p><a href="http://necolas.github.io/normalize.css/">http://necolas.github.io/normalize.css/</a></p>
+<h3 id="CSS3盒子模型box-sizing"><a href="#CSS3盒子模型box-sizing" class="headerlink" title="CSS3盒子模型box-sizing"></a>CSS3盒子模型box-sizing</h3><p>boxing-size:border-box;(传统是content-box)</p>
+<p>padding和border不会再撑大盒子</p>
+<p>移动端可以完全兼容CSS3</p>
+<h3 id="特殊样式"><a href="#特殊样式" class="headerlink" title="特殊样式"></a>特殊样式</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">-webkit-tap-highlight-color: transparent;&#x2F;&#x2F;清除高亮</span><br><span class="line">-webkit-appearance: none;&#x2F;&#x2F;在ios上加上这个属性才可以给按钮和输入框自定义样式</span><br><span class="line">img,a&#123;-webkit-touch-callout:none&#125;&#x2F;&#x2F;禁止长按页面时弹出菜单</span><br></pre></td></tr></table></figure>
+
+<h3 id="二倍精灵图"><a href="#二倍精灵图" class="headerlink" title="二倍精灵图"></a>二倍精灵图</h3><p>background-size缩放的是整个精灵图</p>
+<ul>
+<li>在firework里把精灵图等比例缩放为原来的一半</li>
+<li>根据大小测量坐标</li>
+<li>代码里的bgcsize也要缩放</li>
+</ul>
 ]]></content>
       <categories>
         <category>CSS</category>
@@ -1266,72 +1417,6 @@
       </tags>
   </entry>
   <entry>
-    <title>CSS移动端开发</title>
-    <url>/2021/03/13/CSS%E7%A7%BB%E5%8A%A8%E7%AB%AF%E5%BC%80%E5%8F%91/</url>
-    <content><![CDATA[<p>​    移动端浏览器主要对webkit内核兼容，现在的移动端主要针对手机端开发，移动端碎片化比较严重，分辨率和屏幕尺寸不一</p>
-<span id="more"></span>
-
-<h2 id="调试方法"><a href="#调试方法" class="headerlink" title="调试方法"></a>调试方法</h2><ol>
-<li>谷歌浏览器模拟手机调试</li>
-<li>搭建本地web服务器，手机和服务器在同一个局域网内，通过手机访问服务器</li>
-<li>使用外网服务器，直接IP或域名访问</li>
-</ol>
-<h2 id="视口"><a href="#视口" class="headerlink" title="视口"></a>视口</h2><p>视口就是浏览器显示页面内容的屏幕区域。视口可以分布为布局视口、视觉视口和理想视口</p>
-<h3 id="布局视口layout-viewport"><a href="#布局视口layout-viewport" class="headerlink" title="布局视口layout viewport"></a>布局视口layout viewport</h3><ul>
-<li>一般移动设备的浏览器都默认设置了一个布局视口，用于解决早期的PC端页面在手机上显示的问题</li>
-<li>IOS、Android都把视口分辨率设置为980px，所以pc端上的页面大多都能在手机上呈现，只不过元素看起来很小，一般只能手动缩放页面</li>
-</ul>
-<h3 id="视觉视口-visual-viewport"><a href="#视觉视口-visual-viewport" class="headerlink" title="视觉视口 visual viewport"></a>视觉视口 visual viewport</h3><p>用户正在看到的网站的区域，可以通过缩放操作视觉视口，但是不会影响布局视口，布局视口仍然保持原来的宽度</p>
-<h3 id="理想视口-ideal-viewport"><a href="#理想视口-ideal-viewport" class="headerlink" title="理想视口 ideal viewport"></a>理想视口 ideal viewport</h3><ul>
-<li>为了使网站在移动端有最理想的浏览和阅读宽度而设定</li>
-<li>理想视口，对设备来讲，是最理想的视口尺寸</li>
-<li>需要手写meta视口标签来通知浏览器操作</li>
-<li>meta视口标签的目的：布局视口的宽度和理想视口的宽度保持一致，就是设备有多宽，布局的视口就有多宽</li>
-</ul>
-<h3 id="meta视口标签"><a href="#meta视口标签" class="headerlink" title="meta视口标签"></a>meta视口标签</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;meta name&#x3D;&quot;viewport&quot; content&#x3D;&quot;width&#x3D;device-width, user-scalable&#x3D;no,initial-scale&#x3D;1.0,maximum-scale&#x3D;1.0,minimum-scale&#x3D;1.0&quot;&gt;</span><br></pre></td></tr></table></figure>
-
-<p>width viewport宽度，可以设置device-width特殊值</p>
-<p>initial-scale 初始缩放比，大于0的数字</p>
-<p>maximum-scale  最大缩放比，大于0的数字</p>
-<p>minimum-scale   最小缩放比，大于0的数字</p>
-<p>user-scalable  用户是否可以缩放，yes或no</p>
-<p>视口宽度和设备一致、默认缩放比1:0，不允许用户自行缩放、最大允许缩放比1.0，最小允许缩放比1.0</p>
-<h2 id="二倍图"><a href="#二倍图" class="headerlink" title="二倍图"></a>二倍图</h2><h3 id="物理像素-amp-物理像素比"><a href="#物理像素-amp-物理像素比" class="headerlink" title="物理像素&amp;物理像素比"></a>物理像素&amp;物理像素比</h3><p>物理像素点指屏幕显示的最小颗粒，1px在PC端等于1物理像素，但是移动端不一定，一个1px能显示多少物理像素点成为屏幕像素比</p>
-<ul>
-<li>视网膜屏幕是一种显示技术，把更多物理像素点压缩至一块屏幕内，从而达到更多分辨率</li>
-</ul>
-<h3 id="多倍图"><a href="#多倍图" class="headerlink" title="多倍图"></a>多倍图</h3><p>图片在手机中打开，会按照物理像素比放大，出现模糊现象，因此用倍图的方式（放二倍大小的图片再缩小到需要的大小）</p>
-<h3 id="背景缩放"><a href="#背景缩放" class="headerlink" title="背景缩放"></a>背景缩放</h3><ul>
-<li>background-size  </li>
-<li>规定背景图像尺寸，两个参数为高度，宽度，只写一个参数就是指宽度，等比例缩放</li>
-<li>单位可以是百分比，是相对父盒子的百分比</li>
-<li>cover：等比例缩放，要求完全覆盖盒子 ，可能有部分背景图片显示不全</li>
-<li>contain: 等比例缩放，尽量铺满不会超出，可能会有空白</li>
-</ul>
-<h2 id="移动端开发选择"><a href="#移动端开发选择" class="headerlink" title="移动端开发选择"></a>移动端开发选择</h2><p>单独制作移动端页面（主流）</p>
-<p>响应式页面兼容移动端</p>
-<h2 id="移动端技术解决方案"><a href="#移动端技术解决方案" class="headerlink" title="移动端技术解决方案"></a>移动端技术解决方案</h2><p>###移动端初始化nomalize.css</p>
-<p><a href="http://necolas.github.io/normalize.css/">http://necolas.github.io/normalize.css/</a></p>
-<h3 id="CSS3盒子模型box-sizing"><a href="#CSS3盒子模型box-sizing" class="headerlink" title="CSS3盒子模型box-sizing"></a>CSS3盒子模型box-sizing</h3><p>boxing-size:border-box;(传统是content-box)</p>
-<p>padding和border不会再撑大盒子</p>
-<p>移动端可以完全兼容CSS3</p>
-<h3 id="特殊样式"><a href="#特殊样式" class="headerlink" title="特殊样式"></a>特殊样式</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">-webkit-tap-highlight-color: transparent;&#x2F;&#x2F;清除高亮</span><br><span class="line">-webkit-appearance: none;&#x2F;&#x2F;在ios上加上这个属性才可以给按钮和输入框自定义样式</span><br><span class="line">img,a&#123;-webkit-touch-callout:none&#125;&#x2F;&#x2F;禁止长按页面时弹出菜单</span><br></pre></td></tr></table></figure>
-
-<h3 id="二倍精灵图"><a href="#二倍精灵图" class="headerlink" title="二倍精灵图"></a>二倍精灵图</h3><p>background-size缩放的是整个精灵图</p>
-<ul>
-<li>在firework里把精灵图等比例缩放为原来的一半</li>
-<li>根据大小测量坐标</li>
-<li>代码里的bgcsize也要缩放</li>
-</ul>
-]]></content>
-      <categories>
-        <category>CSS</category>
-      </categories>
-      <tags>
-        <tag>CSS</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>JS-3-高级事件</title>
     <url>/2021/03/11/JS-3-%E9%AB%98%E7%BA%A7%E4%BA%8B%E4%BB%B6/</url>
     <content><![CDATA[<p>获取事件和处理事件的第二种方式：事件监听</p>
@@ -1433,6 +1518,145 @@
 <li><p><strong>注意：</strong>此处应该使用keyup，弹起时文字已经在文本框出现了       keydown和keypress触发的时候，文本框的字还没有出现，并不能实现同时放大的效果</p>
 </li>
 </ol>
+]]></content>
+      <categories>
+        <category>JavaScript</category>
+      </categories>
+      <tags>
+        <tag>JavaScript</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>JS-5-PC端网页特效</title>
+    <url>/2021/03/12/JS-5-PC%E7%AB%AF%E7%BD%91%E9%A1%B5%E7%89%B9%E6%95%88/</url>
+    <content><![CDATA[<p>常见offset系列属性作用</p>
+<p>常见client系列属性作用</p>
+<p>常见scroll系列属性作用</p>
+<p>封装简单动画函数</p>
+<p>写出网页轮播图案例</p>
+<span id="more"></span>
+
+<h2 id="offset"><a href="#offset" class="headerlink" title="offset"></a>offset</h2><p>偏移量，使用offset相关属性可以动态的得到该元素的位置、大小等</p>
+<ul>
+<li>获得元素距离带有定位父元素的位置</li>
+<li>获得元素自身的大小</li>
+<li>注意：返回的数值不带单位</li>
+</ul>
+<p>offsetParent: 返回作为该元素带有定位的父级元素，如果父级都没有定位则返回body</p>
+<p>offsetWidth：获取元素的宽，包括内边距、边框、内容</p>
+<p>offsetHeight：获取元素的高，包括内边距、边框、内容</p>
+<p>offsetLeft:获取元素距离左边位置的值，以带有定位的父亲为准，如果没有父亲或者父亲没有定位则相对body</p>
+<p>offsetTop;获取元素距离上面位置的值，以带有定位的父亲为准，如果没有父亲或者父亲没有定位则相对body</p>
+<h3 id="offset与style区别"><a href="#offset与style区别" class="headerlink" title="offset与style区别"></a>offset与style区别</h3><ul>
+<li>offset可以得到任意样式表的样式值  style只能得到内嵌样式的样式值</li>
+<li>offset得到的是数字型，不带单位  style是字符串带单位</li>
+<li>offset包含整个盒子，style得到的只是width，不包括padding和border</li>
+<li>offset只能读不能写，而width可以赋值</li>
+<li>因此，读属性值一般用offset，写属性一般用width</li>
+</ul>
+<p>案例：获取鼠标在盒子里的坐标</p>
+<ol>
+<li>获取鼠标在页面内的坐标</li>
+<li>获取盒子在页面内的坐标</li>
+<li>相减</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">var box&#x3D;document.querySelector(&#39;.box&#39;);</span><br><span class="line">box.addEventListener(&#39;mousemove&#39;,function()&#123;&#x2F;&#x2F;鼠标移动事件</span><br><span class="line">    var x&#x3D;e.pageX-this.offsetLeft;</span><br><span class="line">    var y&#x3D;e.pageY-this.offsetTop;</span><br><span class="line">    this.innerHTML&#x3D;&#39;X坐标是&#39;+x+&#39;y坐标是&#39;+y;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>##元素可视区client系列</p>
+<p>client是客户端，可动态得到元素边框大小，元素大小等，与offset最大的区别就是不包含边框</p>
+<p>clientTop  上边框</p>
+<p>clientLeft  左边框</p>
+<p>clientWidth</p>
+<p>clientHeight  包括padding、内容，不包括边框，返回数值不带单位</p>
+<h3 id="立即执行函数"><a href="#立即执行函数" class="headerlink" title="立即执行函数"></a>立即执行函数</h3><p>不需要调用立马能够自己执行的函数</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">(function()&#123;&#125;)()    或者  (function()&#123;&#125;())</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>第二个小括号可以看做是调用函数，可以传递参数，外面括号是实参，里面小括号是形参</li>
+<li>两种方法使用方法一致</li>
+<li>最大的作用就是独立创建了一个作用域，所有变量都是局部变量，不会有命名冲突</li>
+</ul>
+<p>###淘宝源码分析</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span> <span class="title">flexible</span>(<span class="params"><span class="built_in">window</span>, <span class="built_in">document</span></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> docEl = <span class="built_in">document</span>.documentElement</span><br><span class="line">    <span class="keyword">var</span> dpr = <span class="built_in">window</span>.devicePixelRatio || <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// adjust body font size</span></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">setBodyFontSize</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">document</span>.body) &#123;</span><br><span class="line">            <span class="built_in">document</span>.body.style.fontSize = (<span class="number">12</span> * dpr) + <span class="string">&#x27;px&#x27;</span></span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="built_in">document</span>.addEventListener(<span class="string">&#x27;DOMContentLoaded&#x27;</span>, setBodyFontSize)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    setBodyFontSize();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// set 1rem = viewWidth / 10</span></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">setRemUnit</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> rem = docEl.clientWidth / <span class="number">10</span></span><br><span class="line">        docEl.style.fontSize = rem + <span class="string">&#x27;px&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    setRemUnit()</span><br><span class="line"></span><br><span class="line">    <span class="comment">// reset rem unit on page resize</span></span><br><span class="line">    <span class="built_in">window</span>.addEventListener(<span class="string">&#x27;resize&#x27;</span>, setRemUnit)</span><br><span class="line">    <span class="built_in">window</span>.addEventListener(<span class="string">&#x27;pageshow&#x27;</span>, <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (e.persisted) &#123;</span><br><span class="line">            setRemUnit()</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    <span class="comment">// detect 0.5px supports</span></span><br><span class="line">    <span class="keyword">if</span> (dpr &gt;= <span class="number">2</span>) &#123;</span><br><span class="line">        <span class="keyword">var</span> fakeBody = <span class="built_in">document</span>.createElement(<span class="string">&#x27;body&#x27;</span>)</span><br><span class="line">        <span class="keyword">var</span> testElement = <span class="built_in">document</span>.createElement(<span class="string">&#x27;div&#x27;</span>)</span><br><span class="line">        testElement.style.border = <span class="string">&#x27;.5px solid transparent&#x27;</span></span><br><span class="line">        fakeBody.appendChild(testElement)</span><br><span class="line">        docEl.appendChild(fakeBody)</span><br><span class="line">        <span class="keyword">if</span> (testElement.offsetHeight === <span class="number">1</span>) &#123;</span><br><span class="line">            docEl.classList.add(<span class="string">&#x27;hairlines&#x27;</span>)</span><br><span class="line">        &#125;</span><br><span class="line">        docEl.removeChild(fakeBody)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;(<span class="built_in">window</span>, <span class="built_in">document</span>))</span><br></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li>前进后退、a标签、刷新都会触发load，但是火狐浏览器使用load事件时存在往返缓存，后退按钮不能刷新页面，可以使用pageshow事件触发，这个事件在页面显示时触发，无论页面是否来自缓存，可以根据事件对象的persisted判断是否缓存中页面触发的pageshow事件，这个事件要给window添加</li>
+</ul>
+<h2 id="元素滚动scroll系列"><a href="#元素滚动scroll系列" class="headerlink" title="元素滚动scroll系列"></a>元素滚动scroll系列</h2><p>scrollTop:  返回被卷去的上侧距离，返回数值不带单位（隐藏的高度）</p>
+<p>scrollLeft:  左侧距离，同上</p>
+<p>scrollWidth: 返回自身实际宽度，不含边框，返回数值不带单位，包含内容超出盒子的部分</p>
+<p>scrollHeight：高度 同上</p>
+<p><strong>scroll事件：</strong></p>
+<p>‘scroll’  滚动触发的事件</p>
+<p><strong>window.pageXOffset:页面被卷曲的头部</strong></p>
+<p>兼容性问题：</p>
+<ol>
+<li>声明了DTD，使用document.documentElement.scrollTop</li>
+<li>未声明DTD，使用document.body.scrollTop</li>
+<li>新方法window.pageYOffset和window.pageXOffset,IE9开始支持</li>
+</ol>
+<p>兼容性方案（了解）</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">function getScroll() &#123;</span><br><span class="line">    return &#123;</span><br><span class="line">        left: window.pageXOffset || document.documentElement.scrollLeft || document.body.scrollLeft || 0,</span><br><span class="line">        top: window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="三大系列总结"><a href="#三大系列总结" class="headerlink" title="三大系列总结"></a>三大系列总结</h2><ul>
+<li><p>offset包含边框，scroll包括文字超出部分</p>
+</li>
+<li><p>offset一般用于获取元素位置，client常用与获取元素大小，获取滚动距离一般用scroll</p>
+</li>
+</ul>
+<h2 id="mouseenter和mouseover"><a href="#mouseenter和mouseover" class="headerlink" title="mouseenter和mouseover"></a>mouseenter和mouseover</h2><p>mouseover：经过自身盒子会触发，经过子盒子还会触发一次</p>
+<p>mouseenter只有经过自身盒子才会触发，因为mouseenter不会冒泡</p>
+<h2 id="动画函数封装"><a href="#动画函数封装" class="headerlink" title="动画函数封装"></a>动画函数封装</h2><h3 id="动画实现原理"><a href="#动画实现原理" class="headerlink" title="动画实现原理"></a>动画实现原理</h3><p>通过定时器setInterval()不断移动盒子位置</p>
+<ol>
+<li>获取盒子当前位置</li>
+<li>在盒子当前位置上加移动距离</li>
+<li>利用定时器不断重复操作</li>
+<li>加一个结束定时器的条件</li>
+<li>此元素一定要加定位，因为要使用element.left实现移动</li>
+</ol>
+<h3 id="动画函数简单封装"><a href="#动画函数简单封装" class="headerlink" title="动画函数简单封装"></a>动画函数简单封装</h3><p>需要传递两个参数，动画对象和移动的距离</p>
+<p>可以实现某个对象右移移动到某个位置</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">function animate(obj,target)&#123;</span><br><span class="line">	clearInterval(obj.timer)&#x2F;&#x2F;</span><br><span class="line">    obj.timer&#x3D;setInterval(function()&#123;</span><br><span class="line">        if(obj.offsetLeft&gt;&#x3D;target)&#123;</span><br><span class="line">            clearInterval(obj.timer);</span><br><span class="line">        &#125;</span><br><span class="line">        obj.style.left&#x3D;obj.offsetLeft+1+&#39;px&#39;;</span><br><span class="line">    &#125;,30);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>var timer=每次开辟空间浪费资源，且使用obj.timer避免不同调用使用相同的变量timer，因此通过添加属性实现给不同元素添加不同定时器</li>
+<li>注意要先清除原来的定时器，只保留当前定时器，避免多次触发动画时创建很多定时器造成不正常现象</li>
+</ul>
+<h3 id="缓动动画"><a href="#缓动动画" class="headerlink" title="缓动动画"></a>缓动动画</h3><p>让元素的运动速度有所变化，最常见的是让速度慢慢减下来</p>
+<p>思路：</p>
+<ol>
+<li>让盒子每次移动的距离慢慢变小</li>
+<li>（目标值-现在的位置）/10   作为每次移动的距离步长即可</li>
+<li>停止的条件：让当前盒子位置等于目标位置时停止定时器</li>
+</ol>
+<p>把每次+1的步长改为慢慢变小的值 即</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">function animate(obj,target)&#123;</span><br><span class="line">	clearInterval(obj.timer)&#x2F;&#x2F;</span><br><span class="line">    obj.timer&#x3D;setInterval(function()&#123;</span><br><span class="line">    	var step&#x3D;target-obj.offsetLeft)&#x2F;10;&#x2F;&#x2F;计算步长，要注意不要出现小号,还要考虑负值</span><br><span class="line">    	step&gt;0?Math.ceil(step):Math.floor(step)</span><br><span class="line">        if(obj.offsetLeft&#x3D;&#x3D;target)&#123;&#x2F;&#x2F;修改为等于号</span><br><span class="line">            clearInterval(obj.timer);</span><br><span class="line">        &#125;</span><br><span class="line">        obj.style.left&#x3D;obj.offsetLeft+step+&#39;px&#39;;</span><br><span class="line">    &#125;,30);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>为了实现在多个目标间移动，需要考虑步长正负</p>
+<p>###动画函数添加回调函数（重要）</p>
+<p>回调函数原理：函数可以作为一个参数，将这个参数传到另一个函数里，当那个函数执行完之后再执行传进去的这个函数，这个过程称为回调</p>
+<p>操作方法：输入添加一个函数作为参数，函数执行写在计时器停止的内容里，即可实现执行完动画后执行回调函数</p>
+<p>if(callback){</p>
+<p>callback()}</p>
+<p>如下代码即可实现运动完毕后盒子变颜色</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">animate</span>(<span class="params">obj, target, callback</span>) </span>&#123;</span><br><span class="line">            <span class="comment">// console.log(callback);  callback = function() &#123;&#125;  调用的时候 callback()</span></span><br><span class="line"></span><br><span class="line">            <span class="comment">// 先清除以前的定时器，只保留当前的一个定时器执行</span></span><br><span class="line">            <span class="built_in">clearInterval</span>(obj.timer);</span><br><span class="line">            obj.timer = <span class="built_in">setInterval</span>(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">                <span class="comment">// 步长值写到定时器的里面</span></span><br><span class="line">                <span class="comment">// 把我们步长值改为整数 不要出现小数的问题</span></span><br><span class="line">                <span class="comment">// var step = Math.ceil((target - obj.offsetLeft) / 10);</span></span><br><span class="line">                <span class="keyword">var</span> step = (target - obj.offsetLeft) / <span class="number">10</span>;</span><br><span class="line">                step = step &gt; <span class="number">0</span> ? <span class="built_in">Math</span>.ceil(step) : <span class="built_in">Math</span>.floor(step);</span><br><span class="line">                <span class="keyword">if</span> (obj.offsetLeft == target) &#123;</span><br><span class="line">                    <span class="comment">// 停止动画 本质是停止定时器</span></span><br><span class="line">                    <span class="built_in">clearInterval</span>(obj.timer);</span><br><span class="line">                    <span class="comment">// 回调函数写到定时器结束里面</span></span><br><span class="line">                    <span class="keyword">if</span> (callback) &#123;</span><br><span class="line">                        <span class="comment">// 调用函数</span></span><br><span class="line">                        callback();</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="comment">// 把每次加1 这个步长值改为一个慢慢变小的值  步长公式：(目标值 - 现在的位置) / 10</span></span><br><span class="line">                obj.style.left = obj.offsetLeft + step + <span class="string">&#x27;px&#x27;</span>;</span><br><span class="line"></span><br><span class="line">            &#125;, <span class="number">15</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">var</span> span = <span class="built_in">document</span>.querySelector(<span class="string">&#x27;span&#x27;</span>);</span><br><span class="line">        <span class="keyword">var</span> btn500 = <span class="built_in">document</span>.querySelector(<span class="string">&#x27;.btn500&#x27;</span>);</span><br><span class="line">        <span class="keyword">var</span> btn800 = <span class="built_in">document</span>.querySelector(<span class="string">&#x27;.btn800&#x27;</span>);</span><br><span class="line"></span><br><span class="line">        btn500.addEventListener(<span class="string">&#x27;click&#x27;</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">            <span class="comment">// 调用函数</span></span><br><span class="line">            animate(span, <span class="number">500</span>);</span><br><span class="line">        &#125;)</span><br><span class="line">        btn800.addEventListener(<span class="string">&#x27;click&#x27;</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">                <span class="comment">// 调用函数</span></span><br><span class="line">                animate(span, <span class="number">800</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">                    <span class="comment">// alert(&#x27;你好吗&#x27;);</span></span><br><span class="line">                    span.style.backgroundColor = <span class="string">&#x27;red&#x27;</span>;</span><br><span class="line">                &#125;);</span><br><span class="line">            &#125;)</span><br></pre></td></tr></table></figure>
+
+<h2 id="返回顶部"><a href="#返回顶部" class="headerlink" title="返回顶部"></a>返回顶部</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">window.scroll(0, 0);&#x2F;&#x2F;x,y不跟单位直接写数字就好</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><p>快速滚动到顶端</p>
+</li>
+<li><p>编写垂直运动的动画函数，点击后目标设为0（y坐标）</p>
+</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">goBack.addEventListener(<span class="string">&#x27;click&#x27;</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">            animate(<span class="built_in">window</span>, <span class="number">0</span>);<span class="comment">//窗口动画，对象是window</span></span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="function"><span class="keyword">function</span> <span class="title">animate</span>(<span class="params">obj, target, callback</span>) </span>&#123;</span><br><span class="line">            <span class="comment">// console.log(callback);  callback = function() &#123;&#125;  调用的时候 callback()</span></span><br><span class="line"></span><br><span class="line">            <span class="comment">// 先清除以前的定时器，只保留当前的一个定时器执行</span></span><br><span class="line">            <span class="built_in">clearInterval</span>(obj.timer);</span><br><span class="line">            obj.timer = <span class="built_in">setInterval</span>(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">                <span class="comment">// 步长值写到定时器的里面</span></span><br><span class="line">                <span class="comment">// 把我们步长值改为整数 不要出现小数的问题</span></span><br><span class="line">                <span class="comment">// var step = Math.ceil((target - obj.offsetLeft) / 10);</span></span><br><span class="line"></span><br><span class="line">                <span class="keyword">var</span> step = (target - <span class="built_in">window</span>.pageYOffset) / <span class="number">10</span>;</span><br><span class="line">                step = step &gt; <span class="number">0</span> ? <span class="built_in">Math</span>.ceil(step) : <span class="built_in">Math</span>.floor(step);</span><br><span class="line">                <span class="keyword">if</span> (<span class="built_in">window</span>.pageYOffset == target) &#123;</span><br><span class="line">                    <span class="comment">// 停止动画 本质是停止定时器</span></span><br><span class="line">                    <span class="built_in">clearInterval</span>(obj.timer);</span><br><span class="line">                    <span class="comment">// 回调函数写到定时器结束里面</span></span><br><span class="line">                    callback &amp;&amp; callback();<span class="comment">//如果有参数传入才会调用callback</span></span><br><span class="line">                &#125;</span><br><span class="line">                <span class="comment">// 把每次加1 这个步长值改为一个慢慢变小的值  步长公式：(目标值 - 现在的位置) / 10</span></span><br><span class="line">                <span class="comment">// obj.style.left = obj.offsetLeft + step + &#x27;px&#x27;;</span></span><br><span class="line">                <span class="built_in">window</span>.scroll(<span class="number">0</span>, <span class="built_in">window</span>.pageYOffset + step);</span><br><span class="line"></span><br><span class="line">            &#125;, <span class="number">15</span>);</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
 ]]></content>
       <categories>
         <category>JavaScript</category>
@@ -1598,145 +1822,6 @@
 <p>history.back()后退</p>
 <p>go()  参数是2表示前进2个页面，-2表示后退2个页面</p>
 <p>一些OA办公系统有可能会用到</p>
-]]></content>
-      <categories>
-        <category>JavaScript</category>
-      </categories>
-      <tags>
-        <tag>JavaScript</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>JS-5-PC端网页特效</title>
-    <url>/2021/03/12/JS-5-PC%E7%AB%AF%E7%BD%91%E9%A1%B5%E7%89%B9%E6%95%88/</url>
-    <content><![CDATA[<p>常见offset系列属性作用</p>
-<p>常见client系列属性作用</p>
-<p>常见scroll系列属性作用</p>
-<p>封装简单动画函数</p>
-<p>写出网页轮播图案例</p>
-<span id="more"></span>
-
-<h2 id="offset"><a href="#offset" class="headerlink" title="offset"></a>offset</h2><p>偏移量，使用offset相关属性可以动态的得到该元素的位置、大小等</p>
-<ul>
-<li>获得元素距离带有定位父元素的位置</li>
-<li>获得元素自身的大小</li>
-<li>注意：返回的数值不带单位</li>
-</ul>
-<p>offsetParent: 返回作为该元素带有定位的父级元素，如果父级都没有定位则返回body</p>
-<p>offsetWidth：获取元素的宽，包括内边距、边框、内容</p>
-<p>offsetHeight：获取元素的高，包括内边距、边框、内容</p>
-<p>offsetLeft:获取元素距离左边位置的值，以带有定位的父亲为准，如果没有父亲或者父亲没有定位则相对body</p>
-<p>offsetTop;获取元素距离上面位置的值，以带有定位的父亲为准，如果没有父亲或者父亲没有定位则相对body</p>
-<h3 id="offset与style区别"><a href="#offset与style区别" class="headerlink" title="offset与style区别"></a>offset与style区别</h3><ul>
-<li>offset可以得到任意样式表的样式值  style只能得到内嵌样式的样式值</li>
-<li>offset得到的是数字型，不带单位  style是字符串带单位</li>
-<li>offset包含整个盒子，style得到的只是width，不包括padding和border</li>
-<li>offset只能读不能写，而width可以赋值</li>
-<li>因此，读属性值一般用offset，写属性一般用width</li>
-</ul>
-<p>案例：获取鼠标在盒子里的坐标</p>
-<ol>
-<li>获取鼠标在页面内的坐标</li>
-<li>获取盒子在页面内的坐标</li>
-<li>相减</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">var box&#x3D;document.querySelector(&#39;.box&#39;);</span><br><span class="line">box.addEventListener(&#39;mousemove&#39;,function()&#123;&#x2F;&#x2F;鼠标移动事件</span><br><span class="line">    var x&#x3D;e.pageX-this.offsetLeft;</span><br><span class="line">    var y&#x3D;e.pageY-this.offsetTop;</span><br><span class="line">    this.innerHTML&#x3D;&#39;X坐标是&#39;+x+&#39;y坐标是&#39;+y;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-
-<p>##元素可视区client系列</p>
-<p>client是客户端，可动态得到元素边框大小，元素大小等，与offset最大的区别就是不包含边框</p>
-<p>clientTop  上边框</p>
-<p>clientLeft  左边框</p>
-<p>clientWidth</p>
-<p>clientHeight  包括padding、内容，不包括边框，返回数值不带单位</p>
-<h3 id="立即执行函数"><a href="#立即执行函数" class="headerlink" title="立即执行函数"></a>立即执行函数</h3><p>不需要调用立马能够自己执行的函数</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">(function()&#123;&#125;)()    或者  (function()&#123;&#125;())</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>第二个小括号可以看做是调用函数，可以传递参数，外面括号是实参，里面小括号是形参</li>
-<li>两种方法使用方法一致</li>
-<li>最大的作用就是独立创建了一个作用域，所有变量都是局部变量，不会有命名冲突</li>
-</ul>
-<p>###淘宝源码分析</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span> <span class="title">flexible</span>(<span class="params"><span class="built_in">window</span>, <span class="built_in">document</span></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> docEl = <span class="built_in">document</span>.documentElement</span><br><span class="line">    <span class="keyword">var</span> dpr = <span class="built_in">window</span>.devicePixelRatio || <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// adjust body font size</span></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">setBodyFontSize</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">document</span>.body) &#123;</span><br><span class="line">            <span class="built_in">document</span>.body.style.fontSize = (<span class="number">12</span> * dpr) + <span class="string">&#x27;px&#x27;</span></span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="built_in">document</span>.addEventListener(<span class="string">&#x27;DOMContentLoaded&#x27;</span>, setBodyFontSize)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    setBodyFontSize();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// set 1rem = viewWidth / 10</span></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">setRemUnit</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> rem = docEl.clientWidth / <span class="number">10</span></span><br><span class="line">        docEl.style.fontSize = rem + <span class="string">&#x27;px&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    setRemUnit()</span><br><span class="line"></span><br><span class="line">    <span class="comment">// reset rem unit on page resize</span></span><br><span class="line">    <span class="built_in">window</span>.addEventListener(<span class="string">&#x27;resize&#x27;</span>, setRemUnit)</span><br><span class="line">    <span class="built_in">window</span>.addEventListener(<span class="string">&#x27;pageshow&#x27;</span>, <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (e.persisted) &#123;</span><br><span class="line">            setRemUnit()</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    <span class="comment">// detect 0.5px supports</span></span><br><span class="line">    <span class="keyword">if</span> (dpr &gt;= <span class="number">2</span>) &#123;</span><br><span class="line">        <span class="keyword">var</span> fakeBody = <span class="built_in">document</span>.createElement(<span class="string">&#x27;body&#x27;</span>)</span><br><span class="line">        <span class="keyword">var</span> testElement = <span class="built_in">document</span>.createElement(<span class="string">&#x27;div&#x27;</span>)</span><br><span class="line">        testElement.style.border = <span class="string">&#x27;.5px solid transparent&#x27;</span></span><br><span class="line">        fakeBody.appendChild(testElement)</span><br><span class="line">        docEl.appendChild(fakeBody)</span><br><span class="line">        <span class="keyword">if</span> (testElement.offsetHeight === <span class="number">1</span>) &#123;</span><br><span class="line">            docEl.classList.add(<span class="string">&#x27;hairlines&#x27;</span>)</span><br><span class="line">        &#125;</span><br><span class="line">        docEl.removeChild(fakeBody)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;(<span class="built_in">window</span>, <span class="built_in">document</span>))</span><br></pre></td></tr></table></figure>
-
-
-
-<ul>
-<li>前进后退、a标签、刷新都会触发load，但是火狐浏览器使用load事件时存在往返缓存，后退按钮不能刷新页面，可以使用pageshow事件触发，这个事件在页面显示时触发，无论页面是否来自缓存，可以根据事件对象的persisted判断是否缓存中页面触发的pageshow事件，这个事件要给window添加</li>
-</ul>
-<h2 id="元素滚动scroll系列"><a href="#元素滚动scroll系列" class="headerlink" title="元素滚动scroll系列"></a>元素滚动scroll系列</h2><p>scrollTop:  返回被卷去的上侧距离，返回数值不带单位（隐藏的高度）</p>
-<p>scrollLeft:  左侧距离，同上</p>
-<p>scrollWidth: 返回自身实际宽度，不含边框，返回数值不带单位，包含内容超出盒子的部分</p>
-<p>scrollHeight：高度 同上</p>
-<p><strong>scroll事件：</strong></p>
-<p>‘scroll’  滚动触发的事件</p>
-<p><strong>window.pageXOffset:页面被卷曲的头部</strong></p>
-<p>兼容性问题：</p>
-<ol>
-<li>声明了DTD，使用document.documentElement.scrollTop</li>
-<li>未声明DTD，使用document.body.scrollTop</li>
-<li>新方法window.pageYOffset和window.pageXOffset,IE9开始支持</li>
-</ol>
-<p>兼容性方案（了解）</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">function getScroll() &#123;</span><br><span class="line">    return &#123;</span><br><span class="line">        left: window.pageXOffset || document.documentElement.scrollLeft || document.body.scrollLeft || 0,</span><br><span class="line">        top: window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="三大系列总结"><a href="#三大系列总结" class="headerlink" title="三大系列总结"></a>三大系列总结</h2><ul>
-<li><p>offset包含边框，scroll包括文字超出部分</p>
-</li>
-<li><p>offset一般用于获取元素位置，client常用与获取元素大小，获取滚动距离一般用scroll</p>
-</li>
-</ul>
-<h2 id="mouseenter和mouseover"><a href="#mouseenter和mouseover" class="headerlink" title="mouseenter和mouseover"></a>mouseenter和mouseover</h2><p>mouseover：经过自身盒子会触发，经过子盒子还会触发一次</p>
-<p>mouseenter只有经过自身盒子才会触发，因为mouseenter不会冒泡</p>
-<h2 id="动画函数封装"><a href="#动画函数封装" class="headerlink" title="动画函数封装"></a>动画函数封装</h2><h3 id="动画实现原理"><a href="#动画实现原理" class="headerlink" title="动画实现原理"></a>动画实现原理</h3><p>通过定时器setInterval()不断移动盒子位置</p>
-<ol>
-<li>获取盒子当前位置</li>
-<li>在盒子当前位置上加移动距离</li>
-<li>利用定时器不断重复操作</li>
-<li>加一个结束定时器的条件</li>
-<li>此元素一定要加定位，因为要使用element.left实现移动</li>
-</ol>
-<h3 id="动画函数简单封装"><a href="#动画函数简单封装" class="headerlink" title="动画函数简单封装"></a>动画函数简单封装</h3><p>需要传递两个参数，动画对象和移动的距离</p>
-<p>可以实现某个对象右移移动到某个位置</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">function animate(obj,target)&#123;</span><br><span class="line">	clearInterval(obj.timer)&#x2F;&#x2F;</span><br><span class="line">    obj.timer&#x3D;setInterval(function()&#123;</span><br><span class="line">        if(obj.offsetLeft&gt;&#x3D;target)&#123;</span><br><span class="line">            clearInterval(obj.timer);</span><br><span class="line">        &#125;</span><br><span class="line">        obj.style.left&#x3D;obj.offsetLeft+1+&#39;px&#39;;</span><br><span class="line">    &#125;,30);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>var timer=每次开辟空间浪费资源，且使用obj.timer避免不同调用使用相同的变量timer，因此通过添加属性实现给不同元素添加不同定时器</li>
-<li>注意要先清除原来的定时器，只保留当前定时器，避免多次触发动画时创建很多定时器造成不正常现象</li>
-</ul>
-<h3 id="缓动动画"><a href="#缓动动画" class="headerlink" title="缓动动画"></a>缓动动画</h3><p>让元素的运动速度有所变化，最常见的是让速度慢慢减下来</p>
-<p>思路：</p>
-<ol>
-<li>让盒子每次移动的距离慢慢变小</li>
-<li>（目标值-现在的位置）/10   作为每次移动的距离步长即可</li>
-<li>停止的条件：让当前盒子位置等于目标位置时停止定时器</li>
-</ol>
-<p>把每次+1的步长改为慢慢变小的值 即</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">function animate(obj,target)&#123;</span><br><span class="line">	clearInterval(obj.timer)&#x2F;&#x2F;</span><br><span class="line">    obj.timer&#x3D;setInterval(function()&#123;</span><br><span class="line">    	var step&#x3D;target-obj.offsetLeft)&#x2F;10;&#x2F;&#x2F;计算步长，要注意不要出现小号,还要考虑负值</span><br><span class="line">    	step&gt;0?Math.ceil(step):Math.floor(step)</span><br><span class="line">        if(obj.offsetLeft&#x3D;&#x3D;target)&#123;&#x2F;&#x2F;修改为等于号</span><br><span class="line">            clearInterval(obj.timer);</span><br><span class="line">        &#125;</span><br><span class="line">        obj.style.left&#x3D;obj.offsetLeft+step+&#39;px&#39;;</span><br><span class="line">    &#125;,30);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>为了实现在多个目标间移动，需要考虑步长正负</p>
-<p>###动画函数添加回调函数（重要）</p>
-<p>回调函数原理：函数可以作为一个参数，将这个参数传到另一个函数里，当那个函数执行完之后再执行传进去的这个函数，这个过程称为回调</p>
-<p>操作方法：输入添加一个函数作为参数，函数执行写在计时器停止的内容里，即可实现执行完动画后执行回调函数</p>
-<p>if(callback){</p>
-<p>callback()}</p>
-<p>如下代码即可实现运动完毕后盒子变颜色</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">animate</span>(<span class="params">obj, target, callback</span>) </span>&#123;</span><br><span class="line">            <span class="comment">// console.log(callback);  callback = function() &#123;&#125;  调用的时候 callback()</span></span><br><span class="line"></span><br><span class="line">            <span class="comment">// 先清除以前的定时器，只保留当前的一个定时器执行</span></span><br><span class="line">            <span class="built_in">clearInterval</span>(obj.timer);</span><br><span class="line">            obj.timer = <span class="built_in">setInterval</span>(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">                <span class="comment">// 步长值写到定时器的里面</span></span><br><span class="line">                <span class="comment">// 把我们步长值改为整数 不要出现小数的问题</span></span><br><span class="line">                <span class="comment">// var step = Math.ceil((target - obj.offsetLeft) / 10);</span></span><br><span class="line">                <span class="keyword">var</span> step = (target - obj.offsetLeft) / <span class="number">10</span>;</span><br><span class="line">                step = step &gt; <span class="number">0</span> ? <span class="built_in">Math</span>.ceil(step) : <span class="built_in">Math</span>.floor(step);</span><br><span class="line">                <span class="keyword">if</span> (obj.offsetLeft == target) &#123;</span><br><span class="line">                    <span class="comment">// 停止动画 本质是停止定时器</span></span><br><span class="line">                    <span class="built_in">clearInterval</span>(obj.timer);</span><br><span class="line">                    <span class="comment">// 回调函数写到定时器结束里面</span></span><br><span class="line">                    <span class="keyword">if</span> (callback) &#123;</span><br><span class="line">                        <span class="comment">// 调用函数</span></span><br><span class="line">                        callback();</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="comment">// 把每次加1 这个步长值改为一个慢慢变小的值  步长公式：(目标值 - 现在的位置) / 10</span></span><br><span class="line">                obj.style.left = obj.offsetLeft + step + <span class="string">&#x27;px&#x27;</span>;</span><br><span class="line"></span><br><span class="line">            &#125;, <span class="number">15</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">var</span> span = <span class="built_in">document</span>.querySelector(<span class="string">&#x27;span&#x27;</span>);</span><br><span class="line">        <span class="keyword">var</span> btn500 = <span class="built_in">document</span>.querySelector(<span class="string">&#x27;.btn500&#x27;</span>);</span><br><span class="line">        <span class="keyword">var</span> btn800 = <span class="built_in">document</span>.querySelector(<span class="string">&#x27;.btn800&#x27;</span>);</span><br><span class="line"></span><br><span class="line">        btn500.addEventListener(<span class="string">&#x27;click&#x27;</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">            <span class="comment">// 调用函数</span></span><br><span class="line">            animate(span, <span class="number">500</span>);</span><br><span class="line">        &#125;)</span><br><span class="line">        btn800.addEventListener(<span class="string">&#x27;click&#x27;</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">                <span class="comment">// 调用函数</span></span><br><span class="line">                animate(span, <span class="number">800</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">                    <span class="comment">// alert(&#x27;你好吗&#x27;);</span></span><br><span class="line">                    span.style.backgroundColor = <span class="string">&#x27;red&#x27;</span>;</span><br><span class="line">                &#125;);</span><br><span class="line">            &#125;)</span><br></pre></td></tr></table></figure>
-
-<h2 id="返回顶部"><a href="#返回顶部" class="headerlink" title="返回顶部"></a>返回顶部</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">window.scroll(0, 0);&#x2F;&#x2F;x,y不跟单位直接写数字就好</span><br></pre></td></tr></table></figure>
-
-<ol>
-<li><p>快速滚动到顶端</p>
-</li>
-<li><p>编写垂直运动的动画函数，点击后目标设为0（y坐标）</p>
-</li>
-</ol>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">goBack.addEventListener(<span class="string">&#x27;click&#x27;</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">            animate(<span class="built_in">window</span>, <span class="number">0</span>);<span class="comment">//窗口动画，对象是window</span></span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="function"><span class="keyword">function</span> <span class="title">animate</span>(<span class="params">obj, target, callback</span>) </span>&#123;</span><br><span class="line">            <span class="comment">// console.log(callback);  callback = function() &#123;&#125;  调用的时候 callback()</span></span><br><span class="line"></span><br><span class="line">            <span class="comment">// 先清除以前的定时器，只保留当前的一个定时器执行</span></span><br><span class="line">            <span class="built_in">clearInterval</span>(obj.timer);</span><br><span class="line">            obj.timer = <span class="built_in">setInterval</span>(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">                <span class="comment">// 步长值写到定时器的里面</span></span><br><span class="line">                <span class="comment">// 把我们步长值改为整数 不要出现小数的问题</span></span><br><span class="line">                <span class="comment">// var step = Math.ceil((target - obj.offsetLeft) / 10);</span></span><br><span class="line"></span><br><span class="line">                <span class="keyword">var</span> step = (target - <span class="built_in">window</span>.pageYOffset) / <span class="number">10</span>;</span><br><span class="line">                step = step &gt; <span class="number">0</span> ? <span class="built_in">Math</span>.ceil(step) : <span class="built_in">Math</span>.floor(step);</span><br><span class="line">                <span class="keyword">if</span> (<span class="built_in">window</span>.pageYOffset == target) &#123;</span><br><span class="line">                    <span class="comment">// 停止动画 本质是停止定时器</span></span><br><span class="line">                    <span class="built_in">clearInterval</span>(obj.timer);</span><br><span class="line">                    <span class="comment">// 回调函数写到定时器结束里面</span></span><br><span class="line">                    callback &amp;&amp; callback();<span class="comment">//如果有参数传入才会调用callback</span></span><br><span class="line">                &#125;</span><br><span class="line">                <span class="comment">// 把每次加1 这个步长值改为一个慢慢变小的值  步长公式：(目标值 - 现在的位置) / 10</span></span><br><span class="line">                <span class="comment">// obj.style.left = obj.offsetLeft + step + &#x27;px&#x27;;</span></span><br><span class="line">                <span class="built_in">window</span>.scroll(<span class="number">0</span>, <span class="built_in">window</span>.pageYOffset + step);</span><br><span class="line"></span><br><span class="line">            &#125;, <span class="number">15</span>);</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
-
-
-
-
-
 ]]></content>
       <categories>
         <category>JavaScript</category>
@@ -2148,6 +2233,69 @@
       </tags>
   </entry>
   <entry>
+    <title>苏宁首页移动端仿制-rem布局</title>
+    <url>/2021/03/18/%E6%A1%88%E4%BE%8B-%E8%8B%8F%E5%AE%81%E9%A6%96%E9%A1%B5%E7%A7%BB%E5%8A%A8%E7%AB%AF%E4%BB%BF%E5%88%B6-rem%E5%B8%83%E5%B1%80/</url>
+    <content><![CDATA[<p>使用rem适配布局仿制苏宁移动端首页练习</p>
+<p>总结：使用rem布局时需要使用rem单位，需要较多的单位转换，一般设置默认字体为@basefont，方便后期维护；Less布局的嵌套变量都具有很高的实用性，提高了代码的逻辑性。</p>
+<span id="more"></span>
+
+<p>成品图：</p>
+<img src="https://www.hualigs.cn/image/6052c6b08add1.jpg"/>
+
+<ol>
+<li>common.css</li>
+</ol>
+<figure class="highlight less"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 设置常见的屏幕尺寸 修改里面的html文字大小</span></span><br><span class="line"><span class="selector-tag">a</span> &#123;</span><br><span class="line">    <span class="attribute">text-decoration</span>: none;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 一定要写到最上面</span></span><br><span class="line"><span class="selector-tag">html</span> &#123;</span><br><span class="line">    <span class="attribute">font-size</span>: <span class="number">50px</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 我们此次定义的划分的份数 为 15</span></span><br><span class="line"><span class="variable">@no:</span> <span class="number">15</span>;</span><br><span class="line"><span class="comment">// 320</span></span><br><span class="line"><span class="keyword">@media</span> screen <span class="keyword">and</span> (<span class="attribute">min-width</span>: <span class="number">320px</span>) &#123;</span><br><span class="line">    <span class="selector-tag">html</span> &#123;</span><br><span class="line">        <span class="attribute">font-size</span>: (<span class="number">320px</span> / <span class="variable">@no</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 360</span></span><br><span class="line"><span class="keyword">@media</span> screen <span class="keyword">and</span> (<span class="attribute">min-width</span>: <span class="number">360px</span>) &#123;</span><br><span class="line">    <span class="selector-tag">html</span> &#123;</span><br><span class="line">        <span class="attribute">font-size</span>: (<span class="number">360px</span> / <span class="variable">@no</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 375 iphone 678</span></span><br><span class="line"><span class="keyword">@media</span> screen <span class="keyword">and</span> (<span class="attribute">min-width</span>: <span class="number">375px</span>) &#123;</span><br><span class="line">    <span class="selector-tag">html</span> &#123;</span><br><span class="line">        <span class="attribute">font-size</span>: (<span class="number">375px</span> / <span class="variable">@no</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 384</span></span><br><span class="line"><span class="keyword">@media</span> screen <span class="keyword">and</span> (<span class="attribute">min-width</span>: <span class="number">384px</span>) &#123;</span><br><span class="line">    <span class="selector-tag">html</span> &#123;</span><br><span class="line">        <span class="attribute">font-size</span>: (<span class="number">384px</span> / <span class="variable">@no</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 400</span></span><br><span class="line"><span class="keyword">@media</span> screen <span class="keyword">and</span> (<span class="attribute">min-width</span>: <span class="number">400px</span>) &#123;</span><br><span class="line">    <span class="selector-tag">html</span> &#123;</span><br><span class="line">        <span class="attribute">font-size</span>: (<span class="number">400px</span> / <span class="variable">@no</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 414</span></span><br><span class="line"><span class="keyword">@media</span> screen <span class="keyword">and</span> (<span class="attribute">min-width</span>: <span class="number">414px</span>) &#123;</span><br><span class="line">    <span class="selector-tag">html</span> &#123;</span><br><span class="line">        <span class="attribute">font-size</span>: (<span class="number">414px</span> / <span class="variable">@no</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 424</span></span><br><span class="line"><span class="keyword">@media</span> screen <span class="keyword">and</span> (<span class="attribute">min-width</span>: <span class="number">424px</span>) &#123;</span><br><span class="line">    <span class="selector-tag">html</span> &#123;</span><br><span class="line">        <span class="attribute">font-size</span>: (<span class="number">424px</span> / <span class="variable">@no</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 480</span></span><br><span class="line"><span class="keyword">@media</span> screen <span class="keyword">and</span> (<span class="attribute">min-width</span>: <span class="number">480px</span>) &#123;</span><br><span class="line">    <span class="selector-tag">html</span> &#123;</span><br><span class="line">        <span class="attribute">font-size</span>: (<span class="number">480px</span> / <span class="variable">@no</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 540</span></span><br><span class="line"><span class="keyword">@media</span> screen <span class="keyword">and</span> (<span class="attribute">min-width</span>: <span class="number">540px</span>) &#123;</span><br><span class="line">    <span class="selector-tag">html</span> &#123;</span><br><span class="line">        <span class="attribute">font-size</span>: (<span class="number">540px</span> / <span class="variable">@no</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 720</span></span><br><span class="line"><span class="keyword">@media</span> screen <span class="keyword">and</span> (<span class="attribute">min-width</span>: <span class="number">720px</span>) &#123;</span><br><span class="line">    <span class="selector-tag">html</span> &#123;</span><br><span class="line">        <span class="attribute">font-size</span>: (<span class="number">720px</span> / <span class="variable">@no</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 750</span></span><br><span class="line"><span class="keyword">@media</span> screen <span class="keyword">and</span> (<span class="attribute">min-width</span>: <span class="number">750px</span>) &#123;</span><br><span class="line">    <span class="selector-tag">html</span> &#123;</span><br><span class="line">        <span class="attribute">font-size</span>: (<span class="number">750px</span> / <span class="variable">@no</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li><strong>在index.less中导入common.less</strong></li>
+</ol>
+<p>可以把一个样式文件导入另一个样式文件，导入后不需要在html中引入原CSS文件</p>
+<p>link是把一个样式文件引入到html页面里面</p>
+<figure class="highlight less"><table><tr><td class="code"><pre><span class="line"><span class="keyword">@import</span> <span class="string">&quot;common&quot;</span>;</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>header</li>
+</ol>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;search-content&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;#&quot;</span> <span class="attr">class</span>=<span class="string">&quot;classify&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;search&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">form</span> <span class="attr">action</span>=<span class="string">&quot;&quot;</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;search&quot;</span> <span class="attr">value</span>=<span class="string">&quot;厨卫保暖记 每千减百&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;#&quot;</span> <span class="attr">class</span>=<span class="string">&quot;login&quot;</span>&gt;</span>登录<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>Less</p>
+<figure class="highlight less"><table><tr><td class="code"><pre><span class="line"><span class="variable">@basefont:</span><span class="number">50</span>;</span><br><span class="line"><span class="selector-class">.search-content</span> &#123;</span><br><span class="line">    <span class="attribute">display</span>: flex;</span><br><span class="line">    <span class="attribute">position</span>: fixed;</span><br><span class="line">    <span class="attribute">top</span>: <span class="number">0</span>;</span><br><span class="line">    <span class="attribute">left</span>: <span class="number">50%</span>;</span><br><span class="line">    <span class="attribute">transform</span>: translateX(-<span class="number">50%</span>);</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">15rem</span>;</span><br><span class="line">    <span class="attribute">height</span>: (<span class="number">88rem</span> / <span class="variable">@basefont</span>);</span><br><span class="line">    <span class="attribute">background-color</span>: <span class="number">#ffc001</span>;</span><br><span class="line">    <span class="selector-class">.classify</span> &#123;</span><br><span class="line">        <span class="attribute">width</span>: (<span class="number">44rem</span>/<span class="variable">@basefont</span>);</span><br><span class="line">        <span class="attribute">height</span>: (<span class="number">70rem</span> / <span class="variable">@basefont</span>);</span><br><span class="line">        <span class="attribute">background</span>: url(<span class="string">../images/classify.png</span>) no-repeat;</span><br><span class="line">        <span class="attribute">background-size</span>: (<span class="number">44rem</span>/<span class="variable">@basefont</span>) (<span class="number">70rem</span> / <span class="variable">@basefont</span>);</span><br><span class="line">        <span class="attribute">margin</span>: (<span class="number">11rem</span>/<span class="variable">@basefont</span>) (<span class="number">25rem</span>/<span class="variable">@basefont</span>) (<span class="number">7rem</span>/<span class="variable">@basefont</span>) (<span class="number">24rem</span>/<span class="variable">@basefont</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="selector-class">.search</span> &#123;</span><br><span class="line">        <span class="attribute">flex</span>:<span class="number">1</span> ;</span><br><span class="line">        <span class="selector-tag">input</span> &#123;</span><br><span class="line">            <span class="attribute">width</span>: <span class="number">100%</span>;</span><br><span class="line">            <span class="attribute">border</span>: <span class="number">0</span>;</span><br><span class="line">            <span class="attribute">height</span>: (<span class="number">66rem</span>/<span class="variable">@basefont</span>);</span><br><span class="line">            <span class="attribute">border-radius</span>: (<span class="number">33rem</span>/<span class="variable">@basefont</span>);</span><br><span class="line">            <span class="attribute">background-color</span>: <span class="number">#fff3cc</span>;</span><br><span class="line">            <span class="attribute">margin-top</span>: (<span class="number">12rem</span>/<span class="variable">@basefont</span>);</span><br><span class="line">            <span class="attribute">font-size</span>: (<span class="number">25rem</span>/<span class="variable">@basefont</span>);</span><br><span class="line">            <span class="attribute">padding-left</span>: (<span class="number">55rem</span>/<span class="variable">@basefont</span>);</span><br><span class="line">            <span class="attribute">color</span>: <span class="number">#757575</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="selector-class">.login</span> &#123;</span><br><span class="line">        <span class="attribute">width</span>: (<span class="number">75rem</span>/<span class="variable">@basefont</span>);</span><br><span class="line">        <span class="attribute">height</span>: (<span class="number">70rem</span>/<span class="variable">@basefont</span>);</span><br><span class="line">        <span class="attribute">margin</span>: (<span class="number">10rem</span>/<span class="variable">@basefont</span>);</span><br><span class="line">        <span class="attribute">font-size</span>: (<span class="number">25rem</span>/<span class="variable">@basefont</span>);</span><br><span class="line">        <span class="attribute">text-align</span>: center;</span><br><span class="line">        <span class="attribute">color</span>: <span class="number">#fff</span>;</span><br><span class="line">        <span class="attribute">line-height</span>: (<span class="number">70rem</span>/<span class="variable">@basefont</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>banner</li>
+</ol>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;banner&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;upload/banner.gif&quot;</span> <span class="attr">alt</span>=<span class="string">&quot;&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>Less</p>
+<figure class="highlight less"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.banner</span> &#123;</span><br><span class="line">    <span class="attribute">width</span>: (<span class="number">750rem</span>/<span class="variable">@basefont</span>);</span><br><span class="line">    <span class="attribute">height</span>: (<span class="number">368rem</span>/<span class="variable">@basefont</span>);</span><br><span class="line">    <span class="selector-tag">img</span>&#123;</span><br><span class="line">        <span class="attribute">width</span>: <span class="number">100%</span>;</span><br><span class="line">        <span class="attribute">height</span>: <span class="number">100%</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.ad</span> &#123;</span><br><span class="line">    <span class="attribute">display</span>: flex;</span><br><span class="line">    <span class="selector-tag">a</span>&#123;</span><br><span class="line">        <span class="attribute">flex</span>: <span class="number">1</span>;</span><br><span class="line">        <span class="selector-tag">img</span>&#123;</span><br><span class="line">            <span class="comment">// 记得盒子限制大小后还要限制图片</span></span><br><span class="line">            <span class="attribute">width</span>: <span class="number">100%</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>广告栏</li>
+</ol>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;ad&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;#&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;upload/ad1.gif&quot;</span> <span class="attr">alt</span>=<span class="string">&quot;&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;#&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;upload/ad2.gif&quot;</span> <span class="attr">alt</span>=<span class="string">&quot;&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;#&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;upload/ad3.gif&quot;</span> <span class="attr">alt</span>=<span class="string">&quot;&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>Less</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">.ad &#123;</span><br><span class="line">    display: flex;</span><br><span class="line">    a&#123;</span><br><span class="line">        flex: 1;</span><br><span class="line">        img&#123;</span><br><span class="line">            &#x2F;&#x2F; 记得盒子限制大小后还要限制图片</span><br><span class="line">            width: 100%;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="6">
+<li>导航栏</li>
+</ol>
+<p>使用浮动布局，十个大小相同的盒子排为两行</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;nav&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;#&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;upload/nav1.png&quot;</span> <span class="attr">alt</span>=<span class="string">&quot;&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">span</span>&gt;</span>爆款手机<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">    省略</span><br></pre></td></tr></table></figure>
+
+<p>Less</p>
+<figure class="highlight less"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.nav</span> &#123;</span><br><span class="line">    <span class="attribute">width</span>: (<span class="number">750rem</span>/<span class="variable">@basefont</span>);</span><br><span class="line">    <span class="selector-tag">a</span> &#123;</span><br><span class="line">        <span class="attribute">float</span>: left;</span><br><span class="line">        <span class="attribute">width</span>: (<span class="number">150rem</span>/<span class="variable">@basefont</span>);</span><br><span class="line">        <span class="attribute">height</span>: (<span class="number">140rem</span>/<span class="variable">@basefont</span>);</span><br><span class="line">        <span class="attribute">text-align</span>: center;</span><br><span class="line">        <span class="selector-tag">img</span> &#123;</span><br><span class="line">            <span class="attribute">display</span>: block;</span><br><span class="line">            <span class="attribute">width</span>: (<span class="number">82rem</span>/<span class="variable">@basefont</span>);</span><br><span class="line">            <span class="attribute">height</span>: (<span class="number">82rem</span>/<span class="variable">@basefont</span>);</span><br><span class="line">            <span class="attribute">margin</span>: <span class="number">10px</span> auto <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="selector-tag">span</span> &#123;</span><br><span class="line">            <span class="attribute">font-size</span>: (<span class="number">25rem</span>/<span class="variable">@basefont</span>);</span><br><span class="line">            <span class="attribute">color</span>: <span class="number">#333</span>;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>CSS</category>
+      </categories>
+      <tags>
+        <tag>CSS</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>黑马面面布局开发</title>
     <url>/2021/03/18/%E6%A1%88%E4%BE%8B-%E9%BB%91%E9%A9%AC%E9%9D%A2%E9%9D%A2%E5%B8%83%E5%B1%80%E5%BC%80%E5%8F%91/</url>
     <content><![CDATA[<p>实现黑马面面的布局开发，本次案例  flex + rem + + flexible.js +  LESS   </p>
@@ -2257,93 +2405,6 @@
       </categories>
       <tags>
         <tag>CSS</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>苏宁首页移动端仿制-rem布局</title>
-    <url>/2021/03/18/%E6%A1%88%E4%BE%8B-%E8%8B%8F%E5%AE%81%E9%A6%96%E9%A1%B5%E7%A7%BB%E5%8A%A8%E7%AB%AF%E4%BB%BF%E5%88%B6-rem%E5%B8%83%E5%B1%80/</url>
-    <content><![CDATA[<p>使用rem适配布局仿制苏宁移动端首页练习</p>
-<p>总结：使用rem布局时需要使用rem单位，需要较多的单位转换，一般设置默认字体为@basefont，方便后期维护；Less布局的嵌套变量都具有很高的实用性，提高了代码的逻辑性。</p>
-<span id="more"></span>
-
-<p>成品图：</p>
-<img src="https://www.hualigs.cn/image/6052c6b08add1.jpg"/>
-
-<ol>
-<li>common.css</li>
-</ol>
-<figure class="highlight less"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 设置常见的屏幕尺寸 修改里面的html文字大小</span></span><br><span class="line"><span class="selector-tag">a</span> &#123;</span><br><span class="line">    <span class="attribute">text-decoration</span>: none;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 一定要写到最上面</span></span><br><span class="line"><span class="selector-tag">html</span> &#123;</span><br><span class="line">    <span class="attribute">font-size</span>: <span class="number">50px</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 我们此次定义的划分的份数 为 15</span></span><br><span class="line"><span class="variable">@no:</span> <span class="number">15</span>;</span><br><span class="line"><span class="comment">// 320</span></span><br><span class="line"><span class="keyword">@media</span> screen <span class="keyword">and</span> (<span class="attribute">min-width</span>: <span class="number">320px</span>) &#123;</span><br><span class="line">    <span class="selector-tag">html</span> &#123;</span><br><span class="line">        <span class="attribute">font-size</span>: (<span class="number">320px</span> / <span class="variable">@no</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 360</span></span><br><span class="line"><span class="keyword">@media</span> screen <span class="keyword">and</span> (<span class="attribute">min-width</span>: <span class="number">360px</span>) &#123;</span><br><span class="line">    <span class="selector-tag">html</span> &#123;</span><br><span class="line">        <span class="attribute">font-size</span>: (<span class="number">360px</span> / <span class="variable">@no</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 375 iphone 678</span></span><br><span class="line"><span class="keyword">@media</span> screen <span class="keyword">and</span> (<span class="attribute">min-width</span>: <span class="number">375px</span>) &#123;</span><br><span class="line">    <span class="selector-tag">html</span> &#123;</span><br><span class="line">        <span class="attribute">font-size</span>: (<span class="number">375px</span> / <span class="variable">@no</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 384</span></span><br><span class="line"><span class="keyword">@media</span> screen <span class="keyword">and</span> (<span class="attribute">min-width</span>: <span class="number">384px</span>) &#123;</span><br><span class="line">    <span class="selector-tag">html</span> &#123;</span><br><span class="line">        <span class="attribute">font-size</span>: (<span class="number">384px</span> / <span class="variable">@no</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 400</span></span><br><span class="line"><span class="keyword">@media</span> screen <span class="keyword">and</span> (<span class="attribute">min-width</span>: <span class="number">400px</span>) &#123;</span><br><span class="line">    <span class="selector-tag">html</span> &#123;</span><br><span class="line">        <span class="attribute">font-size</span>: (<span class="number">400px</span> / <span class="variable">@no</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 414</span></span><br><span class="line"><span class="keyword">@media</span> screen <span class="keyword">and</span> (<span class="attribute">min-width</span>: <span class="number">414px</span>) &#123;</span><br><span class="line">    <span class="selector-tag">html</span> &#123;</span><br><span class="line">        <span class="attribute">font-size</span>: (<span class="number">414px</span> / <span class="variable">@no</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 424</span></span><br><span class="line"><span class="keyword">@media</span> screen <span class="keyword">and</span> (<span class="attribute">min-width</span>: <span class="number">424px</span>) &#123;</span><br><span class="line">    <span class="selector-tag">html</span> &#123;</span><br><span class="line">        <span class="attribute">font-size</span>: (<span class="number">424px</span> / <span class="variable">@no</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 480</span></span><br><span class="line"><span class="keyword">@media</span> screen <span class="keyword">and</span> (<span class="attribute">min-width</span>: <span class="number">480px</span>) &#123;</span><br><span class="line">    <span class="selector-tag">html</span> &#123;</span><br><span class="line">        <span class="attribute">font-size</span>: (<span class="number">480px</span> / <span class="variable">@no</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 540</span></span><br><span class="line"><span class="keyword">@media</span> screen <span class="keyword">and</span> (<span class="attribute">min-width</span>: <span class="number">540px</span>) &#123;</span><br><span class="line">    <span class="selector-tag">html</span> &#123;</span><br><span class="line">        <span class="attribute">font-size</span>: (<span class="number">540px</span> / <span class="variable">@no</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 720</span></span><br><span class="line"><span class="keyword">@media</span> screen <span class="keyword">and</span> (<span class="attribute">min-width</span>: <span class="number">720px</span>) &#123;</span><br><span class="line">    <span class="selector-tag">html</span> &#123;</span><br><span class="line">        <span class="attribute">font-size</span>: (<span class="number">720px</span> / <span class="variable">@no</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 750</span></span><br><span class="line"><span class="keyword">@media</span> screen <span class="keyword">and</span> (<span class="attribute">min-width</span>: <span class="number">750px</span>) &#123;</span><br><span class="line">    <span class="selector-tag">html</span> &#123;</span><br><span class="line">        <span class="attribute">font-size</span>: (<span class="number">750px</span> / <span class="variable">@no</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li><strong>在index.less中导入common.less</strong></li>
-</ol>
-<p>可以把一个样式文件导入另一个样式文件，导入后不需要在html中引入原CSS文件</p>
-<p>link是把一个样式文件引入到html页面里面</p>
-<figure class="highlight less"><table><tr><td class="code"><pre><span class="line"><span class="keyword">@import</span> <span class="string">&quot;common&quot;</span>;</span><br></pre></td></tr></table></figure>
-
-<ol start="3">
-<li>header</li>
-</ol>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;search-content&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;#&quot;</span> <span class="attr">class</span>=<span class="string">&quot;classify&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;search&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">form</span> <span class="attr">action</span>=<span class="string">&quot;&quot;</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;search&quot;</span> <span class="attr">value</span>=<span class="string">&quot;厨卫保暖记 每千减百&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;#&quot;</span> <span class="attr">class</span>=<span class="string">&quot;login&quot;</span>&gt;</span>登录<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>Less</p>
-<figure class="highlight less"><table><tr><td class="code"><pre><span class="line"><span class="variable">@basefont:</span><span class="number">50</span>;</span><br><span class="line"><span class="selector-class">.search-content</span> &#123;</span><br><span class="line">    <span class="attribute">display</span>: flex;</span><br><span class="line">    <span class="attribute">position</span>: fixed;</span><br><span class="line">    <span class="attribute">top</span>: <span class="number">0</span>;</span><br><span class="line">    <span class="attribute">left</span>: <span class="number">50%</span>;</span><br><span class="line">    <span class="attribute">transform</span>: translateX(-<span class="number">50%</span>);</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">15rem</span>;</span><br><span class="line">    <span class="attribute">height</span>: (<span class="number">88rem</span> / <span class="variable">@basefont</span>);</span><br><span class="line">    <span class="attribute">background-color</span>: <span class="number">#ffc001</span>;</span><br><span class="line">    <span class="selector-class">.classify</span> &#123;</span><br><span class="line">        <span class="attribute">width</span>: (<span class="number">44rem</span>/<span class="variable">@basefont</span>);</span><br><span class="line">        <span class="attribute">height</span>: (<span class="number">70rem</span> / <span class="variable">@basefont</span>);</span><br><span class="line">        <span class="attribute">background</span>: url(<span class="string">../images/classify.png</span>) no-repeat;</span><br><span class="line">        <span class="attribute">background-size</span>: (<span class="number">44rem</span>/<span class="variable">@basefont</span>) (<span class="number">70rem</span> / <span class="variable">@basefont</span>);</span><br><span class="line">        <span class="attribute">margin</span>: (<span class="number">11rem</span>/<span class="variable">@basefont</span>) (<span class="number">25rem</span>/<span class="variable">@basefont</span>) (<span class="number">7rem</span>/<span class="variable">@basefont</span>) (<span class="number">24rem</span>/<span class="variable">@basefont</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="selector-class">.search</span> &#123;</span><br><span class="line">        <span class="attribute">flex</span>:<span class="number">1</span> ;</span><br><span class="line">        <span class="selector-tag">input</span> &#123;</span><br><span class="line">            <span class="attribute">width</span>: <span class="number">100%</span>;</span><br><span class="line">            <span class="attribute">border</span>: <span class="number">0</span>;</span><br><span class="line">            <span class="attribute">height</span>: (<span class="number">66rem</span>/<span class="variable">@basefont</span>);</span><br><span class="line">            <span class="attribute">border-radius</span>: (<span class="number">33rem</span>/<span class="variable">@basefont</span>);</span><br><span class="line">            <span class="attribute">background-color</span>: <span class="number">#fff3cc</span>;</span><br><span class="line">            <span class="attribute">margin-top</span>: (<span class="number">12rem</span>/<span class="variable">@basefont</span>);</span><br><span class="line">            <span class="attribute">font-size</span>: (<span class="number">25rem</span>/<span class="variable">@basefont</span>);</span><br><span class="line">            <span class="attribute">padding-left</span>: (<span class="number">55rem</span>/<span class="variable">@basefont</span>);</span><br><span class="line">            <span class="attribute">color</span>: <span class="number">#757575</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="selector-class">.login</span> &#123;</span><br><span class="line">        <span class="attribute">width</span>: (<span class="number">75rem</span>/<span class="variable">@basefont</span>);</span><br><span class="line">        <span class="attribute">height</span>: (<span class="number">70rem</span>/<span class="variable">@basefont</span>);</span><br><span class="line">        <span class="attribute">margin</span>: (<span class="number">10rem</span>/<span class="variable">@basefont</span>);</span><br><span class="line">        <span class="attribute">font-size</span>: (<span class="number">25rem</span>/<span class="variable">@basefont</span>);</span><br><span class="line">        <span class="attribute">text-align</span>: center;</span><br><span class="line">        <span class="attribute">color</span>: <span class="number">#fff</span>;</span><br><span class="line">        <span class="attribute">line-height</span>: (<span class="number">70rem</span>/<span class="variable">@basefont</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ol start="4">
-<li>banner</li>
-</ol>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;banner&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;upload/banner.gif&quot;</span> <span class="attr">alt</span>=<span class="string">&quot;&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>Less</p>
-<figure class="highlight less"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.banner</span> &#123;</span><br><span class="line">    <span class="attribute">width</span>: (<span class="number">750rem</span>/<span class="variable">@basefont</span>);</span><br><span class="line">    <span class="attribute">height</span>: (<span class="number">368rem</span>/<span class="variable">@basefont</span>);</span><br><span class="line">    <span class="selector-tag">img</span>&#123;</span><br><span class="line">        <span class="attribute">width</span>: <span class="number">100%</span>;</span><br><span class="line">        <span class="attribute">height</span>: <span class="number">100%</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.ad</span> &#123;</span><br><span class="line">    <span class="attribute">display</span>: flex;</span><br><span class="line">    <span class="selector-tag">a</span>&#123;</span><br><span class="line">        <span class="attribute">flex</span>: <span class="number">1</span>;</span><br><span class="line">        <span class="selector-tag">img</span>&#123;</span><br><span class="line">            <span class="comment">// 记得盒子限制大小后还要限制图片</span></span><br><span class="line">            <span class="attribute">width</span>: <span class="number">100%</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ol start="5">
-<li>广告栏</li>
-</ol>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;ad&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;#&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;upload/ad1.gif&quot;</span> <span class="attr">alt</span>=<span class="string">&quot;&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;#&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;upload/ad2.gif&quot;</span> <span class="attr">alt</span>=<span class="string">&quot;&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;#&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;upload/ad3.gif&quot;</span> <span class="attr">alt</span>=<span class="string">&quot;&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>Less</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">.ad &#123;</span><br><span class="line">    display: flex;</span><br><span class="line">    a&#123;</span><br><span class="line">        flex: 1;</span><br><span class="line">        img&#123;</span><br><span class="line">            &#x2F;&#x2F; 记得盒子限制大小后还要限制图片</span><br><span class="line">            width: 100%;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ol start="6">
-<li>导航栏</li>
-</ol>
-<p>使用浮动布局，十个大小相同的盒子排为两行</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;nav&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;#&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;upload/nav1.png&quot;</span> <span class="attr">alt</span>=<span class="string">&quot;&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">span</span>&gt;</span>爆款手机<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">    省略</span><br></pre></td></tr></table></figure>
-
-<p>Less</p>
-<figure class="highlight less"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.nav</span> &#123;</span><br><span class="line">    <span class="attribute">width</span>: (<span class="number">750rem</span>/<span class="variable">@basefont</span>);</span><br><span class="line">    <span class="selector-tag">a</span> &#123;</span><br><span class="line">        <span class="attribute">float</span>: left;</span><br><span class="line">        <span class="attribute">width</span>: (<span class="number">150rem</span>/<span class="variable">@basefont</span>);</span><br><span class="line">        <span class="attribute">height</span>: (<span class="number">140rem</span>/<span class="variable">@basefont</span>);</span><br><span class="line">        <span class="attribute">text-align</span>: center;</span><br><span class="line">        <span class="selector-tag">img</span> &#123;</span><br><span class="line">            <span class="attribute">display</span>: block;</span><br><span class="line">            <span class="attribute">width</span>: (<span class="number">82rem</span>/<span class="variable">@basefont</span>);</span><br><span class="line">            <span class="attribute">height</span>: (<span class="number">82rem</span>/<span class="variable">@basefont</span>);</span><br><span class="line">            <span class="attribute">margin</span>: <span class="number">10px</span> auto <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="selector-tag">span</span> &#123;</span><br><span class="line">            <span class="attribute">font-size</span>: (<span class="number">25rem</span>/<span class="variable">@basefont</span>);</span><br><span class="line">            <span class="attribute">color</span>: <span class="number">#333</span>;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>CSS</category>
-      </categories>
-      <tags>
-        <tag>CSS</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>算法-斐波那契非递归方法</title>
-    <url>/2021/03/21/%E7%AE%97%E6%B3%95-%E6%96%90%E6%B3%A2%E9%82%A3%E5%A5%91%E9%9D%9E%E9%80%92%E5%BD%92%E6%96%B9%E6%B3%95/</url>
-    <content><![CDATA[<p>看到这道题上来就果断递归了……结果–超出时间限制了</p>
-<p>想不到思路就去翻题解了，给出了一种动态规划的思路</p>
-<span id="more"></span>
-
-<p><img src="https://www.hualigs.cn/image/6056f8542b194.jpg"></p>
-<p>递归是直接从表达式下手，不断执行函数，直到执行到终止条件即n=0或n=1；复杂度很高</p>
-<p>动态规划则是完全相反的思路：我们已知了n=0和n=1时的值，那我们可以直到n=2，n=4，一直到n=输入，就是我们想要求得的值</p>
-<p>有这个思路后代码实现就比较容易了，分别取两个值记录上一个值和上上个值，循环计算，直到计算到n，复杂度只有O(n)</p>
-<p>同时还需要注意一个小细节：int是32位整型，当数字过大时必然会溢出，因此要对sum取模（题目要求1000000007 ）</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">fib</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(n==<span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(n==<span class="number">1</span>) <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> a=<span class="number">0</span>,b=<span class="number">1</span>,sum=<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">2</span>;i&lt;=n;i++)&#123;</span><br><span class="line">            sum=(a+b)%<span class="number">1000000007</span>;</span><br><span class="line">            a=b;</span><br><span class="line">            b=sum;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> sum;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-
-
-]]></content>
-      <categories>
-        <category>算法</category>
-      </categories>
-      <tags>
-        <tag>算法</tag>
       </tags>
   </entry>
   <entry>
@@ -2568,6 +2629,30 @@
       </tags>
   </entry>
   <entry>
+    <title>算法-斐波那契非递归方法</title>
+    <url>/2021/03/21/%E7%AE%97%E6%B3%95-%E6%96%90%E6%B3%A2%E9%82%A3%E5%A5%91%E9%9D%9E%E9%80%92%E5%BD%92%E6%96%B9%E6%B3%95/</url>
+    <content><![CDATA[<p>看到这道题上来就果断递归了……结果–超出时间限制了</p>
+<p>想不到思路就去翻题解了，给出了一种动态规划的思路</p>
+<span id="more"></span>
+
+<p><img src="https://www.hualigs.cn/image/6056f8542b194.jpg"></p>
+<p>递归是直接从表达式下手，不断执行函数，直到执行到终止条件即n=0或n=1；复杂度很高</p>
+<p>动态规划则是完全相反的思路：我们已知了n=0和n=1时的值，那我们可以直到n=2，n=4，一直到n=输入，就是我们想要求得的值</p>
+<p>有这个思路后代码实现就比较容易了，分别取两个值记录上一个值和上上个值，循环计算，直到计算到n，复杂度只有O(n)</p>
+<p>同时还需要注意一个小细节：int是32位整型，当数字过大时必然会溢出，因此要对sum取模（题目要求1000000007 ）</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">fib</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(n==<span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(n==<span class="number">1</span>) <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> a=<span class="number">0</span>,b=<span class="number">1</span>,sum=<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">2</span>;i&lt;=n;i++)&#123;</span><br><span class="line">            sum=(a+b)%<span class="number">1000000007</span>;</span><br><span class="line">            a=b;</span><br><span class="line">            b=sum;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> sum;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+
+]]></content>
+      <categories>
+        <category>算法</category>
+      </categories>
+      <tags>
+        <tag>算法</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>算法-链表中倒数第k个结点</title>
     <url>/2021/03/21/%E7%AE%97%E6%B3%95-%E9%93%BE%E8%A1%A8%E4%B8%AD%E5%80%92%E6%95%B0%E7%AC%ACk%E4%B8%AA%E7%BB%93%E7%82%B9/</url>
     <content><![CDATA[<p>求链表中倒数第k个结点，主要采用双指针法</p>
@@ -2601,7 +2686,7 @@
       </tags>
   </entry>
   <entry>
-    <title>数据结构与算法全书易错分析</title>
+    <title>数据结构与算法全书易错分析(超详细)</title>
     <url>/2021/03/15/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E6%98%93%E9%94%99%E5%88%86%E6%9E%90/</url>
     <content><![CDATA[<h1 id="1-绪论"><a href="#1-绪论" class="headerlink" title="1 绪论"></a>1 绪论</h1><ol>
 <li>数据结构三要素：数据的逻辑结构，数据的存储结构，数据的运算</li>
@@ -2832,12 +2917,12 @@
 <ol>
 <li>深度优先、拓扑排序、求关键路径都可以判断图中是否有环，最短路径不可以</li>
 </ol>
-<h1 id="7-查找"><a href="#7-查找" class="headerlink" title="7 查找"></a>7 查找</h1><h2 id="7-1查找基本概念"><a href="#7-1查找基本概念" class="headerlink" title="7.1查找基本概念"></a>7.1查找基本概念</h2><p>在数据集合中寻找满足某种条件的数据元素的过程称为查找</p>
+<h1 id="7-查找"><a href="#7-查找" class="headerlink" title="7 查找"></a>7 查找</h1><h2 id="7-1-查找基本概念"><a href="#7-1-查找基本概念" class="headerlink" title="7.1 查找基本概念"></a>7.1 查找基本概念</h2><p>在数据集合中寻找满足某种条件的数据元素的过程称为查找</p>
 <p>查找表：用于查找的数据集合，主要操作有：查找是否在表中，查找特定元素属性，插入元素；删除元素</p>
 <p>静态查找表/动态查找表：只需要进行查找无需动态修改，包括顺序查找，折半查找，散列查找等；适合动态查找的查找方法有二叉排序树、散列查找等</p>
 <p>关键字：数据元素中唯一标识该元素的某个数据项的值，使用基于关键字的查找，查找结果唯一</p>
 <p>平均查找长度：所有查找过程中进行关键字的比较次数的平均值</p>
-<h2 id="7-2顺序查找和折半查找"><a href="#7-2顺序查找和折半查找" class="headerlink" title="7.2顺序查找和折半查找"></a>7.2顺序查找和折半查找</h2><h3 id="7-2-1顺序查找"><a href="#7-2-1顺序查找" class="headerlink" title="7.2.1顺序查找"></a>7.2.1顺序查找</h3><p>顺序表的线性查找：从一端查找到另一端，逐一判断</p>
+<h2 id="7-2-顺序查找和折半查找"><a href="#7-2-顺序查找和折半查找" class="headerlink" title="7.2 顺序查找和折半查找"></a>7.2 顺序查找和折半查找</h2><h3 id="7-2-1顺序查找"><a href="#7-2-1顺序查找" class="headerlink" title="7.2.1顺序查找"></a>7.2.1顺序查找</h3><p>顺序表的线性查找：从一端查找到另一端，逐一判断</p>
 <p>####一般线性表的顺序查找</p>
 <p>成功查找的平均查找长度n+1/2，失败查找的平均查找长度ASL=n+1</p>
 <p>缺点：当n较大时，平均查找长度较大，效率低；优点是对数据元素的存储没有要求，顺序存储或链式存储皆可</p>
@@ -2860,12 +2945,12 @@
 <p>长度为n查找表均匀分为b块，每块s个记录，在块内和索引表均顺序查找，平均查找长度为ASL=(b+1)/2+(s+1)/2,当s=根号n的时候，平均查找长度最短</p>
 <p>若对索引表折半查找，平均查找长度为log<del>2</del>(n+1)+(s+1)/2</p>
 <p>如果都可以折半查找，平均查找长度为log<del>2</del>(n+1)+log<del>2</del>(s+1)</p>
-<h2 id="7-3B树和B-树"><a href="#7-3B树和B-树" class="headerlink" title="7.3B树和B+树"></a>7.3B树和B+树</h2><p>###7.3.1 B树及其基本操作</p>
+<h2 id="7-3-B树和B-树"><a href="#7-3-B树和B-树" class="headerlink" title="7.3 B树和B+树"></a>7.3 B树和B+树</h2><p>###7.3.1 B树及其基本操作</p>
 <p>B树又称多路平衡查找树，B树中所有结点的孩子个数最大值称为B树的阶</p>
 <ol>
 <li>树中每个结点至多有m棵子树，即至多有m-1个关键字</li>
-<li>若根结点不是终端结点，则至少有两颗子树</li>
-<li>除根结点外的所有非叶结点至少有ceil(m/2)棵子树，即至少有ceil(m/2)-1个关键字</li>
+<li>若根结点不是终端结点，则==至少有两颗子树==</li>
+<li>==除根结点外==的所有非叶结点至少有ceil(m/2)棵子树，即至少有ceil(m/2)-1个关键字</li>
 <li>每个结点内部关键字从小到大排序，指针所指的结点中关键字全都大于指针头左侧的关键字，大于右侧的关键字</li>
 <li>所有叶结点都出现在同一层次上，并且不带信息（实际上这些结点不存在，指向他们的指针为空）</li>
 </ol>
@@ -2894,15 +2979,257 @@
 <li>兄弟不够借。则考虑将双亲节点调整到兄弟上去以满足要求。</li>
 </ol>
 <p>合并时双亲节点关键字会减少，如果减少过度就继续执行向上合并，如果双亲是根结点且关键字个数减少为0，则删除根结点，合并后的结点成为根结点。</p>
+<ul>
+<li>一定要注意根结点的特别性质，在计算最少关键字等时需要考虑根结点，它的关键字最少为1，子树至少为2</li>
+</ul>
 <h3 id="7-3-2-B-树"><a href="#7-3-2-B-树" class="headerlink" title="7.3.2 B+树"></a>7.3.2 B+树</h3><ol>
 <li>具有n个关键字的结点含有n+1棵子树</li>
 <li>叶结点包含信息，所有非叶结点仅起索引作用，非叶结点中每个索引项只含有对应子树的最大关键字和指向该子树的指针</li>
 <li>每次查找都是一条从根结点到叶结点的路径</li>
 </ol>
 <p><img src="https://www.hualigs.cn/image/6057136a28298.jpg"></p>
+<ul>
+<li>B+树不同于B树的特点之一是支持顺序查找，因为叶结点包含了全部的关键字信息，且叶节点本身依关键字从小到大顺序链接，而B树不支持顺序查找</li>
+</ul>
+<h2 id="7-4-散列表"><a href="#7-4-散列表" class="headerlink" title="7.4 散列表"></a>7.4 散列表</h2><h3 id="7-4-1-散列表基本概念"><a href="#7-4-1-散列表基本概念" class="headerlink" title="7.4.1 散列表基本概念"></a>7.4.1 散列表基本概念</h3><p>散列函数：一个把查找表中关键字映射成该关键字对应的地址的函数，即为Hash(key)=Addr</p>
+<p>散列函数可能把不同关键字映射到同一地址，称为冲突，这些碰撞的关键字称为同义词</p>
+<p>散列表：根据关键字而直接进行访问的数据结构。建立了关键字和存储地址之间的一种直接影射关系</p>
+<p>理想情况下，对散列表进行查找的时间复杂度为O(1)</p>
+<h3 id="7-4-2-散列函数的构造方法"><a href="#7-4-2-散列函数的构造方法" class="headerlink" title="7.4.2 散列函数的构造方法"></a>7.4.2 散列函数的构造方法</h3><p>构造散列函数，必须注意以下几点：</p>
+<ol>
+<li>散列函数的定义域必须包含全部需要存储的关键字，而值域的范围则依赖于散列表的大小或地址范围。</li>
+<li>散列函数计算出来的地址应该能等概率、均匀分布在地址空间</li>
+<li>应尽量简单，复杂度低</li>
+</ol>
+<p><strong>直接定址法</strong></p>
+<p>H(key)=key或H(key)=a*key+b;</p>
+<p>适用于关键字基本连续的方法</p>
+<p><strong>除留取余法</strong></p>
+<p>H(key)=key%p是最简单最常用的方法</p>
+<p><strong>数字分析法</strong></p>
+<p>选取数码分布较为均匀的若干位作为散列地址</p>
+<p><strong>平方取中法</strong></p>
+<p>取平方值的中间几位作为散列地址，这种方法得到的散列地址分布较为均匀</p>
+<p>适用于关键字的每位取值都不够均匀或均小于散列地址所需要的位数</p>
+<p>###7.4.3 处理冲突的方法</p>
+<p><strong>开放定址法</strong></p>
+<p>H<del>i</del>=(H(key)+d<del>i</del>)%m</p>
+<ol>
+<li>当d<del>i</del>等于0,1,2，……k，称为<em>线性探测法</em> ，冲突时顺序查找下一个地址直到找到下一个空闲单元，可能出现堆积方法</li>
+<li>当d<del>i</del>等于0^2^,1^2^,-1^2^,……,k^2^,-k^2^时，称为<em>平方探测法</em>，其中k≤m/2,散列表长度必须是一个可以表示成4*k+3的素数，又称二次探测法。缺点是不能探测到散列表上所以单元</li>
+<li>当d=hash<del>2</del>(k)时，称为<em>再散列法</em></li>
+<li>d<del>i</del>等于伪随机数序列时，称为<em>伪随机序列法</em></li>
+</ol>
+<p>拉链法(链接法)</p>
+<p>把所有同义词存储在一个线性链表上，适用于经常插入删除的情况</p>
+<h3 id="7-4-4-散列查找及性能分析"><a href="#7-4-4-散列查找及性能分析" class="headerlink" title="7.4.4 散列查找及性能分析"></a>7.4.4 散列查找及性能分析</h3><p>计算出散列地址后，查找该地址后发现不相等，则计算下一个散列地址，不断循环，若找到空地址则表示查找失败，找到相同的则查找成功</p>
+<p>装填因子α：定义为一个表的装满程度，即α=表中记录数n/散列表长度m</p>
+<h1 id="排序"><a href="#排序" class="headerlink" title="排序"></a>排序</h1><h2 id="8-1排序的基本概念"><a href="#8-1排序的基本概念" class="headerlink" title="8.1排序的基本概念"></a>8.1排序的基本概念</h2><p>算法的稳定性：如果两个相等的元素排序前和排序后顺序不变，则称这个算法是稳定的，否则是不稳定的</p>
+<p>排序算法根据元素是否完全在内存中，可以分为两类：①内部排序②外部排序，排序器件元素无法同时存在在内存中，必须在排序的过程中不断内外移动</p>
+<p>一般情况下，内部排序算法执行过程中都要进行两种操作:比较和移动</p>
+<p>对任意n个关键字进行基于比较的排序，则至少需要进行ceil(log<del>2</del>(n!))次比较</p>
+<h2 id="8-2插入排序"><a href="#8-2插入排序" class="headerlink" title="8.2插入排序"></a>8.2插入排序</h2><p>基本思想是将待排序的记录按关键字大小插入前面已经排好序的子序列，直到全部记录插入完成</p>
+<h3 id="8-2-1直接插入排序"><a href="#8-2-1直接插入排序" class="headerlink" title="8.2.1直接插入排序"></a>8.2.1直接插入排序</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">InsertionSort</span><span class="params">(<span class="keyword">int</span> *a, <span class="keyword">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i,j;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">2</span>; i&lt;n; j++)</span><br><span class="line">	&#123;</span><br><span class="line">        <span class="keyword">if</span>(A[i]&lt;A[i<span class="number">-1</span>])&#123;<span class="comment">//如果比前驱元素大则不需要更换顺序</span></span><br><span class="line">            A[<span class="number">0</span>]=A[i];<span class="comment">//哨兵，A[0]不存放元素</span></span><br><span class="line">            <span class="keyword">for</span>(j=i<span class="number">-1</span>;A[<span class="number">0</span>]&lt;A[j];--j)&#123;</span><br><span class="line">                A[j+<span class="number">1</span>]=A[j];<span class="comment">//元素后移让出位置</span></span><br><span class="line">            A[j+<span class="number">1</span>]=A[<span class="number">0</span>];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>空间效率：O(1)</p>
+<p>时间效率：在排序过程中，插入元素的操作进行了n-1趟，最好情况复杂度为O(n),最坏为∑i (i=2~n)</p>
+<p>平均复杂度为O(n^2^)</p>
+<p>稳定性：稳定</p>
+<p>适用性：适用于顺序存储和链式存储的线性表，为链式存储时可以从前往后查找指定元素的位置</p>
+<p>链表插入排序</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for singly-linked list.</span></span><br><span class="line"><span class="comment"> * struct ListNode &#123;</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     ListNode *next;</span></span><br><span class="line"><span class="comment"> *     ListNode() : val(0), next(nullptr) &#123;&#125;</span></span><br><span class="line"><span class="comment"> *     ListNode(int x) : val(x), next(nullptr) &#123;&#125;</span></span><br><span class="line"><span class="comment"> *     ListNode(int x, ListNode *next) : val(x), next(next) &#123;&#125;</span></span><br><span class="line"><span class="comment"> * &#125;;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">ListNode* <span class="title">insertionSortList</span><span class="params">(ListNode* head)</span> </span>&#123;</span><br><span class="line">    ListNode* newList=<span class="keyword">new</span> ListNode(<span class="number">-1</span>);</span><br><span class="line">    <span class="keyword">while</span>(head)&#123;</span><br><span class="line">        ListNode *p=newList;</span><br><span class="line">        <span class="keyword">while</span>(p-&gt;next &amp;&amp; p-&gt;next-&gt;val&lt;head-&gt;val) p=p-&gt;next;<span class="comment">//从前往后移动到待插入的位置</span></span><br><span class="line">        ListNode *temp=head;</span><br><span class="line">        head=head-&gt;next;</span><br><span class="line">        temp-&gt;next=p-&gt;next;</span><br><span class="line">        p-&gt;next=temp;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> newList-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="8-2-2-折半插入排序"><a href="#8-2-2-折半插入排序" class="headerlink" title="8.2.2 折半插入排序"></a>8.2.2 折半插入排序</h3><p>先折半查找出元素的待插入位置，然后统一的移动待插入位置之后的元素</p>
+<p>仅仅减少了比较元素的次数，但元素的移动次数未改变，复杂度仍未O(n^2^)</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">InsertSort</span><span class="params">(<span class="keyword">int</span> *A,<span class="keyword">int</span> n)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i,j,low,high,mid;</span><br><span class="line">    <span class="keyword">for</span>(i=<span class="number">2</span>;i&lt;=n;i++)&#123;</span><br><span class="line">        A[<span class="number">0</span>]=A[i];</span><br><span class="line">        low=<span class="number">1</span>;high=i<span class="number">-1</span>;</span><br><span class="line">        <span class="keyword">while</span>(low&lt;=high)&#123;<span class="comment">//折半查找</span></span><br><span class="line">            mid=(low+high)/<span class="number">2</span>;</span><br><span class="line">            <span class="keyword">if</span>(mid&gt;A[<span class="number">0</span>]) high=mid<span class="number">-1</span>;</span><br><span class="line">            <span class="keyword">else</span> low=mid+<span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(j=i<span class="number">-1</span>;j&gt;=high+<span class="number">1</span>;--j)<span class="comment">//插入</span></span><br><span class="line">            A[j+<span class="number">1</span>]=A[j];</span><br><span class="line">        A[high+<span class="number">1</span>]=A[<span class="number">0</span>];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="8-2-3希尔排序"><a href="#8-2-3希尔排序" class="headerlink" title="8.2.3希尔排序"></a>8.2.3希尔排序</h3><p>又称缩小增量排序，先将待排序表分割称为若干子表，即把相隔某个增量的记录组成一个子表，对各个子表进行直接插入排序，待子表都基本有序后，再对全体进行一次直接插入排序</p>
+<p>空间复杂度O(1)</p>
+<p>时间复杂度最坏情况O(n^2^)</p>
+<p>稳定性：不稳定</p>
+<p>适用性：仅适用于线性表为顺序存储的情况</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">ShellSort</span><span class="params">(ElemType A[],<span class="keyword">int</span> n)</span></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> dk=n/<span class="number">2</span>;dk&gt;=<span class="number">1</span>;dk=dk/<span class="number">2</span>)</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=dk+<span class="number">1</span>;i&lt;=n;++i)</span><br><span class="line">            <span class="keyword">if</span>(A[i]&lt;A[i-dk])&#123;</span><br><span class="line">                A[<span class="number">0</span>]=A[i];</span><br><span class="line">                <span class="keyword">for</span>(j=i-dk;j&gt;<span class="number">0</span> &amp;&amp; A[<span class="number">0</span>]&lt;A[j];j-=dk)</span><br><span class="line">                    A[j+dk]=A[j];</span><br><span class="line">                A[j+dk]=A[<span class="number">0</span>];</span><br><span class="line">            &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="8-3交换排序"><a href="#8-3交换排序" class="headerlink" title="8.3交换排序"></a>8.3交换排序</h2><p>通过比较结果对换两个元素的位置来实现排序</p>
+<h3 id="8-3-1冒泡排序"><a href="#8-3-1冒泡排序" class="headerlink" title="8.3.1冒泡排序"></a>8.3.1冒泡排序</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">BubbleSort</span><span class="params">(<span class="keyword">int</span> *A,<span class="keyword">int</span> n)</span></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;=n<span class="number">-1</span>;i++)&#123;</span><br><span class="line">        flag=<span class="literal">false</span>;<span class="comment">//设置标志位，当没有进行交换标志已经排序完毕直接退出</span></span><br><span class="line">        flor(j=n<span class="number">-1</span>;j&gt;i;j--)&#123;</span><br><span class="line">            <span class="keyword">if</span>(A[j<span class="number">-1</span>]&gt;A[j])&#123;</span><br><span class="line">                swap(A[j<span class="number">-1</span>],A[j]);</span><br><span class="line">                flag=<span class="literal">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        <span class="keyword">if</span>(flag==<span class="literal">false</span>)</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>空间复杂度：O(1)</p>
+<p>时间复杂度：O(n^2^)</p>
+<p>稳定性：稳定</p>
+<h3 id="8-3-2快速排序"><a href="#8-3-2快速排序" class="headerlink" title="8.3.2快速排序"></a>8.3.2快速排序</h3><p>基于分治法的思想，设置一个基准元素，通过一趟排序将待排序表划分为两部分，一半小于基准元素，一半大于，称为一次划分，递归执行直到每部分只有一个元素</p>
+<p>通常取首元素为枢轴元素</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">QuickSort</span> <span class="params">(<span class="keyword">int</span> *A,<span class="keyword">int</span> low,<span class="keyword">int</span> high)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(low&lt;high)&#123;</span><br><span class="line">        <span class="keyword">int</span> pivotpos=Partition(A,low,high);</span><br><span class="line">        QucikSort(A,low,pivotpos<span class="number">-1</span>);</span><br><span class="line">        QuickSort(A,pivotpos+<span class="number">1</span>,high);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">Partition</span><span class="params">(<span class="keyword">int</span> *A,<span class="keyword">int</span> low,<span class="keyword">int</span> high)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> pivot=A[low];</span><br><span class="line">    <span class="keyword">while</span>(low&lt;high)&#123;</span><br><span class="line">        <span class="keyword">while</span>(low&lt;high &amp;&amp; A[high]&gt;=pivot) --high;<span class="comment">//左滑，指针滑动到第一个小于枢轴元素的值</span></span><br><span class="line">        A[low]=A[high];</span><br><span class="line">        <span class="keyword">while</span>(low&lt;high &amp;&amp; A[low]&lt;=pivot) ++low;<span class="comment">//右滑，指针滑动到第一个大于枢轴元素的值</span></span><br><span class="line">        A[high]=A[low];</span><br><span class="line">    &#125;</span><br><span class="line">    A[low]=pivot;<span class="comment">//此时已经划分完毕，low=high在某一位置，让该点为枢轴元素</span></span><br><span class="line">    <span class="keyword">return</span> low;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>空间效率：递归需要借助一个工作栈来保存每层递归调用的必要信息，其容量应与递归调用的最大深度一致，最好情况为O(log<del>2</del>n),最坏情况为O(n),平均情况下，栈的深度为O(log<del>2</del>n)</p>
+<p>时间效率：理想情况时间复杂度为O(nlog<del>2</del>n), 最坏情况为O(n^2^),平均运行时间更接近与最佳情况；快速排序是所有内部排序方法中平均性能最优的排序算法</p>
+<p>提高效率方法：选取尽量可以将数据中分的枢轴元素，如序列的头尾及中间选取三个元素，再取这三个元素的中间值作为最终的枢轴元素；或随机的从当前表中选取枢轴元素</p>
+<p>稳定性：不稳定</p>
+<ul>
+<li>快速排序当每次枢轴都把表等分为长度相近的两个子表时，速度是最快的；当表本身已经有序或逆序时，速度最慢</li>
+<li>快速排序第二趟后要注意4个子表是否按相同的顺序排列</li>
+</ul>
+<h2 id="8-4-选择排序"><a href="#8-4-选择排序" class="headerlink" title="8.4 选择排序"></a>8.4 选择排序</h2><p>每一趟在剩下待排序元素中选取关键字最小的元素。</p>
+<h3 id="8-4-1-简单选择排序"><a href="#8-4-1-简单选择排序" class="headerlink" title="8.4.1 简单选择排序"></a>8.4.1 简单选择排序</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">SelectSort</span><span class="params">(<span class="keyword">int</span> *A,<span class="keyword">int</span> n)</span></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n<span class="number">-1</span>;i++)&#123;</span><br><span class="line">        min=i;</span><br><span class="line">        <span class="keyword">for</span>(j=i+<span class="number">1</span>;j&lt;n;j++)</span><br><span class="line">            <span class="keyword">if</span>(A[j]&lt;A[min]) min=j;<span class="comment">//选出最小元素位置</span></span><br><span class="line">        <span class="keyword">if</span>(min!=i) swap(A[i],A[min]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>空间效率：O(1)</p>
+<p>时间效率：O(n^2^)</p>
+<p>稳定性：不稳定</p>
+<ul>
+<li>简单选择排序算法的比较次数和移动次数分别为O(n^2^)和O(n)</li>
+<li>选择排序算法的比较次数与序列初始状态无关</li>
+</ul>
+<h3 id="8-4-2-堆排序"><a href="#8-4-2-堆排序" class="headerlink" title="8.4.2 堆排序"></a>8.4.2 堆排序</h3><p>堆满足L(i)&gt;=L(2i)且L(i)&gt;=L(2i+1)  大根堆(大顶堆)   或  L(i)&lt;=L(2i)且L(i)&lt;=L(2i+1) 小根堆(小顶堆)</p>
+<p>构造时就依次倒序对结点进行筛选，看是否满足条件，将最大的称为父结点；删除元素时就让下面的元素补上再进行调整</p>
+<p>建立大根堆：</p>
+<p>从最后一个非叶元素开始调整堆排序；</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">BuildManHeap</span><span class="params">(<span class="keyword">int</span> *A,<span class="keyword">int</span> len)</span></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=len/<span class="number">2</span>;i&lt;<span class="number">0</span>;i--)</span><br><span class="line">        HeadAdjust(A,i,len);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">HeadAdjust</span><span class="params">(<span class="keyword">int</span> *A,<span class="keyword">int</span> k,<span class="keyword">int</span> len)</span></span>&#123;<span class="comment">//实现输入的根结点的子树形成堆</span></span><br><span class="line">    A[<span class="number">0</span>]=A[k];<span class="comment">//暂存输入的根结点</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">2</span>*k;i&lt;=len;i*=<span class="number">2</span>)&#123;</span><br><span class="line">        <span class="keyword">if</span>(i&lt;len &amp;&amp; A[i]&lt;A[i+<span class="number">1</span>])</span><br><span class="line">            i++;<span class="comment">//筛选较大的子结点</span></span><br><span class="line">        <span class="keyword">if</span>(A[<span class="number">0</span>]&gt;A[i]) <span class="keyword">break</span>; <span class="comment">//符合堆排序，不用操作直接退出</span></span><br><span class="line">        <span class="keyword">else</span> &#123;</span><br><span class="line">            A[k]=A[i];<span class="comment">//更换根结点</span></span><br><span class="line">            k=i;<span class="comment">//继续筛选</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    A[i]=A[<span class="number">0</span>];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>调整的时间与树高有关，为O(h);建立堆的时间复杂度为O(n)</p>
+<p>堆排序算法：</p>
+<p>参考<a href="https://blog.csdn.net/qq_36186690/article/details/82505569">https://blog.csdn.net/qq_36186690/article/details/82505569</a></p>
+<p><strong>a.将无需序列构建成一个堆，根据升序降序需求选择大顶堆或小顶堆;</strong></p>
+<p><strong>b.将堆顶元素与末尾元素交换，将最大元素”沉”到数组末端;</strong></p>
+<p><strong>c.重新调整结构，使其满足堆定义，然后继续交换堆顶元素与当前末尾元素，反复执行调整+交换步骤，直到整个序列有序。</strong></p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">HeapSort</span><span class="params">(<span class="keyword">int</span> *A,<span class="keyword">int</span> len)</span></span>&#123;</span><br><span class="line">    BuildMaxHeap(A,len);<span class="comment">//建立堆</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=len;i&gt;<span class="number">0</span>;i--)&#123;</span><br><span class="line">        swap(A[i],A[<span class="number">1</span>]);<span class="comment">//交换到堆顶</span></span><br><span class="line">        HeadAdjust(A,<span class="number">1</span>,i<span class="number">-1</span>);<span class="comment">//调整</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>堆插入元素时，先将新结点放在堆的末端，再向上调整</p>
+<p>空间复杂度：O(1)</p>
+<p>时间复杂度：建堆时间为O(n),之后有n-1次向下调整操作，每次调整复杂度为O(h),最好最坏平均时间复杂度都为O(nlog<del>2</del>n)</p>
+<p>稳定性：不稳定</p>
+<h2 id="8-5-归并排序和基数排序"><a href="#8-5-归并排序和基数排序" class="headerlink" title="8.5 归并排序和基数排序"></a>8.5 归并排序和基数排序</h2><h3 id="8-5-1-归并排序"><a href="#8-5-1-归并排序" class="headerlink" title="8.5.1 归并排序"></a>8.5.1 归并排序</h3><p>将两个或两个以上的有序表组合成一个新的有序表</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> *B=(<span class="keyword">int</span> *)<span class="built_in">malloc</span>((n+<span class="number">1</span>)*<span class="keyword">sizeof</span>(<span class="keyword">int</span>));</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Merge</span><span class="params">(<span class="keyword">int</span> *A,<span class="keyword">int</span> low,<span class="keyword">int</span> mid,<span class="keyword">int</span> high)</span></span>&#123;<span class="comment">//实现将两个有序表合成一个</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> k=low;k&lt;=high;k++)</span><br><span class="line">        B[k]=A[k];  <span class="comment">//复制表A到B</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=low,j=mid+<span class="number">1</span>,k=i;i&lt;=mid&amp;&amp;j&lt;=high;k++)&#123;</span><br><span class="line">        <span class="comment">//不断比较两个子表中的第一位B[i]B[j]，选出最小值，填入表A,只要有一个表检测完就结束</span></span><br><span class="line">        <span class="keyword">if</span>(B[i]&lt;=B[j])</span><br><span class="line">            A[k]=B[i++];</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            A[k]=B[j++];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">while</span>(i&lt;=mid)  A[k++]=B[i++]; </span><br><span class="line">    <span class="keyword">while</span>(j&lt;=high) A[k++]=B[j++];</span><br><span class="line">    <span class="comment">//没检测完的表说明值全部大于检测完成的表，直接复制进去即可</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>归并排序</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">MergeSort</span><span class="params">(<span class="keyword">int</span> *A,<span class="keyword">int</span> low,<span class="keyword">int</span> high)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(low&lt;high)&#123;</span><br><span class="line">        <span class="keyword">int</span> mid=(low+high)/<span class="number">2</span>;</span><br><span class="line">        MergeSort(A,low,mid);<span class="comment">//分别对左右子序列排序再合并</span></span><br><span class="line">        MergeSort(A,mid+<span class="number">1</span>,high);</span><br><span class="line">        Merge(A,low,mid,high);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>空间效率：O(n)</p>
+<p>时间效率：每趟归并复杂度为O(n),共需进行ceil(log<del>2</del>n)次归并,事件复杂度为O(nlog<del>2</del>n)</p>
+<p>稳定性：稳定</p>
+<ul>
+<li>归并排序的比较次数与初始状态无关</li>
+<li>外部排序通常用归并排序法，如对很大的数据文件进行排序</li>
+</ul>
+<h3 id="8-5-2-基数排序"><a href="#8-5-2-基数排序" class="headerlink" title="8.5.2 基数排序"></a>8.5.2 基数排序</h3><p>借助多关键字排序的思想对单逻辑关键字进行排序的方法</p>
+<p>实现多关键字排序通常有两种方法：一种是<em>最高位优先（</em>MSD）算法，按关键字位权重递减依次逐层划分成若干更小的子序列；第二种是<em>最低位优先</em>(LSD)算法,按关键字权重底层一次排序</p>
+<p>空间效率：O(r)  r是基数</p>
+<p>时间效率：O(d(n+r))</p>
+<ul>
+<li>基数排序第一趟排序是按照个位数排序的，第二趟按十位数大小排序</li>
+</ul>
+<h2 id="8-6各种内部排序算法的比较及应用"><a href="#8-6各种内部排序算法的比较及应用" class="headerlink" title="8.6各种内部排序算法的比较及应用"></a>8.6各种内部排序算法的比较及应用</h2><table>
+<thead>
+<tr>
+<th>排序方法</th>
+<th>最好情况</th>
+<th>平均情况</th>
+<th>最坏情况</th>
+<th>空间复杂度</th>
+<th>是否稳定</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>直接插入排序</td>
+<td>O(n)</td>
+<td>O(n^2^)</td>
+<td>O(n^2^)</td>
+<td>O(1)</td>
+<td>是</td>
+</tr>
+<tr>
+<td>冒泡排序</td>
+<td>O(n)</td>
+<td>O(n^2^)</td>
+<td>O(n^2^)</td>
+<td>O(1)</td>
+<td>是</td>
+</tr>
+<tr>
+<td>简单选择排序</td>
+<td>O(n^2^)</td>
+<td>O(n^2^)</td>
+<td>O(n^2^)</td>
+<td>O(1)</td>
+<td>否</td>
+</tr>
+<tr>
+<td>希尔排序</td>
+<td></td>
+<td></td>
+<td></td>
+<td>O(1)</td>
+<td>否</td>
+</tr>
+<tr>
+<td>快速排序</td>
+<td>O(nlog<del>2</del>n)</td>
+<td>O(nlog<del>2</del>n)</td>
+<td>O(n^2^)</td>
+<td>O(nlog<del>2</del>n)</td>
+<td>否</td>
+</tr>
+<tr>
+<td>堆排序</td>
+<td>O(nlog<del>2</del>n)</td>
+<td>O(nlog<del>2</del>n)</td>
+<td>O(nlog<del>2</del>n)</td>
+<td>O(1)</td>
+<td>否</td>
+</tr>
+<tr>
+<td>2路归并排序</td>
+<td>O(nlog<del>2</del>n)</td>
+<td>O(nlog<del>2</del>n)</td>
+<td>O(nlog<del>2</del>n)</td>
+<td>O(n)</td>
+<td>是</td>
+</tr>
+<tr>
+<td>基数排序</td>
+<td>O(d(n+r))</td>
+<td>O(d(n+r))</td>
+<td>O(d(n+r))</td>
+<td>O(r)</td>
+<td>是</td>
+</tr>
+</tbody></table>
+<ul>
+<li>n较小时，一般用直接插入排序或者简单选择排序，直接插入排序移动次数较多，因此如果记录本身信息量较大，选择简单选择排序</li>
+<li>若文件初始状态已按关键字基本有序，则选择直接插入或冒泡排序</li>
+<li>若n较大，采用时间复杂度较低的快速、堆、归并。要求稳定选归并，随机分布选快速，少空间复杂度且无最坏情况选堆</li>
+<li>冒泡排序、堆排序每次处理都能产生当前的最大值或最小值，快速排序每次处理都能确定一个元素的最终位置</li>
+<li>在序列中结点已经接近有序的情况下，直接插入排序和冒泡排序复杂度会变低为O(n),但是快速排序复杂度会升高为O(n^2^)</li>
+<li>堆在用于查找时查找效率较低，是用于排序的数据结构</li>
+<li>将顺序存储改为链式存储，则希尔排序、堆排序算法的时间效率会降低</li>
+</ul>
+<h2 id="8-7-外部排序"><a href="#8-7-外部排序" class="headerlink" title="8.7 外部排序"></a>8.7 外部排序</h2><ol>
+<li>外部排序指待排序文件较大，文件一次放不下，需存放在外存的文件的排序</li>
+<li>为减少平衡归并中外存读写次数所采取的方法：增大归并路数和减少归并段个数</li>
+<li>利用败者树增大归并路数</li>
+<li>利用置换-选择排序增大归并段长度来减少归并段个数</li>
+<li>由长度不等的归并段，进行多路平衡归并，需要构造最佳归并树。</li>
+</ol>
+<p>​        外部排序实现两两归并时，由于不可能将两个有序段及归并结果同时放在内存中，因此需要不停将数据读出、写入磁盘：外部排序的总时间=内部排序所需时间+外存信息读写的时间+内部归并所需时间</p>
+<p>​    增大归并路数k能减少归并趟数S，进而减少I/O次数，然而增加归并路数k时，内部归并的时间将增加；S趟共需要比较次数S(n-1)(k-1)=ceil(log<del>2</del>r)(n-1)(k-1)/ceil(log<del>2</del>k)</p>
+<p>​    因此内部归并时间随k增长而增长，引入了<strong>败者树</strong></p>
+<p>​    用内部结点来记忆左右子树中的失败者，而让胜者继续往上进行比较，一直到根结点；大的为失败者，小的为胜利者，则根结点指向的数为最小数</p>
+<p>​    利用这种方法k路归并的比较次数为(n-1)ceil(log<del>2</del>r)</p>
+<p>​    但是归并路数k不是越大越好。归并路数k增大时，响应需要增加输入缓冲区的个数。若可供使用的内存空间不变，需要减少每个缓冲区的容量。</p>
+<p>​    在做m路平衡归并需要2m个输入缓冲区和2个输出缓冲区</p>
+<p><strong>置换-选择排序</strong></p>
+<p>用于产生更长的初始归并段</p>
+<p>数据读入WA，将其中最小关键字存入MINIMAX并输出到FO中，再从其中选出比MINIMAX记录大的最小关键字读入FO，直到选不出比他们大的关键字，即得到一个初始归并段；直到WA为空即得到全部初始归并段</p>
+<p>其中，WA中选择MINIMAX主要采用败者树实现</p>
+<p><strong>最佳归并树</strong></p>
+<p>置换选择排序后得到的初始归并段长度是不等的，如何组织长度不等的初始归并段的归并排序，使得IO次数最少</p>
+<p>将记录最少的归并段最先归并，最多的归并段最晚归并，就可以建立总IO次数最少的最佳归并树</p>
+<p>若初始归并段不足以构成一棵严格k叉树时，需要添加长度为0的虚段，权为0的叶子应离树根最远</p>
+<ul>
+<li>最佳归并树在外部排序中的作用是设计m路归并排序的优化方案</li>
+<li>构造严格的k叉树需要增加(n<del>0</del>-1)%(k-1)个叶结点</li>
+</ul>
 ]]></content>
       <categories>
-        <category>数据结构</category>
+        <category>408</category>
       </categories>
       <tags>
         <tag>数据结构</tag>

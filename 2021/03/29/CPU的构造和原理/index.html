@@ -23,21 +23,26 @@
     var NexT = window.NexT || {};
     var CONFIG = {"hostname":"example.com","root":"/","images":"/images","scheme":"Pisces","version":"8.2.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
-<meta name="description" content="Less介绍Less是一门CSS扩展语言，也称为CSS预处理器，没有减少CSS的功能，而是为CSS加入程序式语言特性，加入了变量、Mixin（混入），运算及函数等功能 Less中文网址： http:&#x2F;&#x2F;lesscss.cn&#x2F; 常见的CSS预处理器：Sass、Less、Stylus Less是一门css预处理语言，扩展了CSS的动态特性">
+<meta name="description" content="CPU分为哪几部分？ CPU是如何数据传输的？ CPU怎样控制执行指令？ 执行顺序是否可以优化">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Less基础">
-<meta property="og:url" content="http://example.com/2021/03/17/Less%E5%9F%BA%E7%A1%80/index.html">
+<meta property="og:title" content="CPU的构造和原理">
+<meta property="og:url" content="http://example.com/2021/03/29/CPU%E7%9A%84%E6%9E%84%E9%80%A0%E5%92%8C%E5%8E%9F%E7%90%86/index.html">
 <meta property="og:site_name" content="lilijoy">
-<meta property="og:description" content="Less介绍Less是一门CSS扩展语言，也称为CSS预处理器，没有减少CSS的功能，而是为CSS加入程序式语言特性，加入了变量、Mixin（混入），运算及函数等功能 Less中文网址： http:&#x2F;&#x2F;lesscss.cn&#x2F; 常见的CSS预处理器：Sass、Less、Stylus Less是一门css预处理语言，扩展了CSS的动态特性">
+<meta property="og:description" content="CPU分为哪几部分？ CPU是如何数据传输的？ CPU怎样控制执行指令？ 执行顺序是否可以优化">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2021-03-17T15:26:41.000Z">
-<meta property="article:modified_time" content="2021-03-21T10:21:11.378Z">
+<meta property="og:image" content="https://www.hualigs.cn/image/606144e7aef39.jpg">
+<meta property="og:image" content="https://www.hualigs.cn/image/6061530491f5d.jpg">
+<meta property="og:image" content="https://www.hualigs.cn/image/606076e7e826d.jpg">
+<meta property="og:image" content="https://www.hualigs.cn/image/6061562ca3fb6.jpg">
+<meta property="article:published_time" content="2021-03-29T02:35:06.000Z">
+<meta property="article:modified_time" content="2021-03-29T04:31:58.412Z">
 <meta property="article:author" content="Li Jing">
-<meta property="article:tag" content="CSS">
+<meta property="article:tag" content="计组">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.hualigs.cn/image/606144e7aef39.jpg">
 
 
-<link rel="canonical" href="http://example.com/2021/03/17/Less%E5%9F%BA%E7%A1%80/">
+<link rel="canonical" href="http://example.com/2021/03/29/CPU%E7%9A%84%E6%9E%84%E9%80%A0%E5%92%8C%E5%8E%9F%E7%90%86/">
 
 
 <script class="page-configurations">
@@ -49,7 +54,7 @@
     lang   : 'zh-CN'
   };
 </script>
-<title>Less基础 | lilijoy</title>
+<title>CPU的构造和原理 | lilijoy</title>
   
 
 
@@ -187,7 +192,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Less%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.</span> <span class="nav-text">Less介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Less%E4%BD%BF%E7%94%A8"><span class="nav-number">2.</span> <span class="nav-text">Less使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Less%E5%8F%98%E9%87%8F"><span class="nav-number">2.1.</span> <span class="nav-text">Less变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Less%E7%BC%96%E8%AF%91"><span class="nav-number">2.2.</span> <span class="nav-text">Less编译</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Less%E5%B5%8C%E5%A5%97"><span class="nav-number">2.3.</span> <span class="nav-text">Less嵌套</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Less%E8%BF%90%E7%AE%97"><span class="nav-number">2.4.</span> <span class="nav-text">Less运算</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#CPU%E7%9A%84%E7%BB%84%E6%88%90%E5%92%8C%E5%8A%9F%E8%83%BD"><span class="nav-number">1.</span> <span class="nav-text">CPU的组成和功能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CPU%E5%A6%82%E4%BD%95%E8%BF%9B%E8%A1%8C%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93"><span class="nav-number">2.</span> <span class="nav-text">CPU如何进行数据传输</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CPU%E5%A6%82%E4%BD%95%E6%89%A7%E8%A1%8C%E6%8C%87%E4%BB%A4"><span class="nav-number">3.</span> <span class="nav-text">CPU如何执行指令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CPU%E6%80%8E%E4%B9%88%E6%8E%A7%E5%88%B6%E6%8C%87%E4%BB%A4%E6%89%A7%E8%A1%8C"><span class="nav-number">4.</span> <span class="nav-text">CPU怎么控制指令执行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8C%87%E4%BB%A4%E6%89%A7%E8%A1%8C%E9%A1%BA%E5%BA%8F%E7%9A%84%E4%BC%98%E5%8C%96"><span class="nav-number">5.</span> <span class="nav-text">指令执行顺序的优化</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -253,7 +258,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/03/17/Less%E5%9F%BA%E7%A1%80/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/03/29/CPU%E7%9A%84%E6%9E%84%E9%80%A0%E5%92%8C%E5%8E%9F%E7%90%86/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -266,7 +271,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Less基础
+          CPU的构造和原理
         </h1>
 
         <div class="post-meta-container">
@@ -276,23 +281,17 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
+      
 
-      <time title="创建时间：2021-03-17 23:26:41" itemprop="dateCreated datePublished" datetime="2021-03-17T23:26:41+08:00">2021-03-17</time>
+      <time title="创建时间：2021-03-29 10:35:06 / 修改时间：12:31:58" itemprop="dateCreated datePublished" datetime="2021-03-29T10:35:06+08:00">2021-03-29</time>
     </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-03-21 18:21:11" itemprop="dateModified" datetime="2021-03-21T18:21:11+08:00">2021-03-21</time>
-      </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-folder"></i>
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/CSS/" itemprop="url" rel="index"><span itemprop="name">CSS</span></a>
+          <a href="/categories/408/" itemprop="url" rel="index"><span itemprop="name">408</span></a>
         </span>
     </span>
 
@@ -306,30 +305,80 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h2 id="Less介绍"><a href="#Less介绍" class="headerlink" title="Less介绍"></a>Less介绍</h2><p>Less是一门CSS扩展语言，也称为CSS预处理器，没有减少CSS的功能，而是为CSS加入程序式语言特性，加入了变量、Mixin（混入），运算及函数等功能</p>
-<p>Less中文网址： <a target="_blank" rel="noopener" href="http://lesscss.cn/">http://lesscss.cn/</a></p>
-<p>常见的CSS预处理器：Sass、Less、Stylus</p>
-<p>Less是一门css预处理语言，扩展了CSS的动态特性</p>
+        <p>CPU分为哪几部分？</p>
+<p>CPU是如何数据传输的？</p>
+<p>CPU怎样控制执行指令？</p>
+<p>执行顺序是否可以优化</p>
 <span id="more"></span>
 
-<h2 id="Less使用"><a href="#Less使用" class="headerlink" title="Less使用"></a>Less使用</h2><p>新建文件 后缀名为less</p>
-<h3 id="Less变量"><a href="#Less变量" class="headerlink" title="Less变量"></a>Less变量</h3><p>@变量名：值；</p>
-<p>变量名不能包含特殊字符不能数字开头且大小写敏感</p>
-<h3 id="Less编译"><a href="#Less编译" class="headerlink" title="Less编译"></a>Less编译</h3><p>Less包含一套自定义语法及一个解析器</p>
-<p>vscode easyLess</p>
-<h3 id="Less嵌套"><a href="#Less嵌套" class="headerlink" title="Less嵌套"></a>Less嵌套</h3><p>可以进行嵌套,子元素直接写在父元素里</p>
-<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.header</span> &#123;</span><br><span class="line"><span class="selector-tag">a</span>&#123;</span><br><span class="line">    <span class="attribute">color</span>:<span class="number">#fff</span>;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>如果遇见交集选择器，伪类选择器，伪元素选择器</p>
-<p>内层选择器没有&amp;符号，则被解析为后代,有就被解析为父元素自身或父元素的伪类</p>
-<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.header</span>&#123;</span><br><span class="line">    <span class="selector-tag">&amp;</span><span class="selector-pseudo">:hover</span> &#123;</span><br><span class="line">        <span class="attribute">color</span>:<span class="number">#ccc</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="selector-tag">&amp;</span><span class="selector-pseudo">::before</span> &#123;</span><br><span class="line">        <span class="attribute">content</span>: <span class="string">&quot;&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="Less运算"><a href="#Less运算" class="headerlink" title="Less运算"></a>Less运算</h3><ul>
-<li>任何数字、颜色或者变量都可以参与运算，提供了加减乘除运算</li>
-<li>运算符中间左右必须有空格隔开</li>
-<li>如果只有一个数有单位，则最后结果以该单位为准</li>
-<li>如果两个数都有单位，且两个单位不一样，则以第一个单位为准</li>
+<p><img src="https://www.hualigs.cn/image/606144e7aef39.jpg"></p>
+<h2 id="CPU的组成和功能"><a href="#CPU的组成和功能" class="headerlink" title="CPU的组成和功能"></a>CPU的组成和功能</h2><p>​    分为运算器和控制器。运算器负责对数据的加工，即对数据进行算术和逻辑运算；控制器是整个系统的指挥中枢，对整个计算机系统进行有效的控制，包括指令控制、操作控制、时间控制和中断管理</p>
+<h2 id="CPU如何进行数据传输"><a href="#CPU如何进行数据传输" class="headerlink" title="CPU如何进行数据传输"></a>CPU如何进行数据传输</h2><p>CPU传输数据一般有三种方式：</p>
+<ul>
+<li>CPU内部单总线方式：所有输入输出都接到一条通路上</li>
+<li>CPU内部三总线方式：有数据总线、控制总线、地址总线</li>
+<li>专用数据通路方式：根据数据和地址流动方向安排连接线路，避免使用共享总线</li>
 </ul>
+<p>总线可以实现数据的传递，比如说CPU已经取到了指令并放在了MDR中，要把MDR的指令传入IR，就要通过总线</p>
+<p>寄存器间的数据传送、主存与CPU间的数据传送、暂存器与寄存器间的数据传送，都是以总线为桥梁的</p>
+<h2 id="CPU如何执行指令"><a href="#CPU如何执行指令" class="headerlink" title="CPU如何执行指令"></a>CPU如何执行指令</h2><p>CPU执行指令的一个周期主要包括取指周期、间指周期、执行周期、中断周期四部分</p>
+<p><strong>取指周期</strong>就是将PC中的内容从主存中取出并存放在IR中，数据流向为</p>
+<p>PC→Bus→MAR</p>
+<p>1→R  </p>
+<p>MEM(MAR)→MDR</p>
+<p>MDR→Bus→IR</p>
+<p><strong>间址周期</strong>就是取操作数有效地址，只有使用间接寻址时才需要这步操作，一次间址就是将指令中的地址码送到MAR再传到总线，CU发出读命令在存储器相应地址中读取该地址后存回MDR</p>
+<p><strong>执行周期</strong>就是根据IR中的指令通过ALU操作来产生执行结果，不同指令有不同的执行周期内容</p>
+<p><strong>中断周期</strong>是处理中断请求，假设程序断点存放在堆栈中，那么需要由CU通过MAR、总线到主存修改栈顶指针，再通过控制总线发出写命令，然后将程序计数器内容通过MDR、数据总线写入存储器对应的堆栈中。</p>
+<h2 id="CPU怎么控制指令执行"><a href="#CPU怎么控制指令执行" class="headerlink" title="CPU怎么控制指令执行"></a>CPU怎么控制指令执行</h2><p>​    通过控制器，根据指令操作码和时序信号，产生各种操作控制信号，以便正确地建立数据通路，从而完成取指令和执行指令的控制。 </p>
+<p>控制器主要功能有：</p>
+<ol>
+<li>从主存中取出一条指令，并指出下一条指令在主存中的位置。</li>
+<li>对指令进行译码或测试，产生相应的操作控制信号，以便启动规定的动作。</li>
+<li>指挥并控制CPU、主存、输入和输出设备之间的数据流动方向。</li>
+</ol>
+<p>​    控制器可以分为硬布线控制器和微程序控制器两种，两类控制器中PC和IR是相同的，有区别的是操作控制器部分。</p>
+<p>###硬布线控制器</p>
+<p>​    通过布线的方式实现不同控制信号输入得到相应的输出结果，控制器的速度取决于电路延迟，速度快，但是设计完成不容易修改</p>
+<p><img src="https://www.hualigs.cn/image/6061530491f5d.jpg"></p>
+<p>###微程序控制器</p>
+<p>​    将每条机器指令编写成一个微程序，每个微程序包含若干微指令，每条微指令对应一个或几个微操作命令</p>
+<p>工作过程：</p>
+<ol>
+<li>执行取微指令公共操作。具体的执行是：在机器开始运行时，自动将取指微程序的入口地址送入CMAR，并从CM中读出相应的微指令送入CMDR。取指微程序的入口地址一般为CM的0号单元，当取指微程序执行完后，从主存中取出的机器指令就已存入指令寄存器中。</li>
+<li>由机器指令的操作码字段通过微地址形成部件产生该机器指令所对应的微程序的入口地址，并送入CMAR。</li>
+<li>从CM中逐条取出对应的微指令并执行。</li>
+<li>执行完对应于一条机器指令的一个微程序后，又回到取指微程序的入口地址，继续第 1 步，以完成取下一条机器指令的公共操作。</li>
+</ol>
+<p>以上是一条机器指令的执行过程，如此周而复始，直到整个程序执行完毕</p>
+<p><img src="https://www.hualigs.cn/image/606076e7e826d.jpg"></p>
+<p>其中CU是一个控制单元</p>
+<p>概念辨析：</p>
+<blockquote>
+<p>微程序&gt;微指令&gt;微命令&gt;微操作</p>
+<p>一条指令的功能由一段微程序实现；</p>
+<p>微指令包含操作控制字段(微操作码)、顺序控制字段(微地址码)(存放<strong>下一条</strong>要执行的微指令地址);</p>
+<p>微命令是控制部件向执行部件发出的各种控制命令，是构成控制序列的最小单位</p>
+<p>微操作是计算机最基本的、不可再分解的操作</p>
+</blockquote>
+<h2 id="指令执行顺序的优化"><a href="#指令执行顺序的优化" class="headerlink" title="指令执行顺序的优化"></a>指令执行顺序的优化</h2><p>​    一条指令的执行过程可以分解为多个阶段，如果一条指令一条指令按顺序执行，必然效率很低。因此引入了指令流水线。</p>
+<p>​    流水CPU是一种非常经济而实用的时间并行技术</p>
+<p><img src="https://www.hualigs.cn/image/6061562ca3fb6.jpg"></p>
+<p>​    类似如图所示的流水线形式工作，可以大幅度提升工作效率</p>
+<p>​    那么不免想到一个问题，如果第二条指令需要资源时第一条指令正在使用呢？或者第二条指令需要的数据应该是第一条输出的数据呢？</p>
+<ol>
+<li>资源冲突：同一时刻争抢同一资源  解决方案：①后面的指令暂停 ②设置不同存储器</li>
+<li>数据冲突：下一条指令使用上一条结果  解决方案：①后面的指令暂停，硬件阻塞和软件插入 ②数据旁路技术  ③编译器优化调整顺序</li>
+<li>控制冲突：转移、调用、返回时冲突  解决方案①分支预测②预测转移成功与不成功指令</li>
+</ol>
+<p>此时如果还是觉得速度不够快效率不够高呢？还有新的技术</p>
+<ol>
+<li>超标量流水线技术：同一阶段并行执行多条指令；要求配置多个功能部件和指令译码电路</li>
+<li>超流水线技术：每个周期分段，一个周期内每个部件使用多次；对cache容量要求更大，需要执行的指令长度很长</li>
+<li>超长指令字：将多条能并行操作的指令组合成一条具有多个操作码字段的超长指令字；需要采用多个处理部件</li>
+</ol>
+<p>本质还是用空间换时间，后续CPU的多核并行也一样是为了提高CPU的工作效率，也是目前速度优化的主流趋势</p>
+<p>后续等待补充—0—</p>
 
     </div>
 
@@ -347,7 +396,7 @@
   </li>
   <li class="post-copyright-link">
       <strong>本文链接：</strong>
-      <a href="http://example.com/2021/03/17/Less%E5%9F%BA%E7%A1%80/" title="Less基础">http://example.com/2021/03/17/Less基础/</a>
+      <a href="http://example.com/2021/03/29/CPU%E7%9A%84%E6%9E%84%E9%80%A0%E5%92%8C%E5%8E%9F%E7%90%86/" title="CPU的构造和原理">http://example.com/2021/03/29/CPU的构造和原理/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -356,21 +405,18 @@
 </div>
 
           <div class="post-tags">
-              <a href="/tags/CSS/" rel="tag"># CSS</a>
+              <a href="/tags/%E8%AE%A1%E7%BB%84/" rel="tag"># 计组</a>
           </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2021/03/17/%E7%A7%BB%E5%8A%A8%E7%AB%AF%E5%BC%80%E5%8F%91%E4%B8%BB%E8%A6%81%E5%B8%83%E5%B1%80/" rel="prev" title="CSS移动端开发主要布局">
-                  <i class="fa fa-chevron-left"></i> CSS移动端开发主要布局
+                <a href="/2021/03/21/%E7%AE%97%E6%B3%95-%E9%93%BE%E8%A1%A8%E4%B8%AD%E5%80%92%E6%95%B0%E7%AC%ACk%E4%B8%AA%E7%BB%93%E7%82%B9/" rel="prev" title="算法-链表中倒数第k个结点">
+                  <i class="fa fa-chevron-left"></i> 算法-链表中倒数第k个结点
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2021/03/18/%E6%A1%88%E4%BE%8B-%E8%8B%8F%E5%AE%81%E9%A6%96%E9%A1%B5%E7%A7%BB%E5%8A%A8%E7%AB%AF%E4%BB%BF%E5%88%B6-rem%E5%B8%83%E5%B1%80/" rel="next" title="苏宁首页移动端仿制-rem布局">
-                  苏宁首页移动端仿制-rem布局 <i class="fa fa-chevron-right"></i>
-                </a>
             </div>
           </div>
     </footer>
